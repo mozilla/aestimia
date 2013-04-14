@@ -33,7 +33,7 @@ POST:
         ]
       }
     }
- </pre>
+</pre>
  
 RETURN: {submission id}
  
