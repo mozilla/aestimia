@@ -1,0 +1,28 @@
+{
+  "name": "aestimia",
+  "version": "0.0.1",
+  "description": "Assess submitted work, with or without an explicit rubric. Brought to you by the powerhouse Open Badges squad. An OpenBadger Joint.",
+  "main": "app.js",
+  "scripts": {
+    "test": "NODE_ENV=test ./node_modules/.bin/tap test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mozilla/aestimia.git"
+  },
+  "author": "Mozilla Open Badges Team <support@openbadges.org>",
+  "license": "BSD",
+  "dependencies": {
+    "nunjucks": "~0.1.8a",
+    "express": "~3.1.2",
+    "sequelize": "~1.6.0",
+    "mysql": "~2.0.0-alpha7"
+  },
+  "devDependencies": {
+    "nock": "~0.17.3",
+    "tap": "~0.4.1",
+    "underscore": "~1.4.4",
+    "async": "~0.2.7",
+    "mime": "~1.2.9"
+  }
+}
