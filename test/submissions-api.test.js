@@ -11,7 +11,9 @@ test("POST something to submission, get something back", function(t) {
 });
 
 test("GET a submission", function(t) {
-  conmock({handler: submissions.get, request: {id:'12345'}},
+  conmock({ handler: submissions.get, 
+            request: {id:'12345'} 
+          },
           function(err, mock) {
             t.same(mock.status, 200, 'you can get something');
             t.same(mock.body, 'information about 12345');

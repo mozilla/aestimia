@@ -3,6 +3,5 @@ exports.create = function(req, res, next) {
 }
 
 exports.get = function(req, res, next) {
-  console.err("FUCK " + req.params);
   res.send("information about " + req.params.id);
 }
