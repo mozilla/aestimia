@@ -56,3 +56,11 @@ RETURN: JSON structure
         ]
      }
 </pre>
+
+### What if we just use SQS?
+
+If we use SQS, the data objects above would be the same, the difference would be the webhook would go away, and the API end points would also go away. Above would just be data structures we pop into a SQS queue.
+
+### How do we handle evidence?
+
+Shared S3 buckets. Then we can authenticate specifically, and only provide temporary links to the mentors. Links that expire quickly.
