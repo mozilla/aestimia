@@ -8,6 +8,23 @@ db.once('open', function () {
   console.log('we have connected to the database');
 });
 
+var EvidenceItemSchema = new Schema({
+  url: String,
+  reflection: String
+});
+
+var RubricItemSchema = new Schema({
+  required: Boolean,
+  text: String,
+  pass: Boolean
+});
+
+var RubricSchema = new Schema({
+  minimum: Number,
+  items: [RubricItemSchema]
+})
+  
+
 var SubmissionSchema = new Schema({
   learner: {
     type: String,
@@ -23,12 +40,13 @@ var SubmissionSchema = new Schema({
     type: Array,
     require: false
   },
+  evidence: [EvidenceItemSchema],
   rubric: {
-    type: Array,
+    type: [RubricItemSchema],
     require: false
   },
   evaluation: {
-    type: Array,
+    type: [RubricItemSchema],
     require: false
   }
 });
