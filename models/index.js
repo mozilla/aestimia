@@ -1,9 +1,10 @@
+const config = require('../config');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-mongoose.connect('mongodb://localhost/csol');
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
+const db = mongoose.createConnection(config.MONGO_HOST, config.MONGO_DB);
+
+db.once('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
   console.log('we have connected to the database');
 });
