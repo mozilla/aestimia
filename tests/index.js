@@ -29,7 +29,7 @@ test.applyFixtures = function applyFixtures(fixtures, carryOn) {
    * Get an array of values from an object.
    */
   function values(obj) {
-    return Object.keys(obj).map(function (key) { 
+    return Object.keys(obj).map(function (key) {
       return obj[key];
     });
   }
@@ -90,21 +90,3 @@ test.applyFixtures = function applyFixtures(fixtures, carryOn) {
     });
   });
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

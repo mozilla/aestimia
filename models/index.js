@@ -27,7 +27,7 @@ var RubricSchema = new Schema({
   minimum: Number,
   items: [RubricItemSchema]
 });
-  
+
 
 var SubmissionSchema = new Schema({
   learner: {
@@ -56,6 +56,3 @@ var SubmissionSchema = new Schema({
 });
 
 exports.Submission = db.model('Submission', SubmissionSchema);
-
-
-

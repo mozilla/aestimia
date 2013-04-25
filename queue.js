@@ -1,5 +1,5 @@
 const sqs = require('sqs');
-const config = require('config');
+const config = require('./config');
 
 module.exports = sqs({
   access:config.SQS_ACCESS_KEY,
