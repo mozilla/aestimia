@@ -10,7 +10,10 @@ db.once('open', function () {
 });
 
 var EvidenceItemSchema = new Schema({
-  url: String,
+  url: {
+    type: String,
+    trim: true
+  },
   reflection: String
 });
 
@@ -23,14 +26,14 @@ var RubricItemSchema = new Schema({
 var RubricSchema = new Schema({
   minimum: Number,
   items: [RubricItemSchema]
-})
+});
   
 
 var SubmissionSchema = new Schema({
   learner: {
     type: String,
     trim: true,
-    require: false
+    require: true
   },
   criteriaUrl: {
     type: String,
@@ -39,7 +42,7 @@ var SubmissionSchema = new Schema({
   },
   classification: {
     type: Array,
-    require: false
+    require: true
   },
   evidence: [EvidenceItemSchema],
   rubric: {
@@ -52,4 +55,7 @@ var SubmissionSchema = new Schema({
   }
 });
 
-exports.Submission = mongoose.model('Submission', SubmissionSchema);
+exports.Submission = db.model('Submission', SubmissionSchema);
+
+
+

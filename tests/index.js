@@ -1,4 +1,5 @@
 const test = require('tap').test;
+const async = require('async');
 
 if (process.env.NODE_ENV !== 'test' && process.env.NODE_ENV !== 'travis') {
   console.log("you must set NODE_ENV to 'test' before running tests")
@@ -7,13 +8,30 @@ if (process.env.NODE_ENV !== 'test' && process.env.NODE_ENV !== 'travis') {
 }
 module.exports = test;
 
+test.clock = {
+  start: function (name) {
+    this.name = name;
+    console.log('---------------------------------')
+    console.log('starting ' + name);
+    console.log('---------------------------------')
+    this.startTime = Date.now();
+  },
+  stop: function () {
+    console.log('---------------------------------')
+    console.log(this.name + ': '+ (Date.now() - this.startTime));
+    console.log('---------------------------------')
+  }
+}
+
 
 test.applyFixtures = function applyFixtures(fixtures, carryOn) {
   /**
    * Get an array of values from an object.
    */
   function values(obj) {
-    return Object.keys(obj).map(function (key) { return obj[key] });
+    return Object.keys(obj).map(function (key) { 
+      return obj[key];
+    });
   }
 
   /**
@@ -72,3 +90,21 @@ test.applyFixtures = function applyFixtures(fixtures, carryOn) {
     });
   });
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

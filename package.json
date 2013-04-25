@@ -4,7 +4,7 @@
   "description": "Assess submitted work, with or without an explicit rubric. Brought to you by the powerhouse Open Badges squad. An OpenBadger Joint.",
   "main": "app.js",
   "scripts": {
-    "test": "NODE_ENV=test ./node_modules/.bin/tap test/*.test.js"
+    "test": "NODE_ENV=test ./node_modules/.bin/tap tests/*.test.js"
   },
   "repository": {
     "type": "git",
