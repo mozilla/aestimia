@@ -1,4 +1,4 @@
-/* 
+/*
 reads the SQS queue and creates local submissions for evaluation,
 runs and runs and runs
 
@@ -6,7 +6,7 @@ USAGE: node queuereader.js
 
 */
 const queue = require('queue');
-const read = queue.read_from;
+const read = queue.readFrom;
 const Submission = require('models').Submission;
 
 queue.pull(read, function(message, done) {

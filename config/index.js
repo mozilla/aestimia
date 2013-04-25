@@ -1,4 +1,4 @@
-module.exports = {
+var config = {
   SQS_ACCESS_KEY:process.env.SQS_ACCESS_KEY,
   SQS_SECRET_KEY:process.env.SQS_SECRET_KEY,
   SQS_REGION:process.env.SQS_REGION,
@@ -7,9 +7,11 @@ module.exports = {
 }
 
 if (process.env.NODE_ENV == 'test') {
-  module.exports.MONGO_HOST=process.env.TEST_MONGO_HOST;
-  module.exports.MONGO_DB=process.env.TEST_MONGO_DB;
+  config.MONGO_HOST=process.env.TEST_MONGO_HOST;
+  config.exports.MONGO_DB=process.env.TEST_MONGO_DB;
 } else {
-  module.exports.MONGO_HOST=process.env.MONGO_HOST;
-  module.exports.MONGO_DB=process.env.MONGO_DB;
+  config.MONGO_HOST=process.env.MONGO_HOST;
+  config.MONGO_DB=process.env.MONGO_DB;
 };
+
+module.exports = config;

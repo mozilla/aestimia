@@ -4,7 +4,10 @@ const Schema = mongoose.Schema;
 
 const db = mongoose.createConnection(config.MONGO_HOST, config.MONGO_DB);
 
-db.once('error', console.error.bind(console, 'connection error:'));
+db.once('error', function (error) {
+  throw error;
+});
+
 db.once('open', function () {
   console.log('we have connected to the database');
 });
