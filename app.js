@@ -10,7 +10,7 @@ env.express(app);
 app.use(express.logger());
 app.use(express.compress());
 app.use(express.bodyParser());
-app.use(express.static(path.join(__dirname, 'static')));
+app.use('/static', express.static(path.join(__dirname, 'static')));
 
 require('./controllers/submissions')(app);
 
