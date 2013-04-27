@@ -2,7 +2,12 @@ const config = require('../config');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const db = mongoose.createConnection(config.MONGO_HOST, config.MONGO_DB);
+var db;
+if (config.MONGO_URL) {
+  db = mongoose.connection(config.MONGO_URL);
+} else {
+  db = mongoose.createConnection(config.MONGO_HOST, config.MONGO_DB);
+}
 
 db.once('error', function (error) {
   throw error;
