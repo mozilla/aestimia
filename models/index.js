@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 var db;
 if (config.MONGO_URL) {
-  db = mongoose.connection(config.MONGO_URL);
+  db = mongoose.connect(config.MONGO_URL);
 } else {
   db = mongoose.createConnection(config.MONGO_HOST, config.MONGO_DB);
 }
