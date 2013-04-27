@@ -2,7 +2,7 @@ const config = require('../config');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-mongoose.connect(config.MONGO_URI);
+mongoose.connect(config.MONGO_URL);
 var db = mongoose.connection;
 
 db.once('error', function (error) {

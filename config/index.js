@@ -7,9 +7,9 @@ var config = {
 }
 
 if (process.env.NODE_ENV == 'test') {
-  config.MONGO_URI = process.env.TEST_MONGO_URI
+  config.MONGO_URL = process.env.TEST_MONGO_URL
 } else {
-  config.MONGO_URI = process.env.MONGO_URI;
+  config.MONGO_URL = process.env.MONGO_URL;
 };
 
 
