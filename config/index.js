@@ -6,12 +6,16 @@ var config = {
   WRITE_QUEUE:process.env.WRITE_QUEUE
 }
 
-if (process.env.NODE_ENV == 'test') {
-  config.MONGO_HOST=process.env.TEST_MONGO_HOST;
-  config.exports.MONGO_DB=process.env.TEST_MONGO_DB;
+if (process.env.MONGOHQ_URL) {
+  config.MONGO_URL = process.env.MONGOHQ_URL;
 } else {
-  config.MONGO_HOST=process.env.MONGO_HOST;
-  config.MONGO_DB=process.env.MONGO_DB;
-};
+  if (process.env.NODE_ENV == 'test') {
+    config.MONGO_HOST=process.env.TEST_MONGO_HOST;
+    config.exports.MONGO_DB=process.env.TEST_MONGO_DB;
+  } else {
+    config.MONGO_HOST=process.env.MONGO_HOST;
+    config.MONGO_DB=process.env.MONGO_DB;
+  };
+}
 
 module.exports = config;

@@ -14,7 +14,9 @@ app.use('/static', express.static(path.join(__dirname, 'static')));
 
 require('./controllers/submissions')(app);
 
-if (!module.parent)
+if (!module.parent) {
+  var port = process.env.PORT || 3000;
   app.listen(3000);
-else
+} else {
   module.exports = http.createServer(app);
+}
