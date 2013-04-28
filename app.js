@@ -10,11 +10,14 @@ env.express(app);
 app.use(express.logger());
 app.use(express.compress());
 app.use(express.bodyParser());
-app.use(express.static(path.join(__dirname, 'static')));
+app.use('/static', express.static(path.join(__dirname, 'static')));
 
 require('./controllers/submissions')(app);
 
-if (!module.parent)
-  app.listen(3000);
-else
+if (!module.parent) {
+  var port = process.env.PORT || 3000;
+  console.log("starting app server on " + port);
+  app.listen(port);
+} else {
   module.exports = http.createServer(app);
+}
