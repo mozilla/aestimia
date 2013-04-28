@@ -7,7 +7,7 @@ USAGE: node queuereader.js
 */
 const queue = require('./queue');
 const read = queue.readFrom;
-const Submission = require('models').Submission;
+const Submission = require('./models').Submission;
 
 console.log("queue reader started listening on " + read);
 queue.pull(read, function(message, done) {
