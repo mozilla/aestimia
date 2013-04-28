@@ -17,7 +17,7 @@ require('./controllers/submissions')(app);
 if (!module.parent) {
   var port = process.env.PORT || 3000;
   console.log("starting app server on " + port);
-  app.listen(3000);
+  app.listen(port);
 } else {
   module.exports = http.createServer(app);
 }
