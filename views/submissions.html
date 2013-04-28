@@ -3,11 +3,16 @@
 {% block main %}
 {% for submission in submissions %}
 <h2>
-	{{ submission.learner }}
+  {{ submission.name }}
+  {% if submission.image %}
+  <img height=90 width=90 src='{{submission.image}}'>
+  {% endif %}
 </h2>
+{% if submission.description %}
 <p>
-  {{ submission.learner }}
+  {{ submission.description }}
 </p>
+{% endif %}
 <p>
 	<a class="btn" href="/submission/{{submission.id}}">View details »</a>
 </p>

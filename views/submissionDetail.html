@@ -1,5 +1,36 @@
 {% extends 'layout.html' %}
 
 {% block main %}
-{{ submission.learner }}
+<h1>{{submission.name}}</h1>
+
+{% if submission.image %}
+<img height=90 width=90 src='{{submission.image}}'>
+{% endif %}
+
+{% if submission.description %}
+<p>{{submission.description}}</p>
+{% endif %}
+
+{% if submission.evidence %}
+<h2>Evidence</h2>
+<ul>
+{% for evidence in submission.evidence %}
+<li>{{evidence.url|escape}}: {{evidence.reflection|escape}}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if submission.rubric %}
+<h2>Evaluation</h2>
+<ul>
+{% for item in submission.rubric.items %}
+<li>{{item.text}}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+<p>
+  <button class="btn btn-large btn-primary" type="button">Finish Evaluation</button>
+</p>
+
 {% endblock %}

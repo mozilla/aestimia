@@ -27,17 +27,25 @@ var RubricItemSchema = new Schema({
   pass: Boolean
 });
 
-var RubricSchema = new Schema({
-  minimum: Number,
-  items: [RubricItemSchema]
-});
-
-
 var SubmissionSchema = new Schema({
   learner: {
     type: String,
     trim: true,
     require: true
+  },
+  name : {
+    type: String,
+    trim: true,
+    require: true
+  },
+  description: {
+    type: String,
+    trim: true,
+    require: false
+  },
+  image: {
+    type: String,
+    require: false
   },
   criteriaUrl: {
     type: String,
@@ -50,12 +58,8 @@ var SubmissionSchema = new Schema({
   },
   evidence: [EvidenceItemSchema],
   rubric: {
-    type: [RubricItemSchema],
-    require: false
-  },
-  evaluation: {
-    type: [RubricItemSchema],
-    require: false
+    minimum: Number,
+    items: [RubricItemSchema]
   }
 });
 
