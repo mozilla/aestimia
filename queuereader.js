@@ -5,7 +5,7 @@ runs and runs and runs
 USAGE: node queuereader.js
 
 */
-const queue = require('queue');
+const queue = require('./queue');
 const read = queue.readFrom;
 const Submission = require('models').Submission;
 
