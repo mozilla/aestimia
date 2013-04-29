@@ -33,6 +33,11 @@ var RubricSchema = new Schema({
 
 
 var SubmissionSchema = new Schema({
+  clientId: {
+    type: String,
+    trim: true,
+    require: false
+  },
   learner: {
     type: String,
     trim: true,
@@ -54,6 +59,10 @@ var SubmissionSchema = new Schema({
   },
   evaluation: {
     type: [RubricItemSchema],
+    require: false
+  },
+  status: {
+    type: String, // needs enumeration
     require: false
   }
 });
