@@ -1,10 +1,20 @@
 {% extends 'layout.html' %}
 
+{% block extra_head %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src='/static/js/submission.js'></script>
+<style>
+  .badge-not-earned { opacity: 0.5 }
+  .badge-earned { }
+  ul { list-style: none }
+</style>
+{% endblock %}
+
 {% block main %}
 <h1>{{submission.name}}</h1>
 
 {% if submission.image %}
-<img height=90 width=90 src='{{submission.image}}'>
+<img height=180 width=180 class="badge-not-earned" src='{{submission.image}}'>
 {% endif %}
 
 {% if submission.description %}
@@ -22,9 +32,12 @@
 
 {% if submission.rubric %}
 <h2>Evaluation</h2>
-<ul>
+<ul id="{{submission._id}}">
 {% for item in submission.rubric.items %}
-<li>{{item.text}}</li>
+<li id="{{item._id}}" class="rubric-item">
+  {{item.text}}
+  <input class="evaluation-checkbox" type="checkbox">
+</li>
 {% endfor %}
 </ul>
 {% endif %}

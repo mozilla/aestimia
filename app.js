@@ -13,6 +13,7 @@ app.use(express.bodyParser());
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
 require('./controllers/submissions')(app);
+require('./controllers/api')(app);
 
 if (!module.parent) {
   var port = process.env.PORT || 3000;
