@@ -1,6 +1,10 @@
 {
   "name": "aestimia",
   "version": "0.0.1",
+  "engines": {
+      "node": "0.8.x",
+      "npm": "1.2.x"
+  },
   "description": "Assess submitted work, with or without an explicit rubric. Brought to you by the powerhouse Open Badges squad. An OpenBadger Joint.",
   "main": "app.js",
   "scripts": {

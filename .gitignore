@@ -11,19 +11,5 @@
 /notes
 /docs
 /node_modules
-/bin/update-docs
-/bin/start-server
-/.project
-/lib/environments/local.js
-/wiki
 
-/var/*
-!/var/.gitkeep
-
-/static/_badges*
-!/static/.gitkeep
 /test.json
-/bin/badges.json
-/acceptance-test/local-config.js
-
-/static/css/*.css

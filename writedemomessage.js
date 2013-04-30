@@ -8,6 +8,19 @@ for(var i = 0; i < 10; i++) {
   queue.push(write, {
     learner:'chris@mozillafoundation.org',
     criteria:'http://lonelylion.com',
-    classification: ['chris','cooldude']
+    classification: ['chris','cooldude'],
+    image: 'https://raw.github.com/mozilla/CSOL-site/gh-pages/img/chicago-badge.png',
+    name: 'The Chicago Demo Badge',
+    description: 'User demonstrates knowledge of Chicago History',
+    evidence: [{url:'http://lonelylion.com', reflection:'I write about history'}],
+    rubric: {
+      minimum: 3,
+      items: [
+        {
+        required: false,
+        text: "must have show that they know wtf is up",
+        }
+      ]
+    }
   });
 }

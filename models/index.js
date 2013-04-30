@@ -2,7 +2,8 @@ const config = require('../config');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const db = mongoose.createConnection(config.MONGO_HOST, config.MONGO_DB);
+mongoose.connect(config.MONGO_URL);
+var db = mongoose.connection;
 
 db.once('error', function (error) {
   throw error;
@@ -26,12 +27,6 @@ var RubricItemSchema = new Schema({
   pass: Boolean
 });
 
-var RubricSchema = new Schema({
-  minimum: Number,
-  items: [RubricItemSchema]
-});
-
-
 var SubmissionSchema = new Schema({
   clientId: {
     type: String,
@@ -42,6 +37,20 @@ var SubmissionSchema = new Schema({
     type: String,
     trim: true,
     require: true
+  },
+  name : {
+    type: String,
+    trim: true,
+    require: true
+  },
+  description: {
+    type: String,
+    trim: true,
+    require: false
+  },
+  image: {
+    type: String,
+    require: false
   },
   criteriaUrl: {
     type: String,
@@ -54,8 +63,8 @@ var SubmissionSchema = new Schema({
   },
   evidence: [EvidenceItemSchema],
   rubric: {
-    type: [RubricItemSchema],
-    require: false
+    minimum: Number,
+    items: [RubricItemSchema],
   },
   evaluation: {
     type: [RubricItemSchema],
