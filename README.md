@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mozilla/aestimia.png)](https://travis-ci.org/mozilla/aestimia)
+
 Aestimia allows a mentor community to assess work based on submitted
 evidence and a rubric.
 
