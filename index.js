@@ -1,3 +1,3 @@
 module.exports = process.env.AESTEMIA_COV
-  ? require('./lib-cov/aestemia')
-  : require('./lib/aestemia');
+  ? require('./lib-cov/aestimia')
+  : require('./lib/aestimia');
