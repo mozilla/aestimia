@@ -1,0 +1,23 @@
+{
+  "name": "aestimia",
+  "version": "0.0.1",
+  "description": "Assess submitted work with an explicit rubric.",
+  "dependencies": {
+    "connect-flash": "~0.1.0",
+    "express": "~3.2.3"
+  },
+  "devDependencies": {
+    "mocha": "~1.9.0",
+    "should": "~1.2.2",
+    "supertest": "~0.6.0"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter dot --check-leaks"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mozilla/aestimia.git"
+  },
+  "author": "Mozilla Open Badges Team <support@openbadges.org>",
+  "license": "BSD"
+}
