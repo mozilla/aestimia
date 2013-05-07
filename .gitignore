@@ -1,15 +1,1 @@
-.#*
-*log
-*~
-*#*
-.vagrant
-.DS_Store
-*.rpm
-*.tar.gz
-*.pid
-
-/notes
-/docs
 /node_modules
-
-/test.json
