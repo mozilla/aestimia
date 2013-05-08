@@ -1,15 +1,10 @@
-var mongoose = require('mongoose');
+var db = require('./db');
 var async = require('async');
 var should = require('should');
 
 var Mentor = require('../').models.Mentor;
 
-function newMentor(obj) {
-  return function(cb) {
-    var m = new Mentor(obj);
-    m.save(cb);
-  };
-}
+db.init();
 
 function ensureClassificationsFor(email, expected) {
   return function(cb) {
@@ -21,17 +16,15 @@ function ensureClassificationsFor(email, expected) {
   };
 }
 
-mongoose.connect('mongodb://localhost/test');
-
 describe('Mentor', function() {
   it('should have a uniqueness constraint on email addrs', function(done) {
     async.series([
-      Mentor.remove.bind(Mentor),
-      newMentor({
+      db.removeAll(Mentor),
+      db.create(Mentor, {
         email: 'foo@bar.org',
         classifications: ['a', 'b']
       }),
-      newMentor({
+      db.create(Mentor, {
         email: 'foo@bar.org',
         classifications: ['lol', 'cat']
       }),
@@ -45,12 +38,12 @@ describe('Mentor', function() {
 describe('Mentor.classificationsFor()', function() {
   it('should report union of user and domain classes', function(done) {
     async.series([
-      Mentor.remove.bind(Mentor),
-      newMentor({
+      db.removeAll(Mentor),
+      db.create(Mentor, {
         email: 'foo@bar.org',
         classifications: ['a', 'b', 'lol']
       }),
-      newMentor({
+      db.create(Mentor, {
         email: '*@bar.org',
         classifications: ['lol', 'cat']
       }),
@@ -60,8 +53,8 @@ describe('Mentor.classificationsFor()', function() {
 
   it('should report domain classifications', function(done) {
     async.series([
-      Mentor.remove.bind(Mentor),
-      newMentor({
+      db.removeAll(Mentor),
+      db.create(Mentor, {
         email: '*@bar.org',
         classifications: ['lol', 'cat']
       }),
@@ -71,8 +64,8 @@ describe('Mentor.classificationsFor()', function() {
 
   it('should report user classifications', function(done) {
     async.series([
-      Mentor.remove.bind(Mentor),
-      newMentor({
+      db.removeAll(Mentor),
+      db.create(Mentor, {
         email: 'foo@bar.org',
         classifications: ['a', 'b']
       }),
