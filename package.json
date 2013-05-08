@@ -23,6 +23,7 @@
     "type": "git",
     "url": "git://github.com/mozilla/aestimia.git"
   },
+  "engines" : { "node" : ">=0.8" },
   "author": "Mozilla Open Badges Team <support@openbadges.org>",
   "license": "BSD"
 }
