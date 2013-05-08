@@ -20,5 +20,14 @@ You'll need node 0.8 or 0.10.
 When deploying, you'll want to set `COOKIE_SECRET` to something super
 secret. See [bin/aestimia.js][] for more configuration options.
 
+## Test Coverage
+
+Build/install [jscoverage][], run `make test-cov`, then open
+`coverage.html` in a browser.
+
+Coverage should always be at 100%. Pull requests that break this will
+be rejected.
+
   [PhantomJS]: http://phantomjs.org/
   [bin/aestimia.js]: https://github.com/mozilla/aestimia/blob/master/bin/aestimia.js
+  [jscoverage]: https://github.com/visionmedia/node-jscoverage
