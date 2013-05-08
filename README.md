@@ -5,7 +5,7 @@ evidence and a rubric.
 
 ## Prerequisites
 
-You'll need node 0.8 or 0.10, as well as [MongoDB][].
+You'll need node 0.8, as well as [MongoDB][].
 
 [PhantomJS][] is required to run the test suite. MongoDB is expected
 to be available on localhost at the default port while the test suite is
