@@ -33,9 +33,35 @@ var baseSubmission = {
   }
 };
 
+function ensureInvalid(invalidator) {
+  return function(done) {
+    var attrs = JSON.parse(JSON.stringify(baseSubmission));
+    invalidator(attrs);
+    async.series([
+      db.removeAll(Submission),
+      db.create(Submission, attrs)
+    ], function(err) {
+      err.name.should.eql('ValidationError');
+      done();
+    });    
+  };
+}
+
 db.init();
 
 describe('Submission', function() {
+  it('should reject unsafe urls for evidence', ensureInvalid(function(attrs) {
+    attrs.evidence[1].url = "javascript:lol()";
+  }));
+
+  it('should reject unsafe urls for criteria', ensureInvalid(function(attrs) {
+    attrs.criteriaUrl = "javascript:lol()";
+  }));
+
+  it('should reject unsafe urls for image', ensureInvalid(function(attrs) {
+    attrs.achievement.imageUrl = "javascript:lol()";
+  }));
+
   it('should work with canned responses', function(done) {
     async.series([
       db.removeAll(Submission),
