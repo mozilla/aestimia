@@ -3,6 +3,12 @@
 Aestimia allows a mentor community to assess work based on submitted
 evidence and a rubric.
 
+## Prerequisites
+
+You'll need node 0.8 or 0.10.
+
+[PhantomJS][] is required to run the test suite.
+
 ## Quick Start
 
     git clone git://github.com/mozilla/aestimia.git
@@ -13,3 +19,5 @@ evidence and a rubric.
 
 When deploying, you'll want to set `COOKIE_SECRET` to something super
 secret.
+
+  [PhantomJS]: http://phantomjs.org/

@@ -1,7 +1,8 @@
 REPORTER=spec
 
 test:
-	@./node_modules/.bin/mocha --reporter $(REPORTER) --check-leaks
+	@./node_modules/.bin/mocha --reporter $(REPORTER) --check-leaks \
+	  test/*.test.js
 
 test-cov: lib-cov
 	@AESTEMIA_COV=1 $(MAKE) test REPORTER=html-cov > coverage.html
