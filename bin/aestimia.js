@@ -5,9 +5,9 @@ var assert = require('assert');
 const PORT = process.env['PORT'] || 3000;
 const COOKIE_SECRET = process.env['COOKIE_SECRET'] || null;
 const DEBUG = ('DEBUG' in process.env);
-const PERSONA_AUDIENCE = process.env['PERSONA_AUDIENCE'] || DEBUG
+const PERSONA_AUDIENCE = process.env['PERSONA_AUDIENCE'] || (DEBUG
   ? 'http://localhost:' + PORT
-  : null;
+  : null);
 
 assert.ok(PERSONA_AUDIENCE, 'PERSONA_AUDIENCE env var should be defined.');
 assert.ok(COOKIE_SECRET, 'COOKIE_SECRET env var should be defined.');
