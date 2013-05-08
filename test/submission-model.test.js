@@ -16,7 +16,7 @@ var baseSubmission = {
   classifications: ["science", "math"],
   evidence: [
     {
-      url: "http://evidence.com/1",
+      url: "https://evidence.com/1",
       reflection: "This shows how great I did."
     },
     {
