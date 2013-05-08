@@ -13,6 +13,16 @@ describe('App', function() {
       .expect(200, done);    
   });
 
+  it('should include CSRF tokens in pages', function(done) {
+    request(app)
+      .get('/')
+      .expect(200, function(err, res) {
+        if (err) return done(err);
+        res.text.should.match(/name="csrf" content="[A-Za-z0-9\-_]+"/);
+        done();
+      });
+  });
+
   it('should return 200 OK at /vendor/jquery.js', function(done) {
     request(app)
       .get('/vendor/jquery.js')
