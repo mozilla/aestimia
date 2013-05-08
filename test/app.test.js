@@ -18,6 +18,23 @@ describe('App', function() {
       .expect(200, done);
   });
 
+  it('should use content security policy', function(done) {
+    request(app)
+      .get('/')
+      .expect('Content-Security-Policy', /'self'/, function(err, res) {
+        if (err) return done(err);
+        res.headers['content-security-policy']
+          .should.not.match(/'unsafe-eval'/);
+        done();
+      });
+  });
+
+  it('should allow eval() at /test/', function(done) {
+    request(app)
+      .get('/test/')
+      .expect('Content-Security-Policy', /'unsafe-eval'/, done);
+  });
+
   it('should return 200 OK at /', function(done) {
     request(app)
       .get('/')
