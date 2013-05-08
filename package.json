@@ -5,12 +5,15 @@
   "dependencies": {
     "connect-flash": "~0.1.0",
     "express-persona": "0.0.7",
+    "underscore": "1.4.4",
+    "mongoose": "3.6.9",
     "nunjucks": "git://github.com/toolness/nunjucks.git#644c8634da0a0327b030c2d0ca72266f15bb8d1a",
     "express": "~3.2.3"
   },
   "devDependencies": {
     "mocha": "~1.9.0",
     "should": "~1.2.2",
+    "async": "0.2.8",
     "supertest": "~0.6.0"
   },
   "scripts": {
