@@ -23,18 +23,35 @@ function ensureClassificationsFor(email, expected) {
 
 mongoose.connect('mongodb://localhost/test');
 
+describe('Mentor', function() {
+  it('should have a uniqueness constraint on email addrs', function(done) {
+    async.series([
+      Mentor.remove.bind(Mentor),
+      newMentor({
+        email: 'foo@bar.org',
+        classifications: ['a', 'b']
+      }),
+      newMentor({
+        email: 'foo@bar.org',
+        classifications: ['lol', 'cat']
+      }),
+    ], function(err) {
+      err.code.should.eql(11000); // duplicate key error
+      done();
+    });
+  });
+});
+
 describe('Mentor.classificationsFor()', function() {
   it('should report union of user and domain classes', function(done) {
     async.series([
       Mentor.remove.bind(Mentor),
       newMentor({
-        username: 'foo',
-        domain: 'bar.org',
-        classifications: ['a', 'b']
+        email: 'foo@bar.org',
+        classifications: ['a', 'b', 'lol']
       }),
       newMentor({
-        username: null,
-        domain: 'bar.org',
+        email: '*@bar.org',
         classifications: ['lol', 'cat']
       }),
       ensureClassificationsFor('foo@bar.org', ['a', 'b', 'lol', 'cat'])
@@ -45,7 +62,7 @@ describe('Mentor.classificationsFor()', function() {
     async.series([
       Mentor.remove.bind(Mentor),
       newMentor({
-        domain: 'bar.org',
+        email: '*@bar.org',
         classifications: ['lol', 'cat']
       }),
       ensureClassificationsFor('foo@bar.org', ['lol', 'cat'])
@@ -56,8 +73,7 @@ describe('Mentor.classificationsFor()', function() {
     async.series([
       Mentor.remove.bind(Mentor),
       newMentor({
-        username: 'foo',
-        domain: 'bar.org',
+        email: 'foo@bar.org',
         classifications: ['a', 'b']
       }),
       ensureClassificationsFor('foo@bar.org', ['a', 'b'])
