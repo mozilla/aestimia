@@ -4,6 +4,7 @@
   "description": "Assess submitted work with an explicit rubric.",
   "dependencies": {
     "connect-flash": "~0.1.0",
+    "express-persona": "0.0.7",
     "nunjucks": "git://github.com/toolness/nunjucks.git#644c8634da0a0327b030c2d0ca72266f15bb8d1a",
     "express": "~3.2.3"
   },

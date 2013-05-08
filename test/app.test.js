@@ -12,6 +12,13 @@ describe('App', function() {
       .expect('Content-Type', /html/)
       .expect(200, done);    
   });
+
+  it('should return 200 OK at /vendor/jquery.js', function(done) {
+    request(app)
+      .get('/vendor/jquery.js')
+      .expect('Content-Type', /javascript/)
+      .expect(200, done);
+  });
 });
 
 describe('Nunjucks environment', function() {
