@@ -28,11 +28,8 @@ describe('App', function() {
   it('should include CSRF tokens in pages', function(done) {
     request(app)
       .get('/')
-      .expect(200, function(err, res) {
-        if (err) return done(err);
-        res.text.should.match(/name="csrf" content="[A-Za-z0-9\-_]+"/);
-        done();
-      });
+      .expect(/name="csrf" content="[A-Za-z0-9\-_]+"/)
+      .expect(200, done);
   });
 
   it('should return 200 OK at /vendor/jquery.js', function(done) {
