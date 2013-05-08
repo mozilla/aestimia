@@ -15,9 +15,10 @@ You'll need node 0.8 or 0.10.
     cd aestimia
     npm install
     npm test
-    COOKIE_SECRET=supersecret node bin/aestimia.js
+    DEBUG= COOKIE_SECRET=supersecret node bin/aestimia.js
 
 When deploying, you'll want to set `COOKIE_SECRET` to something super
-secret.
+secret. See [bin/aestimia.js][] for more configuration options.
 
   [PhantomJS]: http://phantomjs.org/
+  [bin/aestimia.js]: https://github.com/mozilla/aestimia/blob/master/bin/aestimia.js
