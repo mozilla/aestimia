@@ -5,9 +5,11 @@ evidence and a rubric.
 
 ## Prerequisites
 
-You'll need node 0.8 or 0.10.
+You'll need node 0.8 or 0.10, as well as [MongoDB][].
 
-[PhantomJS][] is required to run the test suite.
+[PhantomJS][] is required to run the test suite. MongoDB is expected
+to be available on localhost at the default port while the test suite is
+running, too; the `test` database will be used.
 
 ## Quick Start
 
@@ -28,6 +30,7 @@ Build/install [jscoverage][], run `make test-cov`, then open
 Coverage should always be at 100%. Pull requests that break this will
 be rejected.
 
+  [MongoDB]: http://www.mongodb.org/
   [PhantomJS]: http://phantomjs.org/
   [bin/aestimia.js]: https://github.com/mozilla/aestimia/blob/master/bin/aestimia.js
   [jscoverage]: https://github.com/visionmedia/node-jscoverage
