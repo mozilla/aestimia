@@ -55,7 +55,9 @@ function runQunitTests(path, cb) {
     });
 };
 
-describe('QUnit Tests', function() {
+describe('QUnit Tests (via PhantomJS)', function() {
+  this.timeout(15000);
+
   it('should not fail', function(done) {
     runQunitTests('/test/', function() {
       done();
