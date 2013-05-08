@@ -6,6 +6,18 @@ describe('App', function() {
     cookieSecret: 'testing'
   });
 
+  it('should show flash messages', function(done) {
+    app.get('/test-make-flash-message', function(req, res) {
+      req.flash('info', '<em>hi</em>');
+      return res.render('layout.html');
+    });
+    request(app)
+      .get('/test-make-flash-message')
+      .expect(/class="alert alert-info"/)
+      .expect(/<em>hi<\/em>/)
+      .expect(200, done);
+  });
+
   it('should return 200 OK at /', function(done) {
     request(app)
       .get('/')

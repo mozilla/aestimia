@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 {% block head %}{% endblock %}
 <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap{{ dot_min }}.css">
-<title>{% block title %}Fleeting{% endblock %}</title>
+<title>{% block title %}Aestimia{% endblock %}</title>
 <div class="navbar navbar-static-top navbar-inverse">
   <div class="navbar-inner">
     <div class="container">
@@ -29,12 +29,12 @@
   </div>
 </div>
 <div class="container">
-  {% if messages %}
+  {% if messages().length %}
     <br>
-    {% for category, message in messages %}
-      <div class="alert alert-{{ category }}">
+    {% for message in messages() %}
+      <div class="alert alert-{{ message.category }}">
         <a class="close" data-dismiss="alert" href="#">&times;</a>
-        {{ message|safe }}
+        {{ message.html|safe }}
       </div>
     {% endfor %}
   {% endif %}
