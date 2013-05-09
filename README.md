@@ -19,6 +19,8 @@ running, too; the `test` database will be used.
     npm test
     DEBUG= COOKIE_SECRET=supersecret node bin/aestimia.js
 
+By default, the `aestimia` database on the local mongo instance is used.
+
 When deploying, you'll want to set `COOKIE_SECRET` to something super
 secret. See [bin/aestimia.js][] for more configuration options.
 
