@@ -70,13 +70,6 @@ describe('App', function() {
       .expect('Content-Security-Policy', /'unsafe-eval'/, done);
   });
 
-  it('should return 200 OK at /', function(done) {
-    request(app)
-      .get('/')
-      .expect('Content-Type', /html/)
-      .expect(200, done);    
-  });
-
   it('should include CSRF tokens in pages', function(done) {
     request(app)
       .get('/')
@@ -84,7 +77,7 @@ describe('App', function() {
       .expect(200, done);
   });
 
-  it('should return 200 OK at /vendor/jquery.js', function(done) {
+  it('should serve static files', function(done) {
     request(app)
       .get('/vendor/jquery.js')
       .expect('Content-Type', /javascript/)
