@@ -41,18 +41,6 @@ describe('App', function() {
       .expect(403, done);
   });
 
-  it('should show flash messages', function(done) {
-    app.get('/test-make-flash-message', function(req, res) {
-      req.flash('info', '<em>hi</em>');
-      return res.render('layout.html');
-    });
-    request(app)
-      .get('/test-make-flash-message')
-      .expect(/class="alert alert-info"/)
-      .expect(/<em>hi<\/em>/)
-      .expect(200, done);
-  });
-
   it('should use content security policy', function(done) {
     request(app)
       .get('/')
@@ -68,13 +56,6 @@ describe('App', function() {
     request(app)
       .get('/test/')
       .expect('Content-Security-Policy', /'unsafe-eval'/, done);
-  });
-
-  it('should include CSRF tokens in pages', function(done) {
-    request(app)
-      .get('/')
-      .expect(/name="csrf" content="[A-Za-z0-9\-_]+"/)
-      .expect(200, done);
   });
 
   it('should serve static files', function(done) {
