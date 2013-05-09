@@ -25,6 +25,35 @@ function ensureInvalid(invalidator) {
 db.init();
 
 describe('Submission', function() {
+  it('should find submissions for reviewers', function(done) {
+    async.series([
+      db.removeAll(Submission),
+      db.removeAll(Mentor),
+      db.create(Mentor, {email: "foo@bar.org", classifications: ["math"]}),
+      // A submission the user has already reviewed...
+      db.create(Submission, baseSubmission({
+        classifications: ["math"],
+        reviewer: "foo@bar.org",
+        reviewDate: Date.now()
+      })),
+      // A submission the user can review...
+      db.create(Submission, baseSubmission({
+        classifications: ["math", "science"]
+      })),
+      // A submission the user doesn't have permission to review...
+      db.create(Submission, baseSubmission({
+        classifications: ["science"]
+      })),
+      function(cb) {
+        Submission.findForReview("foo@bar.org", function(err, submissions) {
+          submissions.length.should.eql(1);
+          submissions[0].classifications.length.should.eql(2);
+          cb();
+        });
+      }
+    ], done)
+  });
+
   it('should propagate errors in reviewer validation', function(done) {
     sinon.stub(Submission.Mentor, 'classificationsFor', function(who, cb) {
       cb(new Error("oof"));

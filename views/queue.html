@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+{% if submissions.length %}
+<ul>
+  {% for submission in submissions %}
+  <li>{{ submission.achievement.name }}</li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>You have nothing to review.</p>
+{% endif %}
+{% endblock %}
