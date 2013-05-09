@@ -1,9 +1,74 @@
 var should = require('should');
 var request = require('supertest');
+var sinon = require('sinon');
+
+var aestimia = require('../');
+
+function buildApp(options) {
+  options = options || {};
+  if (!options.cookieSecret) options.cookieSecret = 'testing';
+  return aestimia.app.build(options);
+}
+
+describe('App API endpoints', function() {
+  var app = buildApp({apiKey: 'lol'});
+  var authHeader = 'Basic ' + new Buffer('api:lol').toString('base64');
+
+  app.get('/api/foo', function(req, res) {
+    res.send('here is info');
+  });
+
+  it('should return 401 when no auth is given', function(done) {
+    request(app)
+      .get('/api/foo')
+      .expect('Unauthorized')
+      .expect(401, done);
+  });
+
+  it('should return content when auth is given', function(done) {
+    request(app)
+      .get('/api/foo')
+      .set('Authorization', authHeader)
+      .expect('here is info')
+      .expect(200, done);
+  });
+});
 
 describe('App', function() {
-  var app = require('../').app.build({
-    cookieSecret: 'testing'
+  var app = buildApp({
+    defineExtraRoutes: function(app) {
+      app.get('/forced-error', function(req, res, next) {
+        next(new Error('omg kaboom'));
+      });
+    }
+  });
+
+  it('should report errors', function(done) {
+    sinon.stub(process.stderr, 'write');
+
+    request(app)
+      .get('/forced-error')
+      .expect('Sorry, something exploded!')
+      .expect(500, function(err) {
+        process.stderr.write.calledWithMatch('omg kaboom').should.eql(true);
+        process.stderr.write.restore();
+        done(err);
+      });
+  });
+
+  it('should protect non-api endpoints with CSRF', function(done) {
+    request(app)
+      .post('/blargy')
+      .expect('Content-Type', 'text/plain')
+      .expect('Forbidden')
+      .expect(403, done);
+  });
+
+  it('should protect api endpoints when API is disabled', function(done) {
+    request(app)
+      .get('/api/foo')
+      .expect('API access is disabled.')
+      .expect(403, done);
   });
 
   it('should show flash messages', function(done) {
@@ -73,9 +138,7 @@ describe('Nunjucks environment', function() {
   }
 
   it('should autoescape', function(done) {
-    var app = require('../').app.build({
-      cookieSecret: 'testing'
-    });
+    var app = buildApp();
     app.nunjucksEnv.loaders.push(FakeLoader({
       'test_escaping.html': 'hi {{blah}}'
     }));
