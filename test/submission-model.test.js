@@ -3,40 +3,12 @@ var async = require('async');
 var should = require('should');
 
 var db = require('./db');
+var baseSubmission = require('./utils').baseSubmission;
 var Submission = require('../').models.Submission;
-
-var baseSubmission = {
-  learner: "brian@example.org",
-  criteriaUrl: "http://something.whatever.org",
-  achievement: {
-    name: "Tropical Koala Badge",
-    description: "Awarded to Tropical Koalas.",
-    imageUrl: "http://tropicalkoa.la/png"
-  },
-  classifications: ["science", "math"],
-  evidence: [
-    {
-      url: "https://evidence.com/1",
-      reflection: "This shows how great I did."
-    },
-    {
-      url: "http://evidence.com/2"
-    }
-  ],
-  rubric: {
-    items: [
-      { "required": true, "text": "Learner is a chill bro" },
-      { "required": true, "text": "Learner isn't a jerk" },
-      { "required": false, "text": "Learner can funnel like 80 beers" },
-      { "required": false, "text": "Learner can even lift" }
-    ]
-  }
-};
 
 function ensureInvalid(invalidator) {
   return function(done) {
-    var attrs = JSON.parse(JSON.stringify(baseSubmission));
-    invalidator(attrs);
+    var attrs = baseSubmission(invalidator);
     async.series([
       db.removeAll(Submission),
       db.create(Submission, attrs)
@@ -66,7 +38,7 @@ describe('Submission', function() {
     async.series([
       db.removeAll(Submission),
       function(cb) {
-        var s = new Submission(_.extend({}, baseSubmission, {
+        var s = new Submission(baseSubmission({
           cannedResponses: [
             "This is awesome",
             "This kind of sucks",
@@ -83,7 +55,7 @@ describe('Submission', function() {
     async.series([
       db.removeAll(Submission),
       function(cb) {
-        var s = new Submission(baseSubmission);
+        var s = new Submission(baseSubmission());
         s.isLearnerUnderage().should.eql(false);
         s.save(cb);
       }

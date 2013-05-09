@@ -2,37 +2,7 @@ var should = require('should');
 var request = require('supertest');
 var sinon = require('sinon');
 
-var aestimia = require('../');
-
-function buildApp(options) {
-  options = options || {};
-  if (!options.cookieSecret) options.cookieSecret = 'testing';
-  return aestimia.app.build(options);
-}
-
-describe('App API endpoints', function() {
-  var app = buildApp({apiKey: 'lol'});
-  var authHeader = 'Basic ' + new Buffer('api:lol').toString('base64');
-
-  app.get('/api/foo', function(req, res) {
-    res.send('here is info');
-  });
-
-  it('should return 401 when no auth is given', function(done) {
-    request(app)
-      .get('/api/foo')
-      .expect('Unauthorized')
-      .expect(401, done);
-  });
-
-  it('should return content when auth is given', function(done) {
-    request(app)
-      .get('/api/foo')
-      .set('Authorization', authHeader)
-      .expect('here is info')
-      .expect(200, done);
-  });
-});
+var buildApp = require('./utils').buildApp;
 
 describe('App', function() {
   var app = buildApp({
