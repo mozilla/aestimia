@@ -3,6 +3,7 @@ var async = require('async');
 
 var db = require('./db');
 var utils = require('./utils');
+var data = require('./data');
 var models = require('../').models;
 
 db.init();
@@ -32,6 +33,14 @@ describe('Website', function() {
       .expect(200, done);    
   });
 
+  it('should return 200 OK with HTML at /demo', function(done) {
+    loggedInEmail = null;
+    request(app)
+      .get('/demo')
+      .expect('Content-Type', /html/)
+      .expect(200, done);    
+  });
+
   it('should show "nothing to review" in queue', function(done) {
     loggedInEmail = "meh@glorb.org";
     async.series([
@@ -50,7 +59,7 @@ describe('Website', function() {
       db.removeAll(models.Mentor),
       db.removeAll(models.Submission),
       db.create(models.Mentor, {email: "a@b.com", classifications: ["math"]}),
-      db.create(models.Submission, utils.baseSubmission()),
+      db.create(models.Submission, data.baseSubmission()),
       function(done) {
         request(app)
           .get('/')

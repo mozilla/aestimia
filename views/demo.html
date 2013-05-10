@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Aestimia Demo Control Panel</h1>
+
+<h2>API Secret</h2>
+
+<p>All of the functionality on the page is just a front-end to the API. Enter your API secret below, or else nothing on this page will work.</p>
+
+<p><input type="password" id="js-password"></p>
+
+<h2>Forge a Submission</h2>
+
+<p>Choose a template below, edit it if you like, and then submit it.</p>
+
+<ul class="nav nav-pills" id="submissions">
+  {% for submission in submissions %}
+  <li><a data-toggle="tab" href="#submission-{{ submission.name }}">{{ submission.name }}</a></li>
+  {% endfor %}
+</ul>
+
+<div class="tab-content">
+  {% for submission in submissions %}
+  <div class="tab-pane" id="submission-{{ submission.name }}">
+    <form class="js-submission">
+      <textarea autocomplete="off" style="font-family: monospace" rows="30" class="input-block-level" name="json">{{ submission.json }}</textarea>
+      <input class="btn btn-primary" type="submit" value="Forge">
+    </form>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="/js/demo.js"></script>
+{% endblock %}

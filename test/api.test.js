@@ -3,6 +3,7 @@ var should = require('should');
 var sinon = require('sinon');
 
 var utils = require('./utils');
+var data = require('./data');
 var db = require('./db');
 var aestimia = require('../');
 
@@ -38,7 +39,7 @@ describe('API', function() {
     request(app)
       .post('/api/submit')
       .set('Authorization', authHeader)
-      .send(utils.baseSubmission())
+      .send(data.baseSubmission())
       .expect(200, function(err, res) {
         if (err) return done(err);
         res.body.id.should.match(/[a-f0-9]+/);
@@ -67,7 +68,7 @@ describe('API', function() {
     request(app)
       .post('/api/submit')
       .set('Authorization', authHeader)
-      .send(utils.baseSubmission({
+      .send(data.baseSubmission({
         criteriaUrl: 'javascript:lol()'
       }))
       .expect({
@@ -84,7 +85,7 @@ describe('API', function() {
     request(app)
       .post('/api/submit')
       .set('Authorization', authHeader)
-      .send(utils.baseSubmission({
+      .send(data.baseSubmission({
         creationDate: 'wat'
       }))
       .expect({

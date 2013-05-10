@@ -8,6 +8,7 @@ const COOKIE_SECRET = process.env['COOKIE_SECRET'] || null;
 const MONGO_URL = process.env['MONGO_URL'] || process.env['MONGOHQ_URL'] ||
   process.env['MONGOLAB_URI'] || 'mongodb://localhost/aestimia';
 const DEBUG = ('DEBUG' in process.env);
+const API_SECRET = process.env['API_SECRET'];
 const PERSONA_AUDIENCE = process.env['PERSONA_AUDIENCE'] || (DEBUG
   ? 'http://localhost:' + PORT
   : null);
@@ -26,10 +27,12 @@ mongoose.connect(MONGO_URL, function(err) {
   var app = require('../').app.build({
     cookieSecret: COOKIE_SECRET,
     debug: DEBUG,
+    apiKey: API_SECRET,
     personaAudience: PERSONA_AUDIENCE
   });
 
   app.listen(PORT, function() {
+    console.log("API is " + (API_SECRET ? 'enabled' : 'disabled') + ".");
     console.log("Persona audience set to " + PERSONA_AUDIENCE +
                 ".\nSite must be accessed through the above URL, or " +
                 "login will fail.");

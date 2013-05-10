@@ -4,7 +4,8 @@ var should = require('should');
 var sinon = require('sinon');
 
 var db = require('./db');
-var baseSubmission = require('./utils').baseSubmission;
+var data = require('./data');
+var baseSubmission = data.baseSubmission;
 var models = require('../').models;
 var Submission = models.Submission;
 var Mentor = models.Mentor;
@@ -18,7 +19,7 @@ function ensureInvalid(invalidator) {
     ], function(err) {
       err.name.should.eql('ValidationError');
       done();
-    });    
+    });
   };
 }
 
@@ -107,13 +108,7 @@ describe('Submission', function() {
     async.series([
       db.removeAll(Submission),
       function(cb) {
-        var s = new Submission(baseSubmission({
-          cannedResponses: [
-            "This is awesome",
-            "This kind of sucks",
-            "You didn't satisfy all criteria"
-          ],
-        }));
+        var s = new Submission(data.submissions['canned-responses']);
         s.isLearnerUnderage().should.eql(true);
         s.save(cb);
       }
@@ -124,7 +119,7 @@ describe('Submission', function() {
     async.series([
       db.removeAll(Submission),
       function(cb) {
-        var s = new Submission(baseSubmission());
+        var s = new Submission(data.submissions['base']);
         s.isLearnerUnderage().should.eql(false);
         s.save(cb);
       }
