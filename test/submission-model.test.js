@@ -34,8 +34,10 @@ describe('Submission', function() {
       // A submission the user has already reviewed...
       db.create(Submission, baseSubmission({
         classifications: ["math"],
-        reviewer: "foo@bar.org",
-        reviewDate: Date.now()
+        reviews: [{
+          author: "foo@bar.org",
+          response: "cool yo"
+        }]
       })),
       // A submission the user can review...
       db.create(Submission, baseSubmission({
@@ -61,7 +63,9 @@ describe('Submission', function() {
     });
     async.series([
       db.removeAll(Submission),
-      db.create(Submission, baseSubmission({reviewer: "foo@bar.org"}))
+      db.create(Submission, baseSubmission({
+        reviews: [{author: "foo@bar.org", response: "neat"}]
+      }))
     ], function(err) {
       Submission.Mentor.classificationsFor.restore();
       err.message.should.eql("oof");
@@ -75,7 +79,9 @@ describe('Submission', function() {
       db.removeAll(Mentor),
       db.create(Mentor, {email: "foo@bar.org",
                          classifications: ["math"]}),
-      db.create(Submission, baseSubmission({reviewer: "foo@bar.org"}))
+      db.create(Submission, baseSubmission({
+        reviews: [{author: "foo@bar.org", response: "rad"}]
+      }))
     ], done);
   });
 
@@ -83,11 +89,13 @@ describe('Submission', function() {
     async.series([
       db.removeAll(Submission),
       db.removeAll(Mentor),
-      db.create(Submission, baseSubmission({reviewer: "foo@bar.org"}))
+      db.create(Submission, baseSubmission({
+        reviews: [{author: "a@b.com", response: "nifty"}]
+      }))
     ], function(err) {
       err.name.should.eql("ValidationError");
       err.errors.reviewer.message
-        .should.eql("reviewer does not have permission to review");
+        .should.eql("reviewer a@b.com does not have permission to review");
       done();
     });
   });
