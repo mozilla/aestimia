@@ -29,7 +29,7 @@ $(window).ready(function() {
   });
 
   $("#js-update-mentor").click(function() {
-    postJSON("/api/mentors", $("#js-update-mentor-json").val());
+    postJSON("/api/mentor", $("#js-update-mentor-json").val());
   });
 
   $("#js-list-mentors").click(function() {

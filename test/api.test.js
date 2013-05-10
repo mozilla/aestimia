@@ -56,16 +56,16 @@ describe('API', function() {
     ], done);
   });
 
-  it('POST /mentors should return 400 w/ bad input', function(done) {
+  it('POST /mentor should return 400 w/ bad input', function(done) {
     request(app)
-      .post('/api/mentors')
+      .post('/api/mentor')
       .set('Authorization', authHeader)
       .send({u: 1})
       .expect('need valid email')
       .expect(400, done);
   });
 
-  it('POST /mentors should remove mentors', function(done) {
+  it('POST /mentor removes mentor when only email is given', function(done) {
     async.series([
       db.removeAll(aestimia.models.Mentor),
       db.create(aestimia.models.Mentor, {
@@ -74,7 +74,7 @@ describe('API', function() {
       }),
       function(cb) {
         request(app)
-          .post('/api/mentors')
+          .post('/api/mentor')
           .set('Authorization', authHeader)
           .send({email: 'foo@bar.org'})
           .expect('deleted')
@@ -90,12 +90,12 @@ describe('API', function() {
     ], done);    
   });
 
-  it('POST /mentors should upsert mentors', function(done) {
+  it('POST /mentor should upsert mentors', function(done) {
     async.series([
       db.removeAll(aestimia.models.Mentor),
       function(cb) {
         request(app)
-          .post('/api/mentors')
+          .post('/api/mentor')
           .set('Authorization', authHeader)
           .send({email: 'meh@barf.org', classifications: ['lol', 'u']})
           .expect('updated')
