@@ -60,9 +60,34 @@ describe('API', function() {
     request(app)
       .post('/api/mentors')
       .set('Authorization', authHeader)
-      .send({email: 'meh@barf.org', classifications: 1})
-      .expect('need valid email and classifications')
+      .send({u: 1})
+      .expect('need valid email')
       .expect(400, done);
+  });
+
+  it('POST /mentors should remove mentors', function(done) {
+    async.series([
+      db.removeAll(aestimia.models.Mentor),
+      db.create(aestimia.models.Mentor, {
+        email: "foo@bar.org",
+        classifications: ['u']
+      }),
+      function(cb) {
+        request(app)
+          .post('/api/mentors')
+          .set('Authorization', authHeader)
+          .send({email: 'foo@bar.org'})
+          .expect('deleted')
+          .expect(200, cb);
+      },
+      function(cb) {
+        aestimia.models.Mentor.findOne({
+          email: 'foo@bar.org'
+        }, function(err, mentor) {
+          cb(err || (mentor && new Error("mentor not deleted!")) || null);
+        });
+      }
+    ], done);    
   });
 
   it('POST /mentors should upsert mentors', function(done) {
