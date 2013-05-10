@@ -1,6 +1,7 @@
 var request = require('supertest');
 var should = require('should');
 var sinon = require('sinon');
+var async = require('async');
 
 var utils = require('./utils');
 var data = require('./data');
@@ -33,6 +34,60 @@ describe('API', function() {
       .set('Authorization', authHeader)
       .expect('here is info')
       .expect(200, done);
+  });
+
+  it('GET /mentors should list mentors', function(done) {
+    async.series([
+      db.removeAll(aestimia.models.Mentor),
+      db.create(aestimia.models.Mentor, {
+        email: "foo@bar.org",
+        classifications: ['u']
+      }),
+      function(cb) {
+        request(app)
+          .get('/api/mentors')
+          .set('Authorization', authHeader)
+          .expect([{
+            email: "foo@bar.org",
+            classifications: ['u']
+          }])
+          .expect(200, cb);
+      }
+    ], done);
+  });
+
+  it('POST /mentors should return 400 w/ bad input', function(done) {
+    request(app)
+      .post('/api/mentors')
+      .set('Authorization', authHeader)
+      .send({email: 'meh@barf.org', classifications: 1})
+      .expect('need valid email and classifications')
+      .expect(400, done);
+  });
+
+  it('POST /mentors should upsert mentors', function(done) {
+    async.series([
+      db.removeAll(aestimia.models.Mentor),
+      function(cb) {
+        request(app)
+          .post('/api/mentors')
+          .set('Authorization', authHeader)
+          .send({email: 'meh@barf.org', classifications: ['lol', 'u']})
+          .expect('updated')
+          .expect(200, cb);
+      },
+      function(cb) {
+        aestimia.models.Mentor.findOne({
+          email: 'meh@barf.org'
+        }, function(err, mentor) {
+          if (err) return cb(err);
+          mentor.classifications.length.should.eql(2);
+          mentor.classifications[0].should.eql('lol');
+          mentor.classifications[1].should.eql('u');
+          cb();
+        });
+      }
+    ], done);
   });
 
   it('/submit should accept valid submissions', function(done) {
