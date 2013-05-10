@@ -31,8 +31,9 @@ describe('Submission', function() {
       db.removeAll(Submission),
       db.removeAll(Mentor),
       db.create(Mentor, {email: "foo@bar.org", classifications: ["math"]}),
-      // A submission the user has already reviewed...
+      // A submission the user has already reviewed and rejected...
       db.create(Submission, baseSubmission({
+        _id: "000000000000000000000001",
         classifications: ["math"],
         reviews: [{
           author: "foo@bar.org",
@@ -41,13 +42,60 @@ describe('Submission', function() {
       })),
       // A submission the user can review...
       db.create(Submission, baseSubmission({
+        _id: "000000000000000000000002",
         classifications: ["math", "science"]
       })),
       // A submission the user doesn't have permission to review...
       db.create(Submission, baseSubmission({
+        _id: "000000000000000000000003",
         classifications: ["science"]
-      }))      
+      })),
+      // A submission the user has already reviewed and awarded...
+      db.create(Submission, baseSubmission({
+        _id: "000000000000000000000004",
+        classifications: ["math"],
+        reviews: [{
+          author: "foo@bar.org",
+          response: "cool yo",
+          satisfiedRubrics: [0, 1]
+        }]
+      }))
     ], done);
+  });
+
+  it('isReviewed() should return true', function(done) {
+    Submission.findOne({_id: "000000000000000000000001"}, function(err, s) {
+      s.isReviewed().should.equal(true);
+      done();
+    });
+  });
+
+  it('isReviewed() should return false', function(done) {
+    Submission.findOne({_id: "000000000000000000000002"}, function(err, s) {
+      s.isReviewed().should.equal(false);
+      done();
+    });
+  });
+
+  it("isAwarded() should return false if sub isn't reviewed", function(done) {
+    Submission.findOne({_id: "000000000000000000000002"}, function(err, s) {
+      s.isAwarded().should.equal(false);
+      done();
+    });
+  });
+
+  it("isAwarded() should return false", function(done) {
+    Submission.findOne({_id: "000000000000000000000001"}, function(err, s) {
+      s.isAwarded().should.equal(false);
+      done();
+    });
+  });
+
+  it("isAwarded() should return true", function(done) {
+    Submission.findOne({_id: "000000000000000000000004"}, function(err, s) {
+      s.isAwarded().should.equal(true);
+      done();
+    });
   });
 
   it('should find submissions for reviewers', function(done) {
