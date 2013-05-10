@@ -68,6 +68,55 @@ describe('Website', function() {
     ], done);
   });
 
+  describe('/submissions/:submissionId', function() {
+    before(function(done) {
+      loggedInEmail = null;
+      async.series([
+        db.removeAll(models.Mentor),
+        db.removeAll(models.Submission),
+        db.create(models.Mentor, {
+          email: "a@b.com",
+          classifications: ["math"]
+        }),
+        db.create(models.Submission, data.baseSubmission({
+          _id: "a07f1f77bcf86cd799439011"
+        }))
+      ], done);
+    });
+
+    it('should 404 when :submissionId is not an object id', function(done) {
+      request(app)
+        .get('/submissions/zzzzz')
+        .expect(404, done);
+    });
+
+    it('should 404 when :submissionId does not exist', function(done) {
+      request(app)
+        .get('/submissions/507f1f77bcf86cd799439011')
+        .expect(404, done);
+    });
+
+    it('should 401 when user is not logged in', function(done) {
+      request(app)
+        .get('/submissions/a07f1f77bcf86cd799439011')
+        .expect(401, done);
+    });
+
+    it('should 403 when user has no access', function(done) {
+      loggedInEmail = "lol@b.com";
+      request(app)
+        .get('/submissions/a07f1f77bcf86cd799439011')
+        .expect(403, done);
+    });
+
+    it('should 200 when user has access', function(done) {
+      loggedInEmail = "a@b.com";
+      request(app)
+        .get('/submissions/a07f1f77bcf86cd799439011')
+        .expect(200, done);
+    });
+  });
+
   it('should show email when logged in', function(done) {
     loggedInEmail = "meh@glorb.org";
     request(app)

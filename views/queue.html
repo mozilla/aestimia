@@ -22,7 +22,7 @@
         {% for classification in submission.classifications %}
         <span class="label">{{ classification }}</span>
         {% endfor %}
-        <a href="#" class="btn btn-primary pull-right">Review</a>
+        <a href="/submissions/{{ submission._id }}" class="btn btn-primary pull-right">Review</a>
       </p>
     </div>
   </div>

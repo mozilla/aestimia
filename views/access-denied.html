@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Access Denied</h1>
+{% if email %}
+  <p>You don't have permission to view this page.</p>
+{% else %}
+  <p>You need to log in to view this page.</p>
+{% endif %}
+{% endblock %}
