@@ -31,7 +31,9 @@ describe('Submission', function() {
       db.removeAll(Submission),
       db.removeAll(Mentor),
       db.create(Mentor, {email: "foo@bar.org", classifications: ["math"]}),
-      // A submission the user has already reviewed and rejected...
+      db.create(Mentor, {email: "baz@bar.org", classifications: ["math"]}),
+      db.create(Mentor, {email: "a@b.org", classifications: ["beets"]}),
+      // A submission foo has already reviewed and rejected...
       db.create(Submission, baseSubmission({
         _id: "000000000000000000000001",
         classifications: ["math"],
@@ -40,22 +42,32 @@ describe('Submission', function() {
           response: "cool yo"
         }]
       })),
-      // A submission the user can review...
+      // A submission foo/baz can review...
       db.create(Submission, baseSubmission({
         _id: "000000000000000000000002",
         classifications: ["math", "science"]
       })),
-      // A submission the user doesn't have permission to review...
+      // A submission foo/baz can't review...
       db.create(Submission, baseSubmission({
         _id: "000000000000000000000003",
         classifications: ["science"]
       })),
-      // A submission the user has already reviewed and awarded...
+      // A submission baz has already reviewed and awarded...
       db.create(Submission, baseSubmission({
         _id: "000000000000000000000004",
         classifications: ["math"],
         reviews: [{
-          author: "foo@bar.org",
+          author: "baz@bar.org",
+          response: "cool yo",
+          satisfiedRubrics: [0, 1]
+        }]
+      })),
+      // A submission a has already reviewed and awarded...
+      db.create(Submission, baseSubmission({
+        _id: "000000000000000000000005",
+        classifications: ["beets"],
+        reviews: [{
+          author: "a@b.org",
           response: "cool yo",
           satisfiedRubrics: [0, 1]
         }]
@@ -98,11 +110,20 @@ describe('Submission', function() {
     });
   });
 
+  it('should find reviewed submissions', function(done) {
+    Submission.findReviewed("foo@bar.org", function(err, submissions) {
+      if (err) return done(err);
+      submissions.length.should.eql(2);
+      done();
+    });
+  });
+
   it('should find submissions for reviewers', function(done) {
     Submission.findForReview("foo@bar.org", function(err, submissions) {
       if (err) return done(err);
       submissions.length.should.eql(1);
-      submissions[0].classifications.length.should.eql(2);
+      [].slice.call(submissions[0].classifications)
+        .should.eql(["math", "science"]);
       done();
     });
   });
