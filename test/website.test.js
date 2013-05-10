@@ -39,6 +39,7 @@ describe('Website', function() {
     defineExtraMiddleware: function(app) {
       app.use(function(req, res, next) {
         req.session.email = loggedInEmail;
+        req.session._csrf = "deadbeef";
         next();
       });
     }
@@ -90,7 +91,42 @@ describe('Website', function() {
     next.args[0][0].should.equal(err);
   });
 
-  describe('/submissions/:submissionId', function() {
+  describe('POST /submissions/:submissionId', function() {
+    beforeEach(setupFixtures);
+
+    it('should work', function(done) {
+      loggedInEmail = "a@b.com";
+      async.series([
+        function(cb) {
+          request(app)
+            .post('/submissions/a07f1f77bcf86cd799439011')
+            .send({
+              _csrf: 'deadbeef',
+              response: 'this is awesome',
+              rubric_0: 'on',
+              rubric_1: 'on'
+            })
+            .expect('Location', '/submissions/a07f1f77bcf86cd799439011')
+            .expect(303, cb);
+        },
+        function(cb) {
+          models.Submission.findOne({
+            _id: 'a07f1f77bcf86cd799439011'
+          }, function(err, submission) {
+            if (err) return cb(err);
+            var r = submission.reviews;
+            r.length.should.eql(1);
+            r[0].author.should.eql('a@b.com');
+            r[0].response.should.eql('this is awesome');
+            [].slice.call(r[0].satisfiedRubrics).should.eql([0, 1]);
+            cb();
+          });
+        }
+      ], done);
+    });
+  });
+
+  describe('GET /submissions/:submissionId', function() {
     beforeEach(setupFixtures);
 
     it('should 404 when :submissionId is not an object id', function(done) {
@@ -144,7 +180,7 @@ describe('Website', function() {
   it('should include CSRF tokens in pages', function(done) {
     request(app)
       .get('/')
-      .expect(/name="csrf" content="[A-Za-z0-9\-_]+"/)
+      .expect(/name="csrf" content="deadbeef"/)
       .expect(200, done);
   });
 });
