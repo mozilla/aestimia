@@ -1,9 +1,12 @@
 var request = require('supertest');
 var async = require('async');
+var sinon = require('sinon');
+var should = require('should');
 
 var db = require('./db');
 var utils = require('./utils');
 var data = require('./data');
+var website = require('../').website;
 var models = require('../').models;
 
 db.init();
@@ -66,6 +69,20 @@ describe('Website', function() {
           .expect(/Tropical Koala/, done);
       }
     ], done);
+  });
+
+  it('should pass errors through in findSubmissionById()', function() {
+    var next = sinon.spy();
+    var err = new Error('some error');
+    sinon.stub(models.Submission, 'findOne', function(query, cb) {
+      query._id.should.eql('someid');
+      cb(err);
+    });
+    website.findSubmissionById(null, null, next, 'someid');
+    models.Submission.findOne.restore();
+    next.callCount.should.eql(1);
+    next.args[0].length.should.eql(1);
+    next.args[0][0].should.equal(err);
   });
 
   describe('/submissions/:submissionId', function() {
