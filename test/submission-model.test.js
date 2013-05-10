@@ -30,12 +30,7 @@ describe('Submission', function() {
     async.series([
       db.removeAll(Submission),
       db.removeAll(Mentor),
-      db.create(Mentor, {email: "foo@bar.org", classifications: ["math"]})      
-    ], done);
-  });
-
-  it('should find submissions for reviewers', function(done) {
-    async.series([
+      db.create(Mentor, {email: "foo@bar.org", classifications: ["math"]}),
       // A submission the user has already reviewed...
       db.create(Submission, baseSubmission({
         classifications: ["math"],
@@ -51,15 +46,17 @@ describe('Submission', function() {
       // A submission the user doesn't have permission to review...
       db.create(Submission, baseSubmission({
         classifications: ["science"]
-      })),
-      function(cb) {
-        Submission.findForReview("foo@bar.org", function(err, submissions) {
-          submissions.length.should.eql(1);
-          submissions[0].classifications.length.should.eql(2);
-          cb();
-        });
-      }
-    ], done)
+      }))      
+    ], done);
+  });
+
+  it('should find submissions for reviewers', function(done) {
+    Submission.findForReview("foo@bar.org", function(err, submissions) {
+      if (err) return done(err);
+      submissions.length.should.eql(1);
+      submissions[0].classifications.length.should.eql(2);
+      done();
+    });
   });
 
   it('should propagate errors in reviewer validation', function(done) {
