@@ -106,9 +106,7 @@ describe('API', function() {
           email: 'meh@barf.org'
         }, function(err, mentor) {
           if (err) return cb(err);
-          mentor.classifications.length.should.eql(2);
-          mentor.classifications[0].should.eql('lol');
-          mentor.classifications[1].should.eql('u');
+          [].slice.call(mentor.classifications).should.eql(['lol', 'u']);
           cb();
         });
       }
