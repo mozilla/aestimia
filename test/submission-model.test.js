@@ -26,11 +26,16 @@ function ensureInvalid(invalidator) {
 db.init();
 
 describe('Submission', function() {
-  it('should find submissions for reviewers', function(done) {
+  beforeEach(function(done) {
     async.series([
       db.removeAll(Submission),
       db.removeAll(Mentor),
-      db.create(Mentor, {email: "foo@bar.org", classifications: ["math"]}),
+      db.create(Mentor, {email: "foo@bar.org", classifications: ["math"]})      
+    ], done);
+  });
+
+  it('should find submissions for reviewers', function(done) {
+    async.series([
       // A submission the user has already reviewed...
       db.create(Submission, baseSubmission({
         classifications: ["math"],
@@ -61,12 +66,9 @@ describe('Submission', function() {
     sinon.stub(Submission.Mentor, 'classificationsFor', function(who, cb) {
       cb(new Error("oof"));
     });
-    async.series([
-      db.removeAll(Submission),
-      db.create(Submission, baseSubmission({
-        reviews: [{author: "foo@bar.org", response: "neat"}]
-      }))
-    ], function(err) {
+    new Submission(baseSubmission({
+      reviews: [{author: "foo@bar.org", response: "neat"}]
+    })).save(function(err) {
       Submission.Mentor.classificationsFor.restore();
       err.message.should.eql("oof");
       done();
@@ -74,29 +76,19 @@ describe('Submission', function() {
   });
 
   it('should accept reviewers with proper permissions', function(done) {
-    async.series([
-      db.removeAll(Submission),
-      db.removeAll(Mentor),
-      db.create(Mentor, {email: "foo@bar.org",
-                         classifications: ["math"]}),
-      db.create(Submission, baseSubmission({
-        reviews: [{author: "foo@bar.org", response: "rad"}]
-      }))
-    ], done);
+    new Submission(baseSubmission({
+      reviews: [{author: "foo@bar.org", response: "rad"}]
+    })).save(done);
   });
 
   it('should reject reviewers without proper permissions', function(done) {
-    async.series([
-      db.removeAll(Submission),
-      db.removeAll(Mentor),
-      db.create(Submission, baseSubmission({
-        reviews: [{author: "a@b.com", response: "nifty"}]
-      }))
-    ], function(err) {
+    new Submission(baseSubmission({
+      reviews: [{author: "a@b.com", response: "nifty"}]
+    })).save(function(err) {
       err.name.should.eql("ValidationError");
       err.errors.reviewer.message
         .should.eql("reviewer a@b.com does not have permission to review");
-      done();
+      done();      
     });
   });
 
@@ -113,24 +105,14 @@ describe('Submission', function() {
   }));
 
   it('should work with canned responses', function(done) {
-    async.series([
-      db.removeAll(Submission),
-      function(cb) {
-        var s = new Submission(data.submissions['canned-responses']);
-        s.isLearnerUnderage().should.eql(true);
-        s.save(cb);
-      }
-    ], done);
+    var s = new Submission(data.submissions['canned-responses']);
+    s.isLearnerUnderage().should.eql(true);
+    s.save(done);
   });
 
   it('should work without canned responses', function(done) {
-    async.series([
-      db.removeAll(Submission),
-      function(cb) {
-        var s = new Submission(data.submissions['base']);
-        s.isLearnerUnderage().should.eql(false);
-        s.save(cb);
-      }
-    ], done);
+    var s = new Submission(data.submissions['base']);
+    s.isLearnerUnderage().should.eql(false);
+    s.save(done);
   });
 });
