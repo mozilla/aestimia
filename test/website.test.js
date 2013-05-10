@@ -9,10 +9,26 @@ var data = require('./data');
 var website = require('../').website;
 var models = require('../').models;
 
+var loggedInEmail = null;
+
+function setupFixtures(done) {
+  loggedInEmail = null;
+  async.series([
+    db.removeAll(models.Mentor),
+    db.removeAll(models.Submission),
+    db.create(models.Mentor, {
+      email: "a@b.com",
+      classifications: ["math"]
+    }),
+    db.create(models.Submission, data.baseSubmission({
+      _id: "a07f1f77bcf86cd799439011"
+    }))
+  ], done);
+}
+
 db.init();
 
 describe('Website', function() {
-  var loggedInEmail = null;
   var app = utils.buildApp({
     defineExtraRoutes: function(app) {
       app.get('/test-make-flash-message', function(req, res) {
@@ -29,7 +45,6 @@ describe('Website', function() {
   });
 
   it('should return 200 OK with HTML at /', function(done) {
-    loggedInEmail = null;
     request(app)
       .get('/')
       .expect('Content-Type', /html/)
@@ -37,38 +52,28 @@ describe('Website', function() {
   });
 
   it('should return 200 OK with HTML at /demo', function(done) {
-    loggedInEmail = null;
     request(app)
       .get('/demo')
       .expect('Content-Type', /html/)
       .expect(200, done);    
   });
 
-  it('should show "nothing to review" in queue', function(done) {
-    loggedInEmail = "meh@glorb.org";
-    async.series([
-      db.removeAll(models.Mentor),
-      function(done) {
-        request(app)
-          .get('/')
-          .expect(/nothing to review/, done);
-      }
-    ], done);
-  });
+  describe('queue', function() {
+    beforeEach(setupFixtures);
 
-  it('should list items to review in queue', function(done) {
-    loggedInEmail = "a@b.com";
-    async.series([
-      db.removeAll(models.Mentor),
-      db.removeAll(models.Submission),
-      db.create(models.Mentor, {email: "a@b.com", classifications: ["math"]}),
-      db.create(models.Submission, data.baseSubmission()),
-      function(done) {
-        request(app)
-          .get('/')
-          .expect(/Tropical Koala/, done);
-      }
-    ], done);
+    it('should show "nothing to review"', function(done) {
+      loggedInEmail = "meh@glorb.org";
+      request(app)
+        .get('/')
+        .expect(/nothing to review/, done);
+    });
+
+    it('should list items to review', function(done) {
+      loggedInEmail = "a@b.com";
+      request(app)
+        .get('/')
+        .expect(/Tropical Koala/, done);
+    });
   });
 
   it('should pass errors through in findSubmissionById()', function() {
@@ -86,20 +91,7 @@ describe('Website', function() {
   });
 
   describe('/submissions/:submissionId', function() {
-    before(function(done) {
-      loggedInEmail = null;
-      async.series([
-        db.removeAll(models.Mentor),
-        db.removeAll(models.Submission),
-        db.create(models.Mentor, {
-          email: "a@b.com",
-          classifications: ["math"]
-        }),
-        db.create(models.Submission, data.baseSubmission({
-          _id: "a07f1f77bcf86cd799439011"
-        }))
-      ], done);
-    });
+    beforeEach(setupFixtures);
 
     it('should 404 when :submissionId is not an object id', function(done) {
       request(app)
@@ -142,7 +134,6 @@ describe('Website', function() {
   });
 
   it('should show flash messages', function(done) {
-    loggedInEmail = null;
     request(app)
       .get('/test-make-flash-message')
       .expect(/class="alert alert-info"/)
@@ -151,7 +142,6 @@ describe('Website', function() {
   });
 
   it('should include CSRF tokens in pages', function(done) {
-    loggedInEmail = null;
     request(app)
       .get('/')
       .expect(/name="csrf" content="[A-Za-z0-9\-_]+"/)
