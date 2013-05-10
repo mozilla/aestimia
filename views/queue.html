@@ -1,12 +1,33 @@
 {% extends "layout.html" %}
 {% block content %}
+<h1>Welcome {{ email }}!</h1>
 {% if submissions.length %}
-<ul>
+  <p>Get started by choosing a submission from the list below to review.</p>
   {% for submission in submissions %}
-  <li>{{ submission.achievement.name }}</li>
+  <div class="row well well-small">
+    <div class="span3">
+      <img src="{{ submission.achievement.imageUrl }}">
+      <h5><center>{{ submission.achievement.name }}</center></h5>
+    </div>
+    <div class="span8">
+      <h4>
+        {% if submission.isLearnerUnderage() %}
+          An underage learner
+        {% else %}
+          {{ submission.learner }}
+        {% endif %}
+      </h4>
+      <p><small class="muted">Application submitted {{ submission.creationDate }}.</small></p>
+      <p>
+        {% for classification in submission.classifications %}
+        <span class="label">{{ classification }}</span>
+        {% endfor %}
+        <a href="#" class="btn btn-primary pull-right">Review</a>
+      </p>
+    </div>
+  </div>
   {% endfor %}
-</ul>
 {% else %}
-<p>You have nothing to review.</p>
+  <p>You have nothing to review.</p>
 {% endif %}
 {% endblock %}
