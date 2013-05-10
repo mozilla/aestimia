@@ -29,7 +29,7 @@ secret. See [bin/aestimia.js][] for more configuration options.
 Build/install [jscoverage][], run `make test-cov`, then open
 `coverage.html` in a browser.
 
-Coverage should always be at [100%](). Pull requests that break this will
+Coverage should always be at [100%][]. Pull requests that break this will
 be rejected.
 
   [MongoDB]: http://www.mongodb.org/
