@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% block title %} - Submission {{ submission._id }}{% endblock %}
 {% block content %}
 <h1>
   Submission From
@@ -8,6 +9,7 @@
   {{ submission.learner }}
   {% endif %}
 </h1>
+<p class="muted">Created {{ submission.creationDate }}</p>
 <div class="row">
   <div class="span4 offset4">
     {% include "badge.html" %}
