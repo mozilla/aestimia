@@ -13,46 +13,80 @@
     {% include "badge.html" %}
   </div>
 </div>
-<form method="POST">
-  <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-  <h2>Evidence</h2>
-  <ul class="thumbnails">
-  {% for evitem in submission.evidence %}
-  <li class="span4">
-    <div class="thumbnail">
-      <a href="{{ evitem.url }}">
-        <img src="{{ evitem.url }}" alt="evidence item #{{loop.index}}">
-      </a>
-      <h3>Evidence #{{loop.index}}</h3>
-      {% if evitem.reflection %}
-        <p>{{ evitem.reflection }}</p>
+<h2>Evidence</h2>
+<ul class="thumbnails">
+{% for evitem in submission.evidence %}
+<li class="span4">
+  <div class="thumbnail">
+    <a href="{{ evitem.url }}">
+      <img src="{{ evitem.url }}" alt="evidence item #{{loop.index}}">
+    </a>
+    <h3>Evidence #{{loop.index}}</h3>
+    {% if evitem.reflection %}
+      <p>{{ evitem.reflection }}</p>
+    {% else %}
+      <p class="muted">No reflection provided for this evidence.</p>
+    {% endif %}
+  </div>
+</li>
+{% endfor %}
+</ul>
+{% if submission.isReviewed() %}
+  <div class="well well-small">
+    <h2>Review</h2>
+    {% set review = submission.latestReview() %}
+    <p>This submission was
+      {% if submission.isAwarded() %}
+      awarded
       {% else %}
-        <p class="muted">No reflection provided for this evidence.</p>
+      rejected
       {% endif %}
-    </div>
-  </li>
-  {% endfor %}
-  </ul>
-  <h2>Rubric</h2>
-  {% for rubitem in submission.rubric.items %}
-    <label class="checkbox">
-      <input type="checkbox" name="rubric_{{loop.index0}}"> {{ rubitem.text }}
-      {% if rubitem.required %}
-      (<em>required</em>)
+      by <strong>{{ review.author }}</strong> on 
+      {{ review.date }}.</p>
+    <h3>Rubric</h3>
+    <ul style="list-style-type: none">
+    {% for rubitem in submission.rubric.items %}
+      <li>
+      {% if review.satisfiedRubrics.indexOf(loop.index0) == -1 %}
+      <span style="opacity: 0.5">
+        <i class="icon-remove"></i> {{ rubitem.text }}
+      </span>
+      {% else %}
+      <i class="icon-ok"></i> {{ rubitem.text }}
       {% endif %}
-    </label>
-  {% endfor %}
-  <h2>Response</h2>
-  {% if submission.isLearnerUnderage() %}
-    <select class="input-block-level" name="response" autocomplete="off" required>
-      <option value="" selected>Select a response&hellip;</option>
-      {% for response in submission.cannedResponses %}
-      <option value="{{ response }}">{{ response }}</option>
-      {% endfor %}
-    </select>
-  {% else %}
-    <textarea class="input-block-level" name="response" required></textarea>
-  {% endif %}
-  <input type="submit" class="btn btn-primary" value="Submit Assessment">
-</form>
+      </li>
+    {% endfor %}
+    </ul>
+    <h3>Response</h3>
+    <blockquote>
+      <p>{{ review.response }}</p>
+      <small>{{ review.author }}</small>
+    </blockquote>
+  </div>
+{% else %}
+  <form method="POST">
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    <h2>Rubric</h2>
+    {% for rubitem in submission.rubric.items %}
+      <label class="checkbox">
+        <input type="checkbox" name="rubric_{{loop.index0}}"> {{ rubitem.text }}
+        {% if rubitem.required %}
+        (<em>required</em>)
+        {% endif %}
+      </label>
+    {% endfor %}
+    <h2>Response</h2>
+    {% if submission.isLearnerUnderage() %}
+      <select class="input-block-level" name="response" autocomplete="off" required>
+        <option value="" selected>Select a response&hellip;</option>
+        {% for response in submission.cannedResponses %}
+        <option value="{{ response }}">{{ response }}</option>
+        {% endfor %}
+      </select>
+    {% else %}
+      <textarea class="input-block-level" name="response" required></textarea>
+    {% endif %}
+    <input type="submit" class="btn btn-primary" value="Submit Assessment">
+  </form>
+{% endif %}
 {% endblock %}
