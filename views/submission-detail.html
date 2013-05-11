@@ -2,12 +2,30 @@
 {% block content %}
 <h1>Application for {{ submission.achievement.name }}</h1>
 <div class="row">
-  <div class="span3">
+  <div class="span4 offset4">
     {% include "badge.html" %}
   </div>
 </div>
 <form method="POST">
   <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+  <h2>Evidence</h2>
+  <ul class="thumbnails">
+  {% for evitem in submission.evidence %}
+  <li class="span4">
+    <div class="thumbnail">
+      <a href="{{ evitem.url }}">
+        <img src="{{ evitem.url }}" alt="evidence item #{{loop.index}}">
+      </a>
+      <h3>Evidence #{{loop.index}}</h3>
+      {% if evitem.reflection %}
+        <p>{{ evitem.reflection }}</p>
+      {% else %}
+        <p class="muted">No reflection provided for this evidence.</p>
+      {% endif %}
+    </div>
+  </li>
+  {% endfor %}
+  </ul>
   <h2>Rubric</h2>
   {% for rubitem in submission.rubric.items %}
     <label class="checkbox">
