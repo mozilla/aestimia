@@ -1,0 +1,13 @@
+<img src="{{ submission.achievement.imageUrl }}">
+<center>
+  <div><strong>{{ submission.achievement.name }}</strong></div>
+  {% if submission.isReviewed() %}
+    {% if submission.isAwarded() %}
+      <span class="text-success">Awarded</span>
+    {% else %}
+      <span class="text-error">Rejected</span>
+    {% endif %}
+  {% else %}
+    <span class="muted">Awaiting Review</span>
+  {% endif %}
+</center>

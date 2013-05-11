@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1>Welcome {{ email }}!</h1>
+<h1>Review History</h1>
 {% if submissions.length %}
-  <p>Get started by choosing a submission from the list below to review.</p>
+  <p>These submissions have already been reviewed.</p>
   {% include "submission-list.html" %}
 {% else %}
-  <p>You have nothing to review.</p>
+  <p>There is no submission history to view.</p>
 {% endif %}
 {% endblock %}

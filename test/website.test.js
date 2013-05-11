@@ -91,6 +91,23 @@ describe('Website', function() {
     next.args[0][0].should.equal(err);
   });
 
+  describe('/history', function() {
+    beforeEach(setupFixtures);
+
+    it('should return 401 if user is not logged in', function(done) {
+      request(app)
+        .get('/history')
+        .expect(401, done);      
+    });
+
+    it('should work', function(done) {
+      loggedInEmail = "a@b.com";
+      request(app)
+        .get('/history')
+        .expect(200, done);
+    });
+  });
+
   describe('POST /submissions/:submissionId', function() {
     beforeEach(setupFixtures);
 

@@ -1,6 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
 <h1>Application for {{ submission.achievement.name }}</h1>
+<div class="row">
+  <div class="span3">
+    {% include "badge.html" %}
+  </div>
+</div>
 <form method="POST">
   <input type="hidden" name="_csrf" value="{{ csrfToken }}">
   <h2>Rubric</h2>
