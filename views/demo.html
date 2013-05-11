@@ -23,7 +23,7 @@
 
 <button class="btn btn-primary" id="js-update-mentor">Update Mentor</button>
 
-<h2>Forge a Submission</h2>
+<h2>Create a Submission</h2>
 
 <p>Choose a template below, edit it if you like, and then submit it.</p>
 
@@ -38,7 +38,7 @@
   <div class="tab-pane" id="submission-{{ submission.name }}">
     <form class="js-submission">
       <textarea autocomplete="off" style="font-family: monospace" rows="30" class="input-block-level" name="json">{{ submission.json }}</textarea>
-      <input class="btn btn-primary" type="submit" value="Forge">
+      <input class="btn btn-primary" type="submit" value="Create Submission">
     </form>
   </div>
   {% endfor %}
