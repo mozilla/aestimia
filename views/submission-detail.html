@@ -1,6 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1>Application for {{ submission.achievement.name }}</h1>
+<h1>
+  Submission From
+  {% if submission.isLearnerUnderage() %}
+  An Underage Learner
+  {% else %}
+  {{ submission.learner }}
+  {% endif %}
+</h1>
 <div class="row">
   <div class="span4 offset4">
     {% include "badge.html" %}
