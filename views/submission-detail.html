@@ -49,6 +49,8 @@
     <ul style="list-style-type: none">
     {% for rubitem in submission.rubric.items %}
       <li>
+      {# TODO: This is nasty, we should make a helper method
+         on the submission model for this. #}
       {% if review.satisfiedRubrics.indexOf(loop.index0) == -1 %}
       <span style="opacity: 0.5">
         <i class="icon-remove"></i> {{ rubitem.text }}
