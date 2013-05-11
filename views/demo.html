@@ -1,13 +1,49 @@
 {% extends "layout.html" %}
+{% block head %}
+<style>
+#js-console {
+  height: 345px;
+  padding: 4px;
+  font-family: Menlo, Monaco, "Lucida Console", monospace;
+  font-size: 10px;
+  line-height: 12px;
+  white-space: pre-wrap;
+  color: gray;
+  background: black;
+  overflow: auto;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+#js-console.affix {
+  position: fixed;
+  top: 20px;
+  width: 460px;
+}
+
+#js-console .exec {
+  color: white;
+}
+</style>
+{% endblock %}
 {% block title %} - API Demo{% endblock %}
 {% block content %}
 <h1>Aestimia API Demo Control Panel</h1>
+
+<div class="row">
+  <div class="span6">
 
 <h2>API Secret</h2>
 
 <p>All of the functionality on the page is just a front-end to the API. Enter your API secret below, or else nothing on this page will work.</p>
 
 <p><input type="password" id="js-password"></p>
+<p>
+  <label class="checkbox">
+    <input id="js-show-password" type="checkbox"> Show API secret in console
+  </label>
+</p>
 
 <h2>Mentor List</h2>
 
@@ -43,6 +79,14 @@
     </form>
   </div>
   {% endfor %}
+</div>
+</div>
+<div class="span6">
+  <h2>Console</h2>
+  <p>This console shows you what API calls your actions on the left
+    column are making.</p>
+  <div id="js-console" data-spy="affix" data-offset-top="200"></div>
+</div>
 </div>
 {% endblock %}
 {% block scripts %}
