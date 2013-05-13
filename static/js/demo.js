@@ -102,7 +102,7 @@ $(window).ready(function() {
   });
 
   $("form.js-submission").submit(function() {
-    postJSON("/api/submit", $(this.elements['json']).val());
+    postJSON("/api/submission", $(this.elements['json']).val());
     return false;
   });
 });

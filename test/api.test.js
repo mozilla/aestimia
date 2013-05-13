@@ -40,8 +40,8 @@ describe('API', function() {
     request(app)
       .get('/api/submissions')
       .set('Authorization', authHeader)
-      .expect('invalid search query')
-      .expect(400, done);
+      .expect({message: 'invalid search query'})
+      .expect(422, done);
   });
 
   it('GET /submissions should list learner submissions', function(done) {
@@ -97,8 +97,8 @@ describe('API', function() {
       .post('/api/mentor')
       .set('Authorization', authHeader)
       .send({u: 1})
-      .expect('need valid email')
-      .expect(400, done);
+      .expect({message: 'invalid email'})
+      .expect(422, done);
   });
 
   it('POST /mentor removes mentor when only email is given', function(done) {
@@ -113,7 +113,7 @@ describe('API', function() {
           .post('/api/mentor')
           .set('Authorization', authHeader)
           .send({email: 'foo@bar.org'})
-          .expect('deleted')
+          .expect({message: 'deleted'})
           .expect(200, cb);
       },
       function(cb) {
@@ -134,7 +134,7 @@ describe('API', function() {
           .post('/api/mentor')
           .set('Authorization', authHeader)
           .send({email: 'meh@barf.org', classifications: ['lol', 'u']})
-          .expect('updated')
+          .expect({message: 'updated'})
           .expect(200, cb);
       },
       function(cb) {
@@ -149,19 +149,19 @@ describe('API', function() {
     ], done);
   });
 
-  it('/submit should accept valid submissions', function(done) {
+  it('/submission should accept valid submissions', function(done) {
     request(app)
-      .post('/api/submit')
+      .post('/api/submission')
       .set('Authorization', authHeader)
       .send(data.baseSubmission())
-      .expect(200, function(err, res) {
+      .expect(201, function(err, res) {
         if (err) return done(err);
         res.body.id.should.match(/[a-f0-9]+/);
         done();
       });
   });
 
-  it('/submit should forward unexpected errors', function(done) {
+  it('/submission should forward unexpected errors', function(done) {
     var next = sinon.spy();
     var err = new Error('o snap');
     sinon.stub(aestimia.models, 'Submission', function() {
@@ -178,9 +178,9 @@ describe('API', function() {
     done();
   });
 
-  it('/submit should reject invalid submissions', function(done) {
+  it('/submission should reject invalid submissions', function(done) {
     request(app)
-      .post('/api/submit')
+      .post('/api/submission')
       .set('Authorization', authHeader)
       .send(data.baseSubmission({
         criteriaUrl: 'javascript:lol()'
@@ -192,12 +192,12 @@ describe('API', function() {
                        'path criteriaUrl with value `javascript:lol()`'
         }
       })
-      .expect(400, done);
+      .expect(422, done);
   });
 
-  it('/submit should reject submissions w/ bad types', function(done) {
+  it('/submission should reject submissions w/ bad types', function(done) {
     request(app)
-      .post('/api/submit')
+      .post('/api/submission')
       .set('Authorization', authHeader)
       .send(data.baseSubmission({
         creationDate: 'wat'
@@ -205,7 +205,7 @@ describe('API', function() {
       .expect({
         message: 'Cast to date failed for value "wat" at path "creationDate"',
       })
-      .expect(400, done);
+      .expect(422, done);
   });
 
 });
