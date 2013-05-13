@@ -64,6 +64,7 @@ $(window).ready(function() {
   $(document).ajaxSend(function(event, jqxhr, settings) {
     var USERNAME = 'api';
 
+    if (!/^\/api\//.test(settings.url)) return;
     settings.username = USERNAME;
     settings.password = password.val();
     var url = absoluteUrl(settings.url);
@@ -80,6 +81,7 @@ $(window).ready(function() {
     cmdline.push(url);
     consoleExec(cmdline);
   }).ajaxComplete(function(event, jqxhr, settings) {
+    if (!/^\/api\//.test(settings.url)) return;
     consoleWriteln("HTTP/1.1 " + jqxhr.status + " " + jqxhr.statusText);
     ["Content-Type"].forEach(function(header) {
       consoleWriteln(header + ": " + jqxhr.getResponseHeader(header));
