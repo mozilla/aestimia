@@ -12,10 +12,11 @@ var baseSubmissionObj = {
   evidence: [
     {
       url: "http://seriouscat.com/serious_cat_is_serious.jpg",
+      mediaType: "image",
       reflection: "This shows how great I did."
     },
     {
-      url: "https://mozorg.cdn.mozilla.net/media/img/home/firefox.png"
+      url: "https://www.wikipedia.org/"
     }
   ],
   rubric: {

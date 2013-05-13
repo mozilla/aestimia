@@ -20,9 +20,13 @@
 {% for evitem in submission.evidence %}
 <li class="span4">
   <div class="thumbnail">
-    <a href="{{ evitem.url }}">
-      <img src="{{ evitem.url }}" alt="evidence item #{{loop.index}}">
-    </a>
+    {% if evitem.mediaType == "image" %}
+      <a href="{{ evitem.url }}">
+        <img src="{{ evitem.url }}" alt="evidence item #{{loop.index}}">
+      </a>
+    {% else %}
+      <a href="{{ evitem.url }}">{{ evitem.url }}</a>
+    {% endif %}
     <h3>Evidence #{{loop.index}}</h3>
     {% if evitem.reflection %}
       <p>{{ evitem.reflection }}</p>
