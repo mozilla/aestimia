@@ -17,12 +17,24 @@ running, too; the `test` database will be used.
     cd aestimia
     npm install
     npm test
-    DEBUG= COOKIE_SECRET=supersecret node bin/aestimia.js
+    DEBUG= API_SECRET=api COOKIE_SECRET=cookie node bin/aestimia.js
 
 By default, the `aestimia` database on the local mongo instance is used.
 
-When deploying, you'll want to set `COOKIE_SECRET` to something super
-secret. See [bin/aestimia.js][] for more configuration options.
+Once the server has started, you'll probably want to visit
+http://localhost:3000/demo and enter `api` (or whatever your `API_SECRET`
+is set to) in the *API Secret* field.
+
+Then, add yourself as a mentor from the *Update a mentor* section, and
+create a submission in the *Create a submission* section. Log in as
+yourself via Persona, go back to the site root, and you should see
+the submission there waiting for you to review.
+
+## Deployment
+
+When deploying, you'll want to set `COOKIE_SECRET` and `API_SECRET` to
+something super secret. See [bin/aestimia.js][] for more configuration
+options.
 
 ## Test Coverage
 
