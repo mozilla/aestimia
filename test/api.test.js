@@ -36,6 +36,42 @@ describe('API', function() {
       .expect(200, done);
   });
 
+  it('GET /submissions should fail if no search query', function(done) {
+    request(app)
+      .get('/api/submissions')
+      .set('Authorization', authHeader)
+      .expect('invalid search query')
+      .expect(400, done);
+  });
+
+  it('GET /submissions should list learner submissions', function(done) {
+    async.series([
+      db.removeAll(aestimia.models.Submission),
+      db.create(aestimia.models.Submission, data.baseSubmission({
+        _id: "000000000000000000000001",
+        learner: "foo@bar.org",
+        classifications: ["math"],
+      })),
+      db.create(aestimia.models.Submission, data.baseSubmission({
+        _id: "000000000000000000000002",
+        learner: "someone_else@bar.org",
+        classifications: ["math"],
+      })),
+      function(cb) {
+        request(app)
+          .get('/api/submissions?learner=foo%40bar.org')
+          .set('Authorization', authHeader)
+          .expect(200, function(err, res) {
+            if (err) return cb(err);
+            res.body.length.should.eql(1);
+            res.body[0]._id.should.eql("000000000000000000000001");
+            res.body[0].learner.should.eql("foo@bar.org");
+            cb();
+          });
+      }
+    ], done);
+  });
+
   it('GET /mentors should list mentors', function(done) {
     async.series([
       db.removeAll(aestimia.models.Mentor),
