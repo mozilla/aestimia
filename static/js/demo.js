@@ -60,6 +60,7 @@ $(window).ready(function() {
   };
 
   $("#submissions a:first").tab('show');
+  $('.js-api-root').text(absoluteUrl('/api/'));
 
   $(document).ajaxSend(function(event, jqxhr, settings) {
     var USERNAME = 'api';
@@ -94,10 +95,10 @@ $(window).ready(function() {
     postJSON("/api/mentor", $("#js-update-mentor-json").val());
   });
 
-  $("#js-list-mentors").click(function() {
-    $.get('/api/mentors', function(response) {
-      $("#js-mentors").text(JSON.stringify(response, null, 2));
-    });
+  $("#js-list-mentors").click(function() { $.get('/api/mentors'); });
+  $("#js-list-submissions").click(function() {
+    $.get('/api/submissions?learner=' +
+          encodeURIComponent($('#js-learner').val()))
   });
 
   $("form.js-submission").submit(function() {

@@ -45,40 +45,139 @@
   </label>
 </p>
 
-<h2>Mentor List</h2>
+<h2>API Operations</h2>
 
-<pre id="js-mentors"></pre>
+<div class="accordion" id="api-actions">
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#api-actions" href="#overview">
+        Overview
+      </a>
+    </div>
+    <div id="overview" class="accordion-body collapse">
+      <div class="accordion-inner">
+        <p>The API is accessed from <code class="js-api-root"></code>.</p>
+        <p>Unless otherwise noted, all data is sent and received as JSON.</p>
+        <p>All timestamps are returned in ISO 8601 format:</p>
+        <pre>YYYY-MM-DDTHH:MM:SSZ</pre>
+        <p>Authentication is done using HTTP Basic Authentication, with the
+          username <strong>api</strong> and the password set to the API
+          secret.</p>
+      </div>
+    </div>
+  </div>
 
-<button id="js-list-mentors" class="btn">Update List</button>
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#api-actions" href="#mentor-list">
+        List mentors
+      </a>
+    </div>
+    <div id="mentor-list" class="accordion-body collapse">
+      <div class="accordion-inner">
+        <pre>GET /mentors</pre>
 
-<h2>Update a Mentor</h2>
+        <p>This endpoint returns a list of all mentors. There are no
+          parameters.</p>
 
-<textarea class="input-block-level" rows="4" style="font-family: monospace" id="js-update-mentor-json">{
+        <button id="js-list-mentors" class="btn">List Mentors</button>        
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#api-actions" href="#mentor-update">
+        Update a mentor
+      </a>
+    </div>
+    <div id="mentor-update" class="accordion-body collapse">
+      <div class="accordion-inner">
+        <pre>POST /mentor</pre>
+
+        <p>This endpoint is used to add, change, and remove mentors. If
+          the <code>classifications</code> parameter is not supplied,
+          the mentor is removed. Otherwise, the mentor is given access to
+          view and assess any submissions that have at least one of
+          the mentor's classifications.</p>
+
+        <p>Below is an example body, which you can modify and use 
+          yourself.</p>
+
+        <textarea class="input-block-level" rows="4" style="font-family: monospace" id="js-update-mentor-json">{
   "email": "foo@bar.org",
   "classifications": ["math"]
 }</textarea>
 
-<button class="btn btn-primary" id="js-update-mentor">Update Mentor</button>
-
-<h2>Create a Submission</h2>
-
-<p>Choose a template below, edit it if you like, and then submit it.</p>
-
-<ul class="nav nav-pills" id="submissions">
-  {% for submission in submissions %}
-  <li><a data-toggle="tab" href="#submission-{{ submission.name }}">{{ submission.name }}</a></li>
-  {% endfor %}
-</ul>
-
-<div class="tab-content">
-  {% for submission in submissions %}
-  <div class="tab-pane" id="submission-{{ submission.name }}">
-    <form class="js-submission">
-      <textarea autocomplete="off" style="font-family: monospace" rows="30" class="input-block-level" name="json">{{ submission.json }}</textarea>
-      <input class="btn btn-primary" type="submit" value="Create Submission">
-    </form>
+        <button class="btn btn-primary" id="js-update-mentor">Update Mentor</button>
+      </div>
+    </div>
   </div>
-  {% endfor %}
+
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#api-actions" href="#submission-create">
+        Create a submission
+      </a>
+    </div>
+    <div id="submission-create" class="accordion-body collapse">
+      <div class="accordion-inner">
+        <pre>POST /submit</pre>
+
+        <p>This endpoint creates a submission for assessment.</p>
+
+        <p>Below are some common submissions, which you can choose, modify,
+          and use as the body of a request.</p>
+
+        <ul class="nav nav-tabs" id="submissions">
+          {% for submission in submissions %}
+          <li><a data-toggle="tab" href="#submission-{{ submission.name }}">{{ submission.name }}</a></li>
+          {% endfor %}
+        </ul>
+
+        <div class="tab-content">
+          {% for submission in submissions %}
+          <div class="tab-pane" id="submission-{{ submission.name }}">
+            <form class="js-submission">
+              <textarea autocomplete="off" style="font-family: monospace" rows="30" class="input-block-level" name="json">{{ submission.json }}</textarea>
+              <input class="btn btn-primary" type="submit" value="Create Submission">
+            </form>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#api-actions" href="#submission-list">
+        List submissions
+      </a>
+    </div>
+    <div id="submission-list" class="accordion-body collapse">
+      <div class="accordion-inner">
+        <pre>GET /submissions</pre>
+
+        <p>This endpoint returns a list of all submissions that satisfy
+          a search criteria. Each criteria is submitted as a query
+          string argument.</p>
+
+        <p>Currently, the only search criteria is
+          <code>learner</code>, which is the email of a learner
+          whose submissions you'd like to retrieve.</p>
+
+        <p>Use the form below to try out this endpoint.</p>
+
+        <form>
+          <label>Learner</label>
+          <input type="text" id="js-learner" placeholder="user@domain.com" value="brian@example.org">
+        </form>
+
+        <button id="js-list-submissions" class="btn">List Submissions</button>
+      </div>
+    </div>
+  </div>
 </div>
 </div>
 <div class="span6">
