@@ -1,0 +1,15 @@
+pre.http {
+  border-radius: 0;
+  font-size: 10px;
+  line-height: 12px;
+}
+
+pre.http.headers {
+  margin-bottom: 0;
+  border-bottom: none;
+  background: #f0f0f0;
+}
+
+pre.http.response {
+  background: #fbfbfb;
+}

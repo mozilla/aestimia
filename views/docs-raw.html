@@ -1,0 +1,91 @@
+<section id="overview">
+  <h2><a href="#overview">Overview</a></h2>
+
+  <p>The API is accessed from <code class="js-api-root">/api/</code>.</p>
+  <p>Unless otherwise noted, all data is sent and received as JSON.</p>
+  <p>All timestamps are returned in ISO 8601 format:</p>
+  <pre class="http response">YYYY-MM-DDTHH:MM:SSZ</pre>
+  <p>Authentication is done using HTTP Basic Authentication, with the
+    username <strong>api</strong> and the password set to the API
+    secret.</p>
+  <p>Sending invalid fields will result in a <code>422 Unprocessable Entity</code> response, like so:
+    <pre class="http headers">Status: 422 Unprocessable Entity</pre>
+    <pre class="http response">{
+    "message": "Validation Error",
+    "errors": {
+      "evidence.0.mediaType": "Validator \"invalid media type\" failed for path mediaType with value `iemage`"
+    }
+  }</pre> 
+</section>
+
+<section id="mentor-list">
+  <h2><a href="#mentor-list">List mentors</a></h2>
+    <pre>GET /mentors</pre>
+
+  <p>This endpoint returns a list of all mentors. There are no
+    parameters.</p>
+
+  <h4>Example Response</h4>
+
+  <pre class="http headers">Status: 200 OK</pre>
+  <pre class="http response">[
+  { 
+    "email": "foo@bar.org",
+    "classifications": [ "math" ]
+  }
+]</pre>
+</section>
+
+<section id="mentor-update">
+  <h2><a href="#mentor-update">Update a mentor</a></h2>
+  <pre>POST /mentor</pre>
+
+  <p>This endpoint is used to add, change, and remove mentors. If
+    the <code>classifications</code> parameter is not supplied,
+    the mentor is removed. Otherwise, the mentor is given access to
+    view and assess any submissions that have at least one of
+    the mentor's classifications.</p>
+
+  <h4>Example Input</h4>
+
+  <pre class="http request">{
+  "email": "foo@bar.org",
+  "classifications": ["math"]
+}</pre>
+
+  <h4>Example Response</h4>
+
+  <pre class="http headers">Status: 200 OK</pre>
+  <pre class="http response">{
+  "message": "updated"
+}</pre>
+</section>
+
+<section id="submission-create">
+  <h2><a href="#submission-create">Create a submission</a></h2>
+
+  <pre>POST /submission</pre>
+
+  <p>This endpoint creates a submission for assessment.</p>
+
+  <h4>Example Response</h4>
+
+  <pre class="http headers">Status: 201 Created</pre>
+  <pre class="http response">{
+  "id": "519140258d6230ae0b00000b"
+}</pre>
+</section>
+
+<section id="submission-list">
+  <h2><a href="#submission-list">List submissions</a></h2>
+
+  <pre>GET /submissions</pre>
+
+  <p>This endpoint returns a list of all submissions that satisfy
+    a search criteria. Each criteria is submitted as a query
+    string argument.</p>
+
+  <p>Currently, the only search criteria is
+    <code>learner</code>, which is the email of a learner
+    whose submissions you'd like to retrieve.</p>
+</section>

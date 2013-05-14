@@ -52,6 +52,13 @@ describe('Website', function() {
       .expect(200, done);    
   });
 
+  it('should return 200 OK with HTML at /docs', function(done) {
+    request(app)
+      .get('/docs')
+      .expect('Content-Type', /html/)
+      .expect(200, done);    
+  });
+
   it('should return 200 OK with HTML at /demo', function(done) {
     request(app)
       .get('/demo')

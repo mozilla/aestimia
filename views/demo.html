@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block head %}
+<link rel="stylesheet" href="/css/api.css">
 <style>
 #js-console {
   height: 345px;
@@ -26,22 +27,6 @@
   color: white;
 }
 
-pre.http {
-  border-radius: 0;
-  font-size: 10px;
-  line-height: 12px;
-}
-
-pre.http.headers {
-  margin-bottom: 0;
-  border-bottom: none;
-  background: #f0f0f0;
-}
-
-pre.http.response {
-  background: #fbfbfb;
-}
-
 table.querystring-args code,
 table.querystring-args input {
   color: inherit;
@@ -50,220 +35,101 @@ table.querystring-args input {
 
 </style>
 {% endblock %}
-{% block title %} - API Demo{% endblock %}
+{% block title %} - Interactive API Documentation{% endblock %}
 {% block content %}
-<h1>Aestimia API Demo Control Panel</h1>
+<h1>Aestimia Interactive API Documentation</h1>
 
 <div class="row">
   <div class="span6">
 
-<h2>API Secret</h2>
+    <h2>API Secret</h2>
 
-<p>All of the functionality on the page is just a front-end to the API. Enter your API secret below, or else nothing on this page will work.</p>
+    <p>All of the functionality on the page is just a front-end to the API. Enter your API secret below, or else nothing on this page will work.</p>
 
-<p><input type="password" id="js-password"></p>
-<p>
-  <label class="checkbox">
-    <input id="js-show-password" type="checkbox"> Show API secret in console
-  </label>
-</p>
+    <p><input type="password" id="js-password"></p>
+    <p>
+      <label class="checkbox">
+        <input id="js-show-password" type="checkbox"> Show API secret in console
+      </label>
+    </p>
 
-<h2>API Operations</h2>
+    <h2>API Operations</h2>
 
-<div class="accordion" id="api-actions">
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <a class="accordion-toggle" data-toggle="collapse" data-parent="#api-actions" href="#overview">
-        Overview
-      </a>
-    </div>
-    <div id="overview" class="accordion-body collapse">
-      <div class="accordion-inner">
-        <p>The API is accessed from <code class="js-api-root"></code>.</p>
-        <p>Unless otherwise noted, all data is sent and received as JSON.</p>
-        <p>All timestamps are returned in ISO 8601 format:</p>
-        <pre class="http response">YYYY-MM-DDTHH:MM:SSZ</pre>
-        <p>Authentication is done using HTTP Basic Authentication, with the
-          username <strong>api</strong> and the password set to the API
-          secret.</p>
-        <p>Sending invalid fields will result in a <code>422 Unprocessable Entity</code> response, like so:
-          <pre class="http headers">Status: 422 Unprocessable Entity</pre>
-          <pre class="http response">{
-  "message": "Validation Error",
-  "errors": {
-    "evidence.0.mediaType": "Validator \"invalid media type\" failed for path mediaType with value `iemage`"
-  }
-}</pre> 
+    <p>The documentation below is also available in <a href="/docs">printable form</a>.</p>
+
+    <div class="accordion" id="api-actions">
+      <div class="accordion-group">
+        <div class="accordion-heading">
+          <a class="accordion-toggle" data-toggle="collapse" data-parent="#api-actions" href="#"></a>
+        </div>
+        <div id="" class="accordion-body collapse">
+          <div class="accordion-inner"></div>
+        </div>
       </div>
     </div>
+
   </div>
-
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <a class="accordion-toggle" data-toggle="collapse" data-parent="#api-actions" href="#mentor-list">
-        List mentors
-      </a>
-    </div>
-    <div id="mentor-list" class="accordion-body collapse">
-      <div class="accordion-inner">
-        <pre>GET /mentors</pre>
-
-        <p>This endpoint returns a list of all mentors. There are no
-          parameters.</p>
-
-        <h4>Example Response</h4>
-
-        <pre class="http headers">Status: 200 OK</pre>
-        <pre class="http response">[
-  { 
-    "email": "foo@bar.org",
-    "classifications": [ "math" ]
-  }
-]</pre>
-
-        <h4>Try It Out</h4>
-
-        <button id="js-list-mentors" class="btn">List Mentors</button>        
-      </div>
-    </div>
+  <div class="span6">
+    <h2>Console</h2>
+    <p>This console shows you what API calls your actions on the left
+      column are making.</p>
+    <div id="js-console" data-spy="affix" data-offset-top="200"></div>
   </div>
+</div>
 
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <a class="accordion-toggle" data-toggle="collapse" data-parent="#api-actions" href="#mentor-update">
-        Update a mentor
-      </a>
-    </div>
-    <div id="mentor-update" class="accordion-body collapse">
-      <div class="accordion-inner">
-        <pre>POST /mentor</pre>
+<div id="interactives" style="display: none">
+  <div data-section-id="mentor-list">
+    <button id="js-list-mentors" class="btn">List Mentors</button>        
+  </div>
+  <div data-section-id="mentor-update">
+    <h5>Input</h5>
 
-        <p>This endpoint is used to add, change, and remove mentors. If
-          the <code>classifications</code> parameter is not supplied,
-          the mentor is removed. Otherwise, the mentor is given access to
-          view and assess any submissions that have at least one of
-          the mentor's classifications.</p>
-
-        <h4>Example Input</h4>
-
-        <pre class="http request">{
-  "email": "foo@bar.org",
-  "classifications": ["math"]
-}</pre>
-
-        <h4>Example Response</h4>
-
-        <pre class="http headers">Status: 200 OK</pre>
-        <pre class="http response">{
-  "message": "updated"
-}</pre>
-
-        <h4>Try It Out<h4>
-
-        <h5>Input</h5>
-
-        <textarea class="input-block-level" rows="4" style="font-family: monospace" id="js-update-mentor-json">{
+    <textarea class="input-block-level" rows="4" style="font-family: monospace" id="js-update-mentor-json">{
   "email": "foo@bar.org",
   "classifications": ["math"]
 }</textarea>
 
-        <button class="btn btn-primary" id="js-update-mentor">Update Mentor</button>
+    <button class="btn btn-primary" id="js-update-mentor">Update Mentor</button>
+  </div>
+  <div data-section-id="submission-create">
+    <h5>Input</h5>
+
+    <ul class="nav nav-tabs" id="submissions">
+      {% for submission in submissions %}
+      <li><a data-toggle="tab" href="#submission-{{ submission.name }}">{{ submission.name }}</a></li>
+      {% endfor %}
+    </ul>
+
+    <div class="tab-content">
+      {% for submission in submissions %}
+      <div class="tab-pane" id="submission-{{ submission.name }}">
+        <form class="js-submission">
+          <textarea autocomplete="off" style="font-family: monospace" rows="30" class="input-block-level" name="json">{{ submission.json }}</textarea>
+          <input class="btn btn-primary" type="submit" value="Create Submission">
+        </form>
       </div>
+      {% endfor %}
     </div>
   </div>
+  <div data-section-id="submission-list">
+    <h5>Query String Arguments</h5>
 
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <a class="accordion-toggle" data-toggle="collapse" data-parent="#api-actions" href="#submission-create">
-        Create a submission
-      </a>
-    </div>
-    <div id="submission-create" class="accordion-body collapse">
-      <div class="accordion-inner">
-        <pre>POST /submission</pre>
+    <table class="table http querystring-args">
+      <tr>
+        <th>Argument</th>
+        <th>Value</th>
+      </tr>
+      <tr>
+        <td><code>learner</code></td>
+        <td><input type="text" id="js-learner" placeholder="user@domain.com" value="brian@example.org"></td>
+      </tr>
+    </table>
 
-        <p>This endpoint creates a submission for assessment.</p>
-
-        <h4>Example Response</h4>
-
-        <pre class="http headers">Status: 201 Created</pre>
-        <pre class="http response">{
-  "id": "519140258d6230ae0b00000b"
-}</pre>
-
-        <h4>Try It Out</h4>
-
-        <h5>Input</h5>
-
-        <ul class="nav nav-tabs" id="submissions">
-          {% for submission in submissions %}
-          <li><a data-toggle="tab" href="#submission-{{ submission.name }}">{{ submission.name }}</a></li>
-          {% endfor %}
-        </ul>
-
-        <div class="tab-content">
-          {% for submission in submissions %}
-          <div class="tab-pane" id="submission-{{ submission.name }}">
-            <form class="js-submission">
-              <textarea autocomplete="off" style="font-family: monospace" rows="30" class="input-block-level" name="json">{{ submission.json }}</textarea>
-              <input class="btn btn-primary" type="submit" value="Create Submission">
-            </form>
-          </div>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <a class="accordion-toggle" data-toggle="collapse" data-parent="#api-actions" href="#submission-list">
-        List submissions
-      </a>
-    </div>
-    <div id="submission-list" class="accordion-body collapse">
-      <div class="accordion-inner">
-        <pre>GET /submissions</pre>
-
-        <p>This endpoint returns a list of all submissions that satisfy
-          a search criteria. Each criteria is submitted as a query
-          string argument.</p>
-
-        <p>Currently, the only search criteria is
-          <code>learner</code>, which is the email of a learner
-          whose submissions you'd like to retrieve.</p>
-
-        <h4>Try It Out</h4>
-
-        <h5>Query String Arguments</h5>
-
-        <table class="table http querystring-args">
-          <tr>
-            <th>Argument</th>
-            <th>Value</th>
-          </tr>
-          <tr>
-            <td><code>learner</code></td>
-            <td><input type="text" id="js-learner" placeholder="user@domain.com" value="brian@example.org"></td>
-          </tr>
-        </table>
-
-<!--        <p>
-        <code>learner</code> <input type="text" id="js-learner" placeholder="user@domain.com" value="brian@example.org">
-        </p> -->
-
-        <button id="js-list-submissions" class="btn">List Submissions</button>
-      </div>
-    </div>
+    <button id="js-list-submissions" class="btn">List Submissions</button>
   </div>
 </div>
-</div>
-<div class="span6">
-  <h2>Console</h2>
-  <p>This console shows you what API calls your actions on the left
-    column are making.</p>
-  <div id="js-console" data-spy="affix" data-offset-top="200"></div>
-</div>
+<div id="docs" style="display: none">
+  {% include "docs-raw.html" %}
 </div>
 {% endblock %}
 {% block scripts %}
