@@ -4,6 +4,7 @@
   "description": "Assess submitted work with an explicit rubric.",
   "dependencies": {
     "connect-flash": "~0.1.0",
+    "client-sessions": "0.3.0",
     "express-persona": "0.0.7",
     "underscore": "1.4.4",
     "async": "0.2.8",
