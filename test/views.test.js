@@ -2,6 +2,8 @@ var should = require('should');
 var cheerio = require('cheerio');
 var nunjucks = require('nunjucks');
 var _ = require('underscore');
+var data = require('./data');
+var models = require('../').models;
 
 var loader = new nunjucks.FileSystemLoader(__dirname + '/../views');
 var env = new nunjucks.Environment(loader, {autoescape: true});
@@ -14,6 +16,48 @@ function render(view, ctxOptions) {
 }
 
 describe('views/', function() {
+  describe('badge.html', function() {
+    var AWARDED = '.text-success';
+    var REJECTED = '.text-error';
+    var AWAITING_REVIEW = '.muted';
+
+    it('should show awarded status', function() {
+      var s = new models.Submission(data.baseSubmission({
+        reviews: [{
+            author: "foo@bar.org",
+            response: "awesome",
+            satisfiedRubrics: [0, 1]
+        }]
+      }));
+      var $ = render('badge.html', {submission: s});
+      $(AWARDED).length.should.eql(1);
+      $(REJECTED).length.should.eql(0);
+      $(AWAITING_REVIEW).length.should.eql(0);
+    });
+
+    it('should show rejected status', function() {
+      var s = new models.Submission(data.baseSubmission({
+        reviews: [{
+            author: "foo@bar.org",
+            response: "lame",
+            satisfiedRubrics: []
+        }]
+      }));
+      var $ = render('badge.html', {submission: s});
+      $(AWARDED).length.should.eql(0);
+      $(REJECTED).length.should.eql(1);
+      $(AWAITING_REVIEW).length.should.eql(0);
+    });
+
+    it('should show awaiting-review status', function() {
+      var s = new models.Submission(data.baseSubmission());
+      var $ = render('badge.html', {submission: s});
+      $(AWARDED).length.should.eql(0);
+      $(REJECTED).length.should.eql(0);
+      $(AWAITING_REVIEW).length.should.eql(1);
+    });
+  });
+
   describe('layout.html', function() {
     it('should embed email in a meta tag', function() {
       var $ = render('layout.html', {email: 'a@b.org'});
