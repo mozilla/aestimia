@@ -91,7 +91,5 @@ describe('views/', function() {
       $('.alert.alert-victory').length.should.eql(1);
       $('.alert.alert-victory em').text().should.eql('you win!');
     });
-
-    
   });
 });
