@@ -1,0 +1,72 @@
+.navbar .navbar-inner {
+  background-image:url('/img/chalkboard_bg.jpg');
+  -webkit-box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
+}
+
+.navbar .nav-wrap {
+  width:100%;
+  padding:0 0 0 0;
+  margin:0 0 0 0;
+  width:940px;
+  background-color:white;
+  margin-bottom:-24px;
+  -webkit-box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.25);
+}
+
+.navbar .nav-wrap {
+  text-align: center;
+}
+
+.navbar .nav-wrap ul {
+  display:inline-block;
+  margin:0 0 0 0;
+}
+
+.navbar .nav > li > a {
+  text-shadow:none;
+  color:#333333;
+  text-transform:uppercase;
+}
+
+.navbar .nav > li {
+  float:none;
+  display: inline-block;
+}
+
+.navbar .nav > li.even {
+  border-left:1px solid #c0c0c0;
+  border-right:1px solid #c0c0c0;
+}
+
+.navbar .nav > li.last {
+  border-right:none;
+}
+
+.navbar .nav > li > a:focus, 
+.navbar .nav > li > a:hover {
+  color:#c0c0c0;
+}
+
+.navbar .brand {
+  display: block;
+  width:671px;
+  height:220px;
+  background-image:url('/img/csol_logo.png');
+  background-repeat: no-repeat;
+  margin:0 auto;
+  float:none;
+  text-indent: -9000px;
+}
+
+.navbar .nav {
+  float:none;
+}
+
+/*move elments down to account for straddling menu*/
+#title, .hero-unit {
+	margin-top:1.5em;
+}

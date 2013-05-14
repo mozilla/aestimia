@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block title %} - History{% endblock %}
 {% block content %}
-<h1>Review History</h1>
+<h1 id="title">Review History</h1>
 {% if submissions.length %}
   <p>These submissions have already been reviewed.</p>
   {% include "submission-list.html" %}

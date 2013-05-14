@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block title %} - Submission {{ submission._id }}{% endblock %}
 {% block content %}
-<h1>
+<h1 id="title">
   Submission From
   {% if submission.isLearnerUnderage() %}
   An Underage Learner
