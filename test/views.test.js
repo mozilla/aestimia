@@ -15,20 +15,102 @@ function render(view, ctxOptions) {
   return cheerio.load(env.render(view, ctx));
 }
 
+var awardedSubmission = data.baseSubmission({
+  reviews: [{
+      author: "foo@bar.org",
+      response: "awesome",
+      satisfiedRubrics: [0, 1]
+  }]
+});
+
+var rejectedSubmission = data.baseSubmission({
+  reviews: [{
+      author: "foo@bar.org",
+      response: "lame",
+      satisfiedRubrics: []
+  }]
+});
+
 describe('views/', function() {
+  describe('submission-detail.html', function() {
+    it('should hide email of underage learners', function() {
+      var s = new models.Submission(data.submissions['canned-responses']);
+      var $ = render('submission-detail.html', {submission: s});
+      $.html().should.match(/An underage learner/i);
+      $.html().should.not.match(/brian@example\.org/);
+    });
+
+    it('should show email of non-underage learners', function() {
+      var s = new models.Submission(data.submissions['base']);
+      var $ = render('submission-detail.html', {submission: s});
+      $.html().should.not.match(/An underage learner/i);
+      $.html().should.match(/brian@example\.org/);
+    });
+
+    it('should show review form for unreviewed submissions', function() {
+      var s = new models.Submission(data.submissions['base']);
+      var $ = render('submission-detail.html', {submission: s});
+      $('form').length.should.eql(1);
+    });
+
+    it('should hide review form for reviewed submissions', function() {
+      var s = new models.Submission(awardedSubmission);
+      var $ = render('submission-detail.html', {submission: s});
+      $('form').length.should.eql(0);
+    });
+
+    it('should embed image evidence in page', function() {
+      var s = new models.Submission(data.baseSubmission({
+        evidence: [{url: 'http://u/', mediaType: 'image'}]
+      }));
+      var $ = render('submission-detail.html', {submission: s});
+      $('.thumbnail img').attr("src").should.eql('http://u/');
+    });
+
+    it('should hyperlink to link evidence', function() {
+      var s = new models.Submission(data.baseSubmission({
+        evidence: [{url: 'http://z/', mediaType: 'link'}]
+      }));
+      var $ = render('submission-detail.html', {submission: s});
+      $('.thumbnail a').text().trim().should.eql('http://z/');
+    });
+  });
+
+  describe('submission-list.html', function() {
+    it('should hide email of underage learners', function() {
+      var s = new models.Submission(data.submissions['canned-responses']);
+      var $ = render('submission-list.html', {submissions: [s]});
+      $.html().should.match(/An underage learner/i);
+      $.html().should.not.match(/brian@example\.org/);
+    });
+
+    it('should show email of non-underage learners', function() {
+      var s = new models.Submission(data.submissions['base']);
+      var $ = render('submission-list.html', {submissions: [s]});
+      $.html().should.not.match(/An underage learner/i);
+      $.html().should.match(/brian@example\.org/);
+    });
+
+    it('should show view button for reviewed submissions', function() {
+      var s = new models.Submission(awardedSubmission);
+      var $ = render('submission-list.html', {submissions: [s]});
+      $('a.btn').first().text().trim().should.eql('View');
+    });
+
+    it('should show review button for unreviewed submissions', function() {
+      var s = new models.Submission(data.submissions['base']);
+      var $ = render('submission-list.html', {submissions: [s]});
+      $('a.btn').first().text().trim().should.eql('Review');
+    });
+  });
+
   describe('badge.html', function() {
     var AWARDED = '.text-success';
     var REJECTED = '.text-error';
     var AWAITING_REVIEW = '.muted';
 
     it('should show awarded status', function() {
-      var s = new models.Submission(data.baseSubmission({
-        reviews: [{
-            author: "foo@bar.org",
-            response: "awesome",
-            satisfiedRubrics: [0, 1]
-        }]
-      }));
+      var s = new models.Submission(awardedSubmission);
       var $ = render('badge.html', {submission: s});
       $(AWARDED).length.should.eql(1);
       $(REJECTED).length.should.eql(0);
@@ -36,13 +118,7 @@ describe('views/', function() {
     });
 
     it('should show rejected status', function() {
-      var s = new models.Submission(data.baseSubmission({
-        reviews: [{
-            author: "foo@bar.org",
-            response: "lame",
-            satisfiedRubrics: []
-        }]
-      }));
+      var s = new models.Submission(rejectedSubmission);
       var $ = render('badge.html', {submission: s});
       $(AWARDED).length.should.eql(0);
       $(REJECTED).length.should.eql(1);
