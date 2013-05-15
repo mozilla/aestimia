@@ -32,4 +32,7 @@ window.reloadPage = function() {
     return false;
   });
   $(".js-logout").tooltip();
+
+  // Miscellaneous stuff that every page might need.
+  if ($.fn.timeago) $("time.timeago").timeago();
 })();

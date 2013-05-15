@@ -9,7 +9,7 @@
   {{ submission.learner }}
   {% endif %}
 </h1>
-<p class="muted">Created {{ submission.creationDate }}</p>
+<p class="muted">Created {{ submission.creationDate|timeago }}</p>
 <div class="row">
   <div class="span4 offset4">
     {% include "badge.html" %}
@@ -47,8 +47,8 @@
       {% else %}
       rejected
       {% endif %}
-      by <strong>{{ review.author }}</strong> on 
-      {{ review.date }}.</p>
+      by <strong>{{ review.author }}</strong>  
+      {{ review.date|timeago }}.</p>
     <h3>Rubric</h3>
     <ul style="list-style-type: none">
     {% for rubitem in submission.rubric.items %}

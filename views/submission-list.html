@@ -11,7 +11,7 @@
         {{ submission.learner }}
       {% endif %}
     </h4>
-    <p><small class="muted">Application submitted {{ submission.creationDate }}.</small></p>
+    <p><small class="muted">Application submitted {{ submission.creationDate|timeago }}.</small></p>
     <p>
       {% for classification in submission.classifications %}
       <span class="label">{{ classification }}</span>
