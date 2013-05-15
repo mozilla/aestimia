@@ -1,29 +1,15 @@
-function constructAccordion() {
-  var interactives = $("#interactives");
-  var docs = $("#docs").remove();
-  var accordion = $("#api-actions");
-  var accordionTemplate = $(".accordion-group", accordion).remove();
+function addInteractives() {
+  $("#api-actions .accordion-body").each(function() {
+    var interactive = $('#interactives [data-section-id="' + this.id + '"]');
 
-  $("section", docs).each(function() {
-    var id = this.id;
-    var titleDiv = $("h2", this).remove();
-    var title = titleDiv.text();
-    var interactive = $('[data-section-id="' + id + '"]', interactives);
-    var aDiv = accordionTemplate.clone().appendTo(accordion);
-    var aInner = $("div.accordion-inner", aDiv);
-
-    $("a.accordion-toggle", aDiv)
-      .attr("href", "#" + id)
-      .text(title);
-    $("div.accordion-body", aDiv).attr("id", id);
-    aInner.append(this);
     if (interactive.length)
-      aInner.append('<h4>Try It Out</h4>').append(interactive);
+      $(".accordion-inner", this)
+        .append('<h4>Try It Out</h4>').append(interactive);
   });
 }
 
 $(window).ready(function() {
-  constructAccordion();
+  addInteractives();
 
   var password = $('#js-password');
   var consoleDiv = $('#js-console');

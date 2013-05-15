@@ -37,6 +37,27 @@ var rejectedSubmission = data.baseSubmission({
 });
 
 describe('views/', function() {
+  describe('demo.html', function() {
+    it('should have an accordion', function() {
+      var $ = render('demo.html', {
+        sections: [{id: 'foo', title: 'Foo!', html: '<em>foo.</em>'}]
+      });
+      $("#api-actions #foo em").text().should.eql('foo.');
+    });
+  });
+
+  describe('docs.html', function() {
+    it('should have a ToC', function() {
+      var $ = render('docs.html', {sections: [
+        {id: 'foo', title: 'Foo!'},
+        {id: 'bar', title: 'Bar!'}
+      ]});
+      $('.toc li.active a[href="#foo"]').text().should.eql('Foo!');
+      $('.toc li:not(.active) a[href="#bar"]')
+        .text().should.eql('Bar!');
+    });
+  });
+
   describe('submission-detail.html', function() {
     it('should hide email of underage learners', function() {
       var s = new models.Submission(data.submissions['canned-responses']);

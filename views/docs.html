@@ -27,7 +27,11 @@ h2 a:hover:after {
 
 <div class="row">
   <div class="span3">
-    <ul class="toc nav nav-pills nav-stacked"></ul>
+    <ul class="toc nav nav-pills nav-stacked">
+      {% for section in sections %}
+      <li {% if loop.first %}class="active"{% endif %}><a href="#{{section.id}}">{{section.title}}</a></li>
+      {% endfor %}
+    </ul>
   </div>
   <div class="span9">
     <p>The documentation below is also available in <a href="/demo">interactive form</a>.</p>

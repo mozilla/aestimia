@@ -58,14 +58,18 @@ table.querystring-args input {
     <p>The documentation below is also available in <a href="/docs">printable form</a>.</p>
 
     <div class="accordion" id="api-actions">
+      {% for section in sections %}
       <div class="accordion-group">
         <div class="accordion-heading">
-          <a class="accordion-toggle" data-toggle="collapse" data-parent="#api-actions" href="#"></a>
+          <a class="accordion-toggle" data-toggle="collapse" data-parent="#api-actions" href="#{{section.id}}">{{section.title}}</a>
         </div>
-        <div id="" class="accordion-body collapse">
-          <div class="accordion-inner"></div>
+        <div id="{{section.id}}" class="accordion-body collapse">
+          <div class="accordion-inner">
+            {{section.html|safe}}
+          </div>
         </div>
       </div>
+      {% endfor %}
     </div>
 
   </div>
@@ -127,9 +131,6 @@ table.querystring-args input {
 
     <button id="js-list-submissions" class="btn">List Submissions</button>
   </div>
-</div>
-<div id="docs" style="display: none">
-  {% include "docs-raw.html" %}
 </div>
 {% endblock %}
 {% block scripts %}
