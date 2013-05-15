@@ -17,21 +17,17 @@ h2 a:hover:after {
   top: 0;
   width: 220px;
 }
-
-ul.toc {
-  padding-top: 10px;
-}
 </style>
 {% endblock %}
 
 {% block content %}
+<h1 id="title">Aestimia API Documentation</h1>
+
 <div class="row">
   <div class="span3">
-    <ul class="toc nav nav-pills nav-stacked" data-spy="affix" data-offset-top="40"></ul>
+    <ul class="toc nav nav-pills nav-stacked"></ul>
   </div>
   <div class="span9">
-    <h1>Aestimia API Documentation</h1>
-
     <p>The documentation below is also available in <a href="/demo">interactive form</a>.</p>
 
     {% include "docs-raw.html" %}

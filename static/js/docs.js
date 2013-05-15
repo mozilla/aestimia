@@ -6,6 +6,7 @@ $(window).ready(function() {
       .appendTo(li);
   });
 
+  $(".toc").affix({offset: {top: $(".toc").offset().top}});
   $(".toc li").first().addClass("active");
   $("body").attr("data-spy", "scroll").attr("data-target", ".toc")
     .scrollspy();

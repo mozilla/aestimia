@@ -85,6 +85,7 @@ $(window).ready(function() {
     });
   };
 
+  consoleDiv.affix({offset: {top: consoleDiv.offset().top}});
   $("#submissions a:first").tab('show');
   $('.js-api-root').text(absoluteUrl('/api/'));
 
