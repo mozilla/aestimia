@@ -36,7 +36,8 @@ the submission there waiting for you to review.
   to prevent tampering.
 
 * `API_SECRET` is the secret used to make API requests to
-  Aestimia. If absent, the API is disabled.
+  Aestimia. If absent, the API is disabled. API documentation
+  can be found at `/docs` once Aestimia has launched.
 
 * `PERSONA_AUDIENCE` is the origin of the server, as it appears
   to users. If `DEBUG` is enabled, this defaults to
