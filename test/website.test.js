@@ -66,15 +66,6 @@ describe('Website', function() {
       .expect(200, done);    
   });
 
-  it('should parse raw doc sections', function() {
-    var sections = website.parseRawDocSections();
-
-    sections[0].id.should.eql('overview');
-    sections[0].title.should.eql('Overview');
-    sections[0].html.should.match(/api/i);
-    sections[0].html.should.not.match(/<h2>/i);
-  });
-
   describe('queue', function() {
     beforeEach(setupFixtures);
 
