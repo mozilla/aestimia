@@ -23,6 +23,12 @@ window.reloadPage = function() {
     }
   });
 
-  $("body").on("click", ".js-login", function() { navigator.id.request(); });
-  $("body").on("click", ".js-logout", function() { navigator.id.logout(); });
+  $("body").on("click", ".js-login", function() {
+    navigator.id.request();
+    return false;
+  });
+  $("body").on("click", ".js-logout", function() {
+    navigator.id.logout();
+    return false;
+  });
 })();
