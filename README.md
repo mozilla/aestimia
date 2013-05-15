@@ -30,22 +30,43 @@ create a submission in the *Create a submission* section. Log in as
 yourself via Persona, go back to the site root, and you should see
 the submission there waiting for you to review.
 
+## Environment Variables
+
+* `COOKIE_SECRET` is the secret used to encrypt and sign cookies,
+  to prevent tampering.
+
+* `API_SECRET` is the secret used to make API requests to
+  Aestimia. If absent, the API is disabled.
+
+* `PERSONA_AUDIENCE` is the origin of the server, as it appears
+  to users. If `DEBUG` is enabled, this defaults to
+  `http://localhost:PORT`. Otherwise, it must be defined.
+
+* `MONGO_URL` is the URL to the MongoDB instance. If this isn't
+  present, the app looks at `MONGOHQ_URL`, followed by
+  `MONGOLAB_URI`. If none of these are present, the default value,
+  `mongodb://localhost/aestimia`, is used.
+
+* `DEBUG` represents a boolean value: if the variable exists
+  with any value (even the empty string), the boolean is true,
+  otherwise it's false. Setting this to true makes the server
+  use unminified source code on the client-side, among other
+  things.
+
+* `THEME_DIR` is the path to a theme. Any relative paths are resolved
+  based on the root directory of Aestimia. Thus setting
+  `THEME_DIR` to `theme/csol` would activate the Chicago Summer of
+  Learning theme.
+
+* `PORT` is the port that the server binds to. Defaults to 3000.
+
 ## Themes
 
 Aestimia looks like generic [Bootstrap][] out of the box, but it
 can be themed. See `theme/csol` for an example.
 
 To enable a theme, set the `THEME_DIR` environment variable to
-the root directory of the theme. Any relative paths are resolved
-based on the root directory of Aestimia. Thus setting
-`THEME_DIR` to `theme/csol` would activate the Chicago Summer of
-Learning theme.
-
-## Deployment
-
-When deploying, you'll want to set `COOKIE_SECRET` and `API_SECRET` to
-something super secret. See [bin/aestimia.js][] for more configuration
-options.
+the root directory of the theme; see above for more details.
 
 ## Test Coverage
 
