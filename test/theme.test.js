@@ -48,8 +48,8 @@ describe('Themes', function() {
   });
 
   it('can inherit base layout', function() {
-    render('example.html')('title')
-      .text().should.eql("Aestimia");
+    render('example.html', {APP_NAME: 'Blargh'})('title')
+      .text().should.eql("Blargh");
   });
 
   it('are applied to existing views', function() {

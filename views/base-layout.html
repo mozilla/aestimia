@@ -6,11 +6,11 @@
 {% block head %}{% endblock %}
 <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap{{ DOT_MIN }}.css">
 {% block theme_head %}{% endblock %}
-<title>Aestimia{% block title %}{% endblock %}</title>
+<title>{{ APP_NAME }}{% block title %}{% endblock %}</title>
 <div class="navbar navbar-static-top navbar-inverse">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="/">Aestimia</a>
+      <a class="brand" href="/">{{ APP_NAME }}</a>
       <div class="nav-wrap">
         <ul class="nav">
           {% if email %}
