@@ -9,6 +9,7 @@
     "underscore": "1.4.4",
     "async": "0.2.8",
     "mongoose": "3.6.9",
+    "cheerio": "0.11.0",
     "nunjucks": "git://github.com/toolness/nunjucks.git#644c8634da0a0327b030c2d0ca72266f15bb8d1a",
     "express": "~3.2.3"
   },
@@ -16,7 +17,6 @@
     "mocha": "~1.9.0",
     "should": "~1.2.2",
     "sinon": "1.7.2",
-    "cheerio": "0.11.0",
     "supertest": "~0.6.0"
   },
   "scripts": {
