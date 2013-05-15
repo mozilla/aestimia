@@ -31,4 +31,5 @@ window.reloadPage = function() {
     navigator.id.logout();
     return false;
   });
+  $(".js-logout").tooltip();
 })();

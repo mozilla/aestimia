@@ -37,12 +37,12 @@
   display: inline-block;
 }
 
-.navbar .nav > li.even {
+.navbar .nav > li:nth-child(even) {
   border-left:1px solid #c0c0c0;
   border-right:1px solid #c0c0c0;
 }
 
-.navbar .nav > li.last {
+.navbar .nav > li:last-child {
   border-right:none;
 }
 

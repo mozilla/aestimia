@@ -13,14 +13,12 @@
       <a class="brand" href="/">Aestimia</a>
       <div class="nav-wrap">
         <ul class="nav">
-          <li class="odd first"><a href="/learn">Learn</a></li>
-          <li class="even"><a href="/badges">Badges</a></li>
-          <li class="odd"><a href="/challenges">Challenges</a></li>
           {% if email %}
-          <li class="even"><a href="/history">History</a></li>
-          <li class="odd last"><a class="js-logout" href="#">Logout</a></li>
+          <li><a href="/">Review</a></li>
+          <li><a href="/history">History</a></li>
+          <li><a class="js-logout" href="#" data-placement="right" title="Logout {{email}}.">Logout</a></li>
           {% else %}
-          <li class="even last"><a class="js-login" href="#">Login</a></li>
+          <li><a class="js-login" href="#">Login</a></li>
           {% endif %}
         </ul>
       </div>
