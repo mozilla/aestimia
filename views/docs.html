@@ -36,7 +36,13 @@ h2 a:hover:after {
   <div class="span9">
     <p>The documentation below is also available in <a href="/demo">interactive form</a>.</p>
 
-    {% include "docs-raw.html" %}
+    {% for section in sections %}
+    <section id="{{section.id}}">
+      <h2><a href="#{{section.id}}">{{section.title}}</a></h2>
+
+      {{section.html|safe}}
+    </section>
+    {% endfor %}
   </div>
 </div>
 {% endblock %}
