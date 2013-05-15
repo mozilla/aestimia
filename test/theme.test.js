@@ -37,6 +37,10 @@ describe('Themes', function() {
       .expect(200, done);
   });
 
+  it('can add to app.locals via app-locals.json', function() {
+    app.locals.EXAMPLE.should.eql('example app local');
+  });
+
   it('can override theme_head', function() {
     render('example.html')('meta[name="example-theme-meta"]')
       .attr("content").should.eql("hai2u");
