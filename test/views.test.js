@@ -4,9 +4,14 @@ var nunjucks = require('nunjucks');
 var _ = require('underscore');
 var data = require('./data');
 var models = require('../').models;
+var filters = require('../').filters;
 
 var loader = new nunjucks.FileSystemLoader(__dirname + '/../views');
 var env = new nunjucks.Environment(loader, {autoescape: true});
+
+Object.keys(filters).forEach(function(name) {
+  env.addFilter(name, filters[name]);
+});
 
 function render(view, ctxOptions) {
   var ctx = _.extend({
@@ -134,6 +139,22 @@ describe('views/', function() {
     });
   });
 
+  describe('splash.html', function() {
+    it('should show login button', function() {
+      var $ = render('splash.html');
+      $('.js-login').text().should.eql('Login');
+      $('.js-logout').length.should.eql(0);
+    });
+  });
+
+  describe('access-denied.html', function() {
+    it('should show login button when user is logged out', function() {
+      var $ = render('access-denied.html');
+      $('.js-login').text().should.eql('Login');
+      $('.js-logout').length.should.eql(0);
+    });
+  });
+
   describe('layout.html', function() {
     it('should embed email in a meta tag', function() {
       var $ = render('layout.html', {email: 'a@b.org'});
@@ -149,12 +170,6 @@ describe('views/', function() {
       var $ = render('layout.html', {email: 'u'});
       $('.js-logout').text().should.eql('Logout');
       $('.js-login').length.should.eql(0);
-    });
-
-    it('should show login button when user is logged out', function() {
-      var $ = render('layout.html');
-      $('.js-login').text().should.eql('Login');
-      $('.js-logout').length.should.eql(0);
     });
 
     it('should show alert messages', function() {

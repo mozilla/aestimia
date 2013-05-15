@@ -1,9 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1 id="title">Access Denied</h1>
 {% if email %}
+  <h1 id="title">Access Denied</h1>
   <p>You don't have permission to view this page.</p>
 {% else %}
+  <h1 id="title">Login Required</h1>
   <p>You need to log in to view this page.</p>
+  <p><button class="btn btn-primary btn-large js-login">Login</button></p>
 {% endif %}
 {% endblock %}
