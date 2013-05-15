@@ -1,10 +1,38 @@
-.navbar .navbar-inner {
+ul, ol {
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+}
+.row,
+[class*="span"] {
+  margin-left:0px;
+}
+body .container > br {
+  display:none;
+}
+body > .container {
+  padding-bottom:25px;
+}
+#title, .hero-unit {
+  margin-top:45px;
+}
+
+/*navbar*/
+.navbar .nav > li:nth-child(even) {
+  border-left:1px solid #c0c0c0;
+  border-right:1px solid #c0c0c0;
+}
+.navbar .nav > li:last-child {
+  border-right:none;
+}
+.navbar .navbar-inner,
+footer .footer-inner {
   background-image:url('../img/chalkboard_bg.jpg');
+}
+.navbar .navbar-inner {
   -webkit-box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
   box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
 }
-
 .navbar .nav-wrap {
   width:100%;
   padding:0 0 0 0;
@@ -16,41 +44,30 @@
   -moz-box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.25);
   box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.25);
 }
-
 .navbar .nav-wrap {
   text-align: center;
 }
-
 .navbar .nav-wrap ul {
   display:inline-block;
   margin:0 0 0 0;
 }
-
 .navbar .nav > li > a {
   text-shadow:none;
   color:#333333;
   text-transform:uppercase;
 }
-
 .navbar .nav > li {
   float:none;
   display: inline-block;
 }
-
-.navbar .nav > li:nth-child(even) {
-  border-left:1px solid #c0c0c0;
-  border-right:1px solid #c0c0c0;
-}
-
-.navbar .nav > li:last-child {
+.navbar .nav > li:last-child,
+footer li:last-child {
   border-right:none;
 }
-
 .navbar .nav > li > a:focus, 
 .navbar .nav > li > a:hover {
   color:#c0c0c0;
 }
-
 .navbar .brand {
   display: block;
   width:671px;
@@ -61,12 +78,77 @@
   float:none;
   text-indent: -9000px;
 }
-
 .navbar .nav {
   float:none;
 }
 
-/*move elments down to account for straddling menu*/
-#title, .hero-unit {
-	margin-top:1.5em;
+/*footer*/
+footer, footer a {
+  color:#fff;
+}
+footer a:hover {
+  color:#c0c0c0;
+  text-decoration: none;
+}
+footer .footer-inner {
+  -webkit-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
+}
+footer .lower,
+footer .upper {
+  margin-top:20px;
+}
+footer .lower {
+  border-top:1px solid white;
+  padding-top:20px;
+}
+footer a.logo {
+  text-indent: -9000px;
+  width:82px;
+  height:82px;
+  display:block;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+footer a.logo.chi {
+  background-image:url('../img/chi.png');
+}
+footer a.logo.mac {
+  background-image:url('../img/mac.png');
+}
+footer a.logo.moz {
+  background-image:url('../img/moz.png');
+}
+footer ul li {
+  display: inline-block;
+}
+footer ul li > a,
+footer ul li > span {
+  margin:10px;
+}
+footer ul li:first-child a {
+  margin-left:0px;
+}
+footer li:nth-child(even) {
+  border-left:1px solid #fff;
+  border-right:1px solid #fff;
+}
+footer li:last-child {
+  border-right:none;
+}
+footer .lower p {
+  background-image: url('../img/csol_logo_sm.png');
+  padding-left:209px;
+  background-repeat: no-repeat;
+  background-position: top left;
+  width:400px;
+  min-height:131px;
+  margin-bottom:20px;
+}
+footer .lower li {
+  border-left:none;
+  border-right:none;
+  padding:0 0 0 0;
+  margin:0 0 0 0;
 }
