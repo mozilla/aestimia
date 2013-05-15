@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="csrf" content="{{ csrfToken }}">
+<meta name="email" content="{{ email }}">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+{% block head %}{% endblock %}
+<link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap{{ dot_min }}.css">
+{% block theme_head %}{% endblock %}
+<title>Aestimia{% block title %}{% endblock %}</title>
+<div class="navbar navbar-static-top navbar-inverse">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="/">Aestimia</a>
+      <div class="nav-wrap">
+        <ul class="nav">
+          {% if email %}
+          <li><a href="/">Review</a></li>
+          <li><a href="/history">History</a></li>
+          <li><a class="js-logout" href="#" data-placement="bottom" title="Logout {{email}}.">Logout</a></li>
+          {% else %}
+          <li><a class="js-login" href="#">Login</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  {% if messages().length %}
+    <br>
+    {% for message in messages() %}
+      <div class="alert alert-{{ message.category }}">
+        <a class="close" data-dismiss="alert" href="#">&times;</a>
+        {{ message.html|safe }}
+      </div>
+    {% endfor %}
+  {% endif %}
+  {% block content %}{% endblock %}
+</div>
+{% block theme_footer %}{% endblock %}
+<script src="/vendor/jquery{{ dot_min }}.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap{{ dot_min }}.js"></script>
+<script src="https://login.persona.org/include.js"></script>
+<script src="/js/login.js"></script>
+{% block scripts %}{% endblock %}

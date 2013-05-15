@@ -9,6 +9,7 @@ const MONGO_URL = process.env['MONGO_URL'] || process.env['MONGOHQ_URL'] ||
   process.env['MONGOLAB_URI'] || 'mongodb://localhost/aestimia';
 const DEBUG = ('DEBUG' in process.env);
 const API_SECRET = process.env['API_SECRET'];
+const THEME_DIR = process.env['THEME_DIR'];
 const PERSONA_AUDIENCE = process.env['PERSONA_AUDIENCE'] || (DEBUG
   ? 'http://localhost:' + PORT
   : null);
@@ -24,10 +25,14 @@ mongoose.connect(MONGO_URL, function(err) {
   }
 
   console.log("Connected to mongodb instance at " + MONGO_URL + ".");
+  if (THEME_DIR)
+    console.log("Using theme at " + THEME_DIR + ".");
+
   var app = require('../').app.build({
     cookieSecret: COOKIE_SECRET,
     debug: DEBUG,
     apiKey: API_SECRET,
+    themeDir: THEME_DIR,
     personaAudience: PERSONA_AUDIENCE
   });
 
