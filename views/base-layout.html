@@ -11,15 +11,15 @@
   <div class="navbar-inner">
     <div class="container">
       <a class="brand" href="/">{{ APP_NAME }}</a>
+      {% if email %}
       <div class="nav-wrap">
-        {% if email %}
         <ul class="nav">
           <li><a href="/">Review</a></li>
           <li><a href="/history">History</a></li>
           <li><a class="js-logout" href="#" data-placement="bottom" title="Logout {{email}}.">Logout</a></li>
         </ul>
-        {% endif %}
       </div>
+      {% endif %}
     </div>
   </div>
 </div>
