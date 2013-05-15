@@ -30,6 +30,15 @@ create a submission in the *Create a submission* section. Log in as
 yourself via Persona, go back to the site root, and you should see
 the submission there waiting for you to review.
 
+## Themes
+
+Aestimia supports a rudimentary notion of themes/skins to alter the
+site appearance. By default, the look is pure [Bootstrap][], but
+a custom CSS stylesheet can be applied atop it by specifying a
+URL to it in the `CSS_THEME_URL` environment variable. For instance,
+to apply the Chicago Summer of Learning theme, one could set
+`CSS_THEME_URL` to `/css/csol-theme.css`.
+
 ## Deployment
 
 When deploying, you'll want to set `COOKIE_SECRET` and `API_SECRET` to
@@ -44,6 +53,7 @@ Build/install [jscoverage][], run `make test-cov`, then open
 Coverage should always be at [100%][]. Pull requests that break this will
 be rejected.
 
+  [Bootstrap]: http://twitter.github.io/bootstrap/
   [MongoDB]: http://www.mongodb.org/
   [PhantomJS]: http://phantomjs.org/
   [bin/aestimia.js]: https://github.com/mozilla/aestimia/blob/master/bin/aestimia.js

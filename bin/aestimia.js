@@ -12,6 +12,7 @@ const API_SECRET = process.env['API_SECRET'];
 const PERSONA_AUDIENCE = process.env['PERSONA_AUDIENCE'] || (DEBUG
   ? 'http://localhost:' + PORT
   : null);
+const CSS_THEME_URL = process.env['CSS_THEME_URL'];
 
 assert.ok(PERSONA_AUDIENCE, 'PERSONA_AUDIENCE env var should be defined.');
 assert.ok(COOKIE_SECRET, 'COOKIE_SECRET env var should be defined.');
@@ -28,6 +29,7 @@ mongoose.connect(MONGO_URL, function(err) {
     cookieSecret: COOKIE_SECRET,
     debug: DEBUG,
     apiKey: API_SECRET,
+    themeUrl: CSS_THEME_URL,
     personaAudience: PERSONA_AUDIENCE
   });
 

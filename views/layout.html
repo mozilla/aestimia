@@ -5,7 +5,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 {% block head %}{% endblock %}
 <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap{{ dot_min }}.css">
-<link rel="stylesheet" href="/css/csol-theme.css">
+{% if themeUrl %}
+<link rel="stylesheet" href="{{ themeUrl }}">
+{% endif %}
 <title>Aestimia{% block title %}{% endblock %}</title>
 <div class="navbar navbar-static-top navbar-inverse">
   <div class="navbar-inner">

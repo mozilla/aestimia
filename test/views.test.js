@@ -145,6 +145,12 @@ describe('views/', function() {
       $('meta[name="csrf"]').attr("content").should.eql('sup');
     });
 
+    it('should optionally add theme stylesheet', function() {
+      var $ = render('layout.html', {themeUrl: '/foo'});
+      $('link[href="/foo"]').length.should.eql(1);
+      $('link[href="/foo"]').attr("rel").should.eql("stylesheet");
+    });
+
     it('should show logout link when user is logged in', function() {
       var $ = render('layout.html', {email: 'u'});
       $('.js-logout').text().should.eql('Logout');
