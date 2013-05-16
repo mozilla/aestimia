@@ -71,6 +71,13 @@ the submission there waiting for you to review.
   than HTTP, and the `SSL_KEY` environment variable must also
   be defined.
 
+## API
+
+Submissions and mentor management are accessible over an API.
+If you have an instance of Aestimia running, interactive API
+documentation is available at `/demo`. Otherwise, you can still
+read the [static documentation](http://mozilla.github.io/aestimia/).
+
 ## Themes
 
 Aestimia looks like generic [Bootstrap][] out of the box, but it
