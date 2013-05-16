@@ -1,10 +1,37 @@
 {% extends "base-layout.html" %}
 {% block theme_head %}
-<link rel="stylesheet" href="{{ THEME_ROOT }}/css/csol.css">
+<link rel="stylesheet" href="{{ THEME_ROOT }}css/csol.css">
 {% endblock %}
 {% block theme_footer %}
 <footer>
-  <!-- TODO: Put a real footer here. -->
-  <div style="background: black; color: gray; text-align: center; padding: 20px">Chicago is the best.</div>
+  <div class="footer-inner">
+  	<div class="container">
+			<div class="upper clearfix">
+				<ul class="pull-left">
+					<li><a href="mailto:summeroflearning@cityofchicago.org">summeroflearning@cityofchicago.org</a></li>
+					<li><span>&copy; 2013</span></li>
+				</ul>
+				<ul class="pull-right">
+					<li><a href="#">About</a></li>
+					<li><a href="#">Terms</a></li>
+					<li><a href="#">Privacy</a></li>
+					<li><a href="#">VPAT</a></li>
+				</ul>
+			</div>
+			<div class="lower clearfix">
+				<p class="pull-left">
+					More than 100 organizations across the city have joined forces to integrate learning into summer activities for youth of all ages in every Chicago neighborhood.
+					<br><br>
+					With your help, we'll launch the largest citywide summer learning campaign in the nation.
+				</p>
+				<ul class="pull-right">
+					<li><a class="logo chi" href="#">City of Chicago</a></li>
+					<li><a class="logo mac" href="#">MacArthur Foundation</a></li>
+					<li><a class="logo moz" href="#">Mozilla</a></li>
+				</ul>
+			</div>
+		</div>
+  </div>
 </footer>
+<script src="{{ THEME_ROOT }}js/csol.js"></script>
 {% endblock %}
