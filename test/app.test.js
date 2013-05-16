@@ -26,6 +26,26 @@ describe('App', function() {
       });
   });
 
+  it('should enable HSTS if protocol is HTTPS', function(done) {
+    var httpsApp = buildApp({
+      personaAudience: 'https://foo.org'
+    });
+    request(httpsApp)
+      .get('/')
+      .expect('Strict-Transport-Security',
+              'max-age=31536000; includeSubDomains', done);
+  });
+
+  it('should not enable HSTS if protocol is HTTP', function(done) {
+    request(app)
+      .get('/').end(function(err, res) {
+        if (err) return done(err);
+        if ('strict-transport-security' in res.headers)
+          throw new Error('HSTS header exists!');
+        done();
+      });
+  });
+
   it('should not allow itself to be embedded in iframes', function(done) {
     request(app)
       .get('/')

@@ -1,6 +1,9 @@
 var http = require('http');
 var app = http.createServer(require('../').app.build({
-      cookieSecret: 'testing'
+      cookieSecret: 'testing',
+      // We're not putting the port in here, but technically that
+      // shouldn't cause any of what we're doing to fail.
+      personaAudience: 'http://localhost'
     }));
 var spawn = require('child_process').spawn;
 
