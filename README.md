@@ -61,6 +61,16 @@ the submission there waiting for you to review.
 
 * `PORT` is the port that the server binds to. Defaults to 3000.
 
+* `SSL_KEY` is the path to a private key to use for SSL. If this
+  is provided, the server must be accessed over HTTPS rather
+  than HTTP, and the `SSL_CERT` environment variable must also
+  be defined.
+
+* `SSL_CERT` is the path to a SSL certificate. If this
+  is provided, the server must be accessed over HTTPS rather
+  than HTTP, and the `SSL_KEY` environment variable must also
+  be defined.
+
 ## Themes
 
 Aestimia looks like generic [Bootstrap][] out of the box, but it
