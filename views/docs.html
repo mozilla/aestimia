@@ -39,8 +39,9 @@ h2 a:hover:after {
       review, determining whether or not an applicant's evidence satisfies
       a rubric.</p>
 
-    <p>This is the documentation for the Aestimia API. For information on
-      installing and configuring Aestimia, see the 
+    <p>This is the documentation for the Aestimia API{% if commitHash %}, 
+      based on commit <a href="https://github.com/mozilla/aestimia/commit/{{commitHash}}">{{commitHash.slice(0, 10)}}</a>{% endif %}.
+      For information on installing and configuring Aestimia, see the 
       <a href="https://github.com/mozilla/aestimia">Github project</a>.</p>
 
     {% if not generatingStaticDocs %}
