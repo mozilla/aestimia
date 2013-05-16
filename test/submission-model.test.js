@@ -111,16 +111,26 @@ describe('Submission', function() {
   });
 
   it('should find reviewed submissions', function(done) {
-    Submission.findReviewed("foo@bar.org", function(err, submissions) {
+    Submission.findReviewed({
+      email: "foo@bar.org",
+      page: 1,
+      resultsPerPage: 100
+    }, function(err, submissions, totalPages) {
       if (err) return done(err);
+      totalPages.should.eql(1);
       submissions.length.should.eql(2);
       done();
     });
   });
 
   it('should find submissions for reviewers', function(done) {
-    Submission.findForReview("foo@bar.org", function(err, submissions) {
+    Submission.findForReview({
+      email: "foo@bar.org",
+      page: 1,
+      resultsPerPage: 100
+    }, function(err, submissions, totalPages) {
       if (err) return done(err);
+      totalPages.should.eql(1);
       submissions.length.should.eql(1);
       [].slice.call(submissions[0].classifications)
         .should.eql(["math", "science"]);

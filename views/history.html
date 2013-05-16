@@ -2,7 +2,7 @@
 {% block title %} - History{% endblock %}
 {% block content %}
 <h1 id="title">Review History</h1>
-{% if submissions.length %}
+{% if totalPages %}
   <p>These submissions have already been reviewed.</p>
   {% include "submission-list.html" %}
 {% else %}

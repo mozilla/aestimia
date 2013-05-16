@@ -2,8 +2,8 @@
 {% block title %} - Queue{% endblock %}
 {% block content %}
 <h1 id="title">Welcome {{ email }}!</h1>
-{% if submissions.length %}
-  <p>Get started by choosing a submission from the list below to review.</p>
+{% if totalPages %}
+  <p>Choose a submission from the list below to review.</p>
   {% include "submission-list.html" %}
 {% else %}
   <p>You have nothing to review.</p>

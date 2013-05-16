@@ -98,6 +98,102 @@ describe('Website', function() {
     next.args[0][0].should.equal(err);
   });
 
+  describe('showPaginatedSubmissions()', function() {
+    var req, res, next, tester;
+
+    beforeEach(function() {
+      req = {
+        query: {},
+        path: '/foo',
+        session: {email: 'foo@bar.org'}
+      };
+      res = {
+        render: sinon.spy(),
+        redirect: sinon.spy()
+      };
+      next = sinon.spy();
+      tester = models.Submission.tester = sinon.stub();
+    });
+
+    afterEach(function() {
+      delete models.Submission['tester'];
+    });
+
+    it('should pass email address to Submission method', function() {
+      website.showPaginatedSubmissions('tester', 'lol.html', req, res, next);
+      tester.args[0][0].email.should.eql('foo@bar.org');
+    });
+
+    it('should go to page 1 if no query arg', function() {
+      website.showPaginatedSubmissions('tester', 'lol.html', req, res, next);
+      tester.args[0][0].page.should.eql(1);
+    });
+
+    it('should go to page 1 if negative query arg', function() {
+      req.query.page = '-53';
+      website.showPaginatedSubmissions('tester', 'lol.html', req, res, next);
+      tester.args[0][0].page.should.eql(1);
+    });
+
+    it('should go to page 1 if 0 query arg', function() {
+      req.query.page = '0';
+      website.showPaginatedSubmissions('tester', 'lol.html', req, res, next);
+      tester.args[0][0].page.should.eql(1);
+    });
+
+    it('should propagate errors', function() {
+      website.showPaginatedSubmissions('tester', 'lol.html', req, res, next);
+      tester.args[0][1]('barf');
+      next.args[0][0].should.eql('barf');
+    });
+
+    it('should redirect if page # out of bounds', function() {
+      website.showPaginatedSubmissions('tester', 'lol.html', req, res, next);
+      tester.args[0][1](null, [], 5);
+      res.redirect.args[0].should.eql([302, '/foo?page=5']);
+    });
+
+    it('should call render w/ expected view', function() {
+      website.showPaginatedSubmissions('tester', 'lol.html', req, res, next);
+      tester.args[0][1](null, ['hi'], 5);
+      res.render.args[0][0].should.eql('lol.html');
+    });
+
+    it('should call render w/ prevPage, nextPage set to false', function() {
+      website.showPaginatedSubmissions('tester', 'lol.html', req, res, next);
+      tester.args[0][1](null, ['u'], 1);
+      res.render.args[0][1].prevPage.should.equal(false);
+      res.render.args[0][1].nextPage.should.equal(false);
+    });
+
+    it('should call render w/ nextPage set to link', function() {
+      req.query.page = 2;
+      website.showPaginatedSubmissions('tester', 'lol.html', req, res, next);
+      tester.args[0][1](null, ['hi'], 5);
+      res.render.args[0][1].nextPage.should.eql('/foo?page=3');
+    });
+
+    it('should call render w/ nextPage set to false', function() {
+      req.query.page = 5;
+      website.showPaginatedSubmissions('tester', 'lol.html', req, res, next);
+      tester.args[0][1](null, ['hi'], 5);
+      res.render.args[0][1].nextPage.should.eql(false);
+    });
+
+    it('should call render w/ prevPage set to link', function() {
+      req.query.page = 2;
+      website.showPaginatedSubmissions('tester', 'lol.html', req, res, next);
+      tester.args[0][1](null, ['hi'], 5);
+      res.render.args[0][1].prevPage.should.eql('/foo?page=1');
+    });
+
+    it('should call render w/ prevPage set to false', function() {
+      website.showPaginatedSubmissions('tester', 'lol.html', req, res, next);
+      tester.args[0][1](null, ['hi'], 5);
+      res.render.args[0][1].prevPage.should.equal(false);
+    });
+  });
+
   describe('/history', function() {
     beforeEach(setupFixtures);
 
