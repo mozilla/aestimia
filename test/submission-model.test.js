@@ -153,6 +153,17 @@ describe('Submission', function() {
     })).save(done);
   });
 
+  it('should reject un-canned responses', function(done) {
+    new Submission(_.extend({}, data.submissions['canned-responses'], {
+      reviews: [{author: "foo@bar.org", response: "rad"}]
+    })).save(function(err) {
+      err.name.should.eql("ValidationError");
+      err.errors.response.message
+        .should.eql("review response is not in list of canned responses");
+      done();
+    });
+  });
+
   it('should reject reviewers without proper permissions', function(done) {
     new Submission(baseSubmission({
       reviews: [{author: "a@b.com", response: "nifty"}]
