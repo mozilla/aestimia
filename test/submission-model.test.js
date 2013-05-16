@@ -164,6 +164,12 @@ describe('Submission', function() {
     });
   });
 
+  it('should not reject canned responses', function(done) {
+    new Submission(_.extend({}, data.submissions['canned-responses'], {
+      reviews: [{author: "foo@bar.org", response: "This kind of sucks"}]
+    })).save(done);
+  });
+
   it('should reject reviewers without proper permissions', function(done) {
     new Submission(baseSubmission({
       reviews: [{author: "a@b.com", response: "nifty"}]
