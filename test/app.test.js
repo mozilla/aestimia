@@ -26,6 +26,18 @@ describe('App', function() {
       });
   });
 
+  it('should not allow itself to be embedded in iframes', function(done) {
+    request(app)
+      .get('/')
+      .expect('X-Frame-Options', 'DENY', done)
+  });
+
+  it('should prevent IE from performing content sniffing', function(done) {
+    request(app)
+      .get('/')
+      .expect('X-Content-Type-Options', 'nosniff', done)
+  });
+
   it('should protect non-api endpoints with CSRF', function(done) {
     request(app)
       .post('/blargy')
