@@ -20,7 +20,9 @@
 
 <section id="schemas">
   <h2><a href="#schemas">Schemas</a></h2>
-  <h3>Mentor</h3>
+
+  <h3><a id="schemas_mentor" href="#schemas_mentor">Mentor</a></h3>
+
   <p>The mentor model is fairly simple and straightforward.</p>
   <dl>
     <dt>email</dt>
@@ -31,7 +33,9 @@
     <dd>An array of strings that determine which submissions the mentor
       has permission to view.</dd>
   </dl>
-  <h3>Submission</h3>
+
+  <h3><a id="schemas_submission" href="#schemas_submission">Submission</a></h3>
+
   <p>The submission model is complex, and contains a number of
     sub-models.</p>
   <dl>
@@ -146,6 +150,16 @@
       </dl>
     </dd>
   </dl>
+
+  <h3><a id="schemas_examples" href="#schemas_examples">Examples</a></h3>
+
+  <p>A mentor who has permission to view and assess any math-related
+    submissions:</p>
+  <pre class="http response">{{examples.mentor}}</pre>  
+  <p>A submission that has been submitted, but not reviewed:</p>
+  <pre class="http response">{{examples.submitted}}</pre>
+  <p>The same submission, awarded:</p>
+  <pre class="http response">{{examples.awarded}}</pre>
 </section>
 
 <section id="mentor-list">
@@ -198,6 +212,10 @@
 
   <p>This endpoint creates a submission for assessment.</p>
 
+  <h4>Example Request</h4>
+
+  <pre class="http request">{{examples.submitted}}</pre>
+
   <h4>Example Response</h4>
 
   <pre class="http headers">Status: 201 Created</pre>
@@ -218,4 +236,9 @@
   <p>Currently, the only search criteria is
     <code>learner</code>, which is the email of a learner
     whose submissions you'd like to retrieve.</p>
+
+  <h4>Example Response</h4>
+
+  <pre class="http headers">Status: 200 OK</pre>
+  <pre class="http response">{{examples.submissionList}}</pre>
 </section>

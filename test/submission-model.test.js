@@ -6,6 +6,7 @@ var sinon = require('sinon');
 var db = require('./db');
 var data = require('./data');
 var baseSubmission = data.baseSubmission;
+var reviewedSubmissions = data.reviewedSubmissions;
 var models = require('../').models;
 var Submission = models.Submission;
 var Mentor = models.Mentor;
@@ -31,7 +32,7 @@ describe('Submission', function() {
       db.removeAll(Submission),
       db.removeAll(Mentor),
       db.create(Mentor, {email: "foo@bar.org", classifications: ["math"]}),
-      db.create(Mentor, {email: "baz@bar.org", classifications: ["math"]}),
+      db.create(Mentor, data.mentors['baz_math']),
       db.create(Mentor, {email: "a@b.org", classifications: ["beets"]}),
       // A submission foo has already reviewed and rejected...
       db.create(Submission, baseSubmission({
@@ -53,14 +54,9 @@ describe('Submission', function() {
         classifications: ["science"]
       })),
       // A submission baz has already reviewed and awarded...
-      db.create(Submission, baseSubmission({
+      db.create(Submission, _.extend({}, reviewedSubmissions['awarded'], {
         _id: "000000000000000000000004",
         classifications: ["math"],
-        reviews: [{
-          author: "baz@bar.org",
-          response: "cool yo",
-          satisfiedRubrics: [0, 1]
-        }]
       })),
       // A submission a has already reviewed and awarded...
       db.create(Submission, baseSubmission({

@@ -52,4 +52,26 @@ exports.submissions = {
   })
 };
 
+exports.reviewedSubmissions = {
+  'awarded': baseSubmission({
+    reviews: [{
+      author: "baz@bar.org",
+      response: "cool yo",
+      satisfiedRubrics: [0, 1]
+    }]
+  })
+};
+
+exports.mentors = {
+  baz_math: {email: "baz@bar.org", classifications: ["math"]}
+};
+
 exports.baseSubmission = baseSubmission;
+
+exports.docExamples = {
+  'mentor': JSON.stringify(exports.mentors.baz_math, null, 2),
+  'submitted': JSON.stringify(exports.submissions.base, null, 2),
+  'awarded': JSON.stringify(exports.reviewedSubmissions.awarded, null, 2),
+  'submissionList': JSON.stringify([exports.reviewedSubmissions.awarded],
+                                   null, 2)
+};
