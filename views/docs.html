@@ -34,7 +34,19 @@ h2 a:hover:after {
     </ul>
   </div>
   <div class="span9">
-    <p>The documentation below is also available in <a href="/demo">interactive form</a>.</p>
+    <p>Aestimia is a simple application that allows API clients to submit
+      <strong>submissions</strong> for badges that <strong>mentors</strong> 
+      review, determining whether or not an applicant's evidence satisfies
+      a rubric.</p>
+
+    <p>This is the documentation for the Aestimia API. For information on
+      installing and configuring Aestimia, see the 
+      <a href="https://github.com/mozilla/aestimia">Github project</a>.</p>
+
+    {% if not generatingStaticDocs %}
+      <p>The documentation below is also available in 
+        <a href="/demo">interactive form</a>.</p>
+    {% endif %}
 
     {% for section in sections %}
     <section id="{{section.id}}">
