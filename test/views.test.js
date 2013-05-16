@@ -128,6 +128,35 @@ describe('views/', function() {
       var $ = render('submission-list.html', {submissions: [s]});
       $('a.btn').first().text().trim().should.eql('Review');
     });
+
+    it('should show previous page link if it exists', function() {
+      var $ = render('submission-list.html', {
+        submissions: [],
+        prevPage: '/prev'
+      });
+      $('.pager li').length.should.eql(1);
+      $('.pager li a[href="/prev"]').length.should.eql(1);
+    });
+
+    it('should show next page link if it exists', function() {
+      var $ = render('submission-list.html', {
+        submissions: [],
+        nextPage: '/next'
+      });
+      $('.pager li').length.should.eql(1);
+      $('.pager li a[href="/next"]').length.should.eql(1);
+    });
+
+    it('should show prev and next page link if both exist', function() {
+      var $ = render('submission-list.html', {
+        submissions: [],
+        prevPage: '/prev',
+        nextPage: '/next'
+      });
+      $('.pager li').length.should.eql(2);
+      $('.pager li a[href="/prev"]').length.should.eql(1);
+      $('.pager li a[href="/next"]').length.should.eql(1);
+    });
   });
 
   describe('badge.html', function() {
