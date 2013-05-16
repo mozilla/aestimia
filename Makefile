@@ -14,4 +14,12 @@ clean:
 	rm -f coverage.html
 	rm -rf lib-cov
 
+website:
+	node bin/generate-static-docs.js gh-pages
+	git checkout gh-pages
+	mv gh-pages/* .
+	rmdir gh-pages
+	git add *.html *.js *.css
+	echo "run 'git commit -a' to commit changes to site, then push to github."
+
 .PHONY: test clean
