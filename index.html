@@ -5,12 +5,12 @@
 
 <link rel="stylesheet" href="api.css">
 <style>
-h2 a { color: inherit; }
-h2 a:hover {
+h2 a, h3 a { color: inherit; }
+h2 a:hover, h3 a:hover {
   color: inherit;
   text-decoration: none;
 }
-h2 a:hover:after {
+h2 a:hover:after, h3 a:hover:after {
   content: " #";
   color: lightgray;
 }
@@ -51,7 +51,7 @@ h2 a:hover:after {
       a rubric.</p>
 
     <p>This is the documentation for the Aestimia API, 
-      based on commit <a href="https://github.com/mozilla/aestimia/commit/cd5815da3ee5a45fb7f4bc464ebef1d41b0fe6d7">cd5815da3e</a>.
+      based on commit <a href="https://github.com/mozilla/aestimia/commit/2e7a4fcc6bb8f5b003fc3a3eca0ed7b08736efed">2e7a4fcc6b</a>.
       For information on installing and configuring Aestimia, see the 
       <a href="https://github.com/mozilla/aestimia">Github project</a>.</p>
 
@@ -87,7 +87,9 @@ h2 a:hover:after {
 
       
   
-  <h3>Mentor</h3>
+
+  <h3><a id="schemas_mentor" href="#schemas_mentor">Mentor</a></h3>
+
   <p>The mentor model is fairly simple and straightforward.</p>
   <dl>
     <dt>email</dt>
@@ -98,7 +100,9 @@ h2 a:hover:after {
     <dd>An array of strings that determine which submissions the mentor
       has permission to view.</dd>
   </dl>
-  <h3>Submission</h3>
+
+  <h3><a id="schemas_submission" href="#schemas_submission">Submission</a></h3>
+
   <p>The submission model is complex, and contains a number of
     sub-models.</p>
   <dl>
@@ -214,6 +218,115 @@ h2 a:hover:after {
     </dd>
   </dl>
 
+  <h3><a id="schemas_examples" href="#schemas_examples">Examples</a></h3>
+
+  <p>A mentor who has permission to view and assess any math-related
+    submissions:</p>
+  <pre class="http response">{
+  "email": "baz@bar.org",
+  "classifications": [
+    "math"
+  ]
+}</pre>  
+  <p>A submission that has been submitted, but not reviewed:</p>
+  <pre class="http response">{
+  "learner": "brian@example.org",
+  "criteriaUrl": "http://seriouscat.com/",
+  "achievement": {
+    "name": "Tropical Koala Badge",
+    "description": "Awarded to Tropical Koalas.",
+    "imageUrl": "http://labs.toolness.com/catbadge.png"
+  },
+  "classifications": [
+    "science",
+    "math"
+  ],
+  "evidence": [
+    {
+      "url": "http://seriouscat.com/serious_cat_is_serious.jpg",
+      "mediaType": "image",
+      "reflection": "This shows how great I did."
+    },
+    {
+      "url": "https://www.wikipedia.org/"
+    }
+  ],
+  "rubric": {
+    "items": [
+      {
+        "required": true,
+        "text": "Learner is a chill bro"
+      },
+      {
+        "required": true,
+        "text": "Learner isn't a jerk"
+      },
+      {
+        "required": false,
+        "text": "Learner can funnel like 80 beers"
+      },
+      {
+        "required": false,
+        "text": "Learner can even lift"
+      }
+    ]
+  }
+}</pre>
+  <p>The same submission, awarded:</p>
+  <pre class="http response">{
+  "learner": "brian@example.org",
+  "criteriaUrl": "http://seriouscat.com/",
+  "achievement": {
+    "name": "Tropical Koala Badge",
+    "description": "Awarded to Tropical Koalas.",
+    "imageUrl": "http://labs.toolness.com/catbadge.png"
+  },
+  "classifications": [
+    "science",
+    "math"
+  ],
+  "evidence": [
+    {
+      "url": "http://seriouscat.com/serious_cat_is_serious.jpg",
+      "mediaType": "image",
+      "reflection": "This shows how great I did."
+    },
+    {
+      "url": "https://www.wikipedia.org/"
+    }
+  ],
+  "rubric": {
+    "items": [
+      {
+        "required": true,
+        "text": "Learner is a chill bro"
+      },
+      {
+        "required": true,
+        "text": "Learner isn't a jerk"
+      },
+      {
+        "required": false,
+        "text": "Learner can funnel like 80 beers"
+      },
+      {
+        "required": false,
+        "text": "Learner can even lift"
+      }
+    ]
+  },
+  "reviews": [
+    {
+      "author": "baz@bar.org",
+      "response": "cool yo",
+      "satisfiedRubrics": [
+        0,
+        1
+      ]
+    }
+  ]
+}</pre>
+
     </section>
     
     <section id="mentor-list">
@@ -277,6 +390,52 @@ h2 a:hover:after {
 
   <p>This endpoint creates a submission for assessment.</p>
 
+  <h4>Example Request</h4>
+
+  <pre class="http request">{
+  "learner": "brian@example.org",
+  "criteriaUrl": "http://seriouscat.com/",
+  "achievement": {
+    "name": "Tropical Koala Badge",
+    "description": "Awarded to Tropical Koalas.",
+    "imageUrl": "http://labs.toolness.com/catbadge.png"
+  },
+  "classifications": [
+    "science",
+    "math"
+  ],
+  "evidence": [
+    {
+      "url": "http://seriouscat.com/serious_cat_is_serious.jpg",
+      "mediaType": "image",
+      "reflection": "This shows how great I did."
+    },
+    {
+      "url": "https://www.wikipedia.org/"
+    }
+  ],
+  "rubric": {
+    "items": [
+      {
+        "required": true,
+        "text": "Learner is a chill bro"
+      },
+      {
+        "required": true,
+        "text": "Learner isn't a jerk"
+      },
+      {
+        "required": false,
+        "text": "Learner can funnel like 80 beers"
+      },
+      {
+        "required": false,
+        "text": "Learner can even lift"
+      }
+    ]
+  }
+}</pre>
+
   <h4>Example Response</h4>
 
   <pre class="http headers">Status: 201 Created</pre>
@@ -301,6 +460,65 @@ h2 a:hover:after {
   <p>Currently, the only search criteria is
     <code>learner</code>, which is the email of a learner
     whose submissions you'd like to retrieve.</p>
+
+  <h4>Example Response</h4>
+
+  <pre class="http headers">Status: 200 OK</pre>
+  <pre class="http response">[
+  {
+    "learner": "brian@example.org",
+    "criteriaUrl": "http://seriouscat.com/",
+    "achievement": {
+      "name": "Tropical Koala Badge",
+      "description": "Awarded to Tropical Koalas.",
+      "imageUrl": "http://labs.toolness.com/catbadge.png"
+    },
+    "classifications": [
+      "science",
+      "math"
+    ],
+    "evidence": [
+      {
+        "url": "http://seriouscat.com/serious_cat_is_serious.jpg",
+        "mediaType": "image",
+        "reflection": "This shows how great I did."
+      },
+      {
+        "url": "https://www.wikipedia.org/"
+      }
+    ],
+    "rubric": {
+      "items": [
+        {
+          "required": true,
+          "text": "Learner is a chill bro"
+        },
+        {
+          "required": true,
+          "text": "Learner isn't a jerk"
+        },
+        {
+          "required": false,
+          "text": "Learner can funnel like 80 beers"
+        },
+        {
+          "required": false,
+          "text": "Learner can even lift"
+        }
+      ]
+    },
+    "reviews": [
+      {
+        "author": "baz@bar.org",
+        "response": "cool yo",
+        "satisfiedRubrics": [
+          0,
+          1
+        ]
+      }
+    ]
+  }
+]</pre>
 
     </section>
     
