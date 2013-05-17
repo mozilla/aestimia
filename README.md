@@ -54,6 +54,13 @@ the submission there waiting for you to review.
   use unminified source code on the client-side, among other
   things.
 
+* `ENABLE_STUBBYID`, like `DEBUG`, represents a boolean value.
+  If it *and* `DEBUG` are both true, then the [stubbyid][] persona
+  simulator is enabled. This allows anyone to easily log in as
+  anyone they want, which makes manual testing and debugging easier.
+  However, it should also *never* be enabled on production sites,
+  which is why `DEBUG` must also be enabled for this feature to work.
+
 * `THEME_DIR` is the path to a theme. Any relative paths are resolved
   based on the root directory of Aestimia. Thus setting
   `THEME_DIR` to `theme/csol` would activate the Chicago Summer of
@@ -76,7 +83,7 @@ the submission there waiting for you to review.
 Submissions and mentor management are accessible over an API.
 If you have an instance of Aestimia running, interactive API
 documentation is available at `/demo`. Otherwise, you can still
-read the [static documentation](http://mozilla.github.io/aestimia/).
+read the [static documentation][].
 
 ## Themes
 
@@ -94,6 +101,8 @@ Build/install [jscoverage][], run `make test-cov`, then open
 Coverage should always be at [100%][]. Pull requests that break this will
 be rejected.
 
+  [stubbyid]: http://toolness.github.io/stubbyid/
+  [static documentation]: http://mozilla.github.io/aestimia/
   [Bootstrap]: http://twitter.github.io/bootstrap/
   [MongoDB]: http://www.mongodb.org/
   [PhantomJS]: http://phantomjs.org/

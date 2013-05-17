@@ -10,6 +10,7 @@ const COOKIE_SECRET = process.env['COOKIE_SECRET'] || null;
 const MONGO_URL = process.env['MONGO_URL'] || process.env['MONGOHQ_URL'] ||
   process.env['MONGOLAB_URI'] || 'mongodb://localhost/aestimia';
 const DEBUG = ('DEBUG' in process.env);
+const ENABLE_STUBBYID = ('ENABLE_STUBBYID' in process.env);
 const API_SECRET = process.env['API_SECRET'];
 const THEME_DIR = process.env['THEME_DIR'];
 const SSL_KEY = process.env['SSL_KEY'];
@@ -25,6 +26,8 @@ assert.ok((SSL_KEY && SSL_CERT) || (!SSL_KEY && !SSL_CERT),
 if (SSL_KEY)
   assert.equal(url.parse(PERSONA_AUDIENCE).protocol, 'https:',
                'PERSONA_AUDIENCE must be https if SSL is enabled.');
+if (ENABLE_STUBBYID)
+  assert.ok(DEBUG, 'ENABLE_STUBBYID must be used with DEBUG.');
 
 mongoose.connect(MONGO_URL, function(err) {
   if (err) {
@@ -42,6 +45,9 @@ mongoose.connect(MONGO_URL, function(err) {
     debug: DEBUG,
     apiKey: API_SECRET,
     themeDir: THEME_DIR,
+    personaDefineRoutes: ENABLE_STUBBYID &&
+                         require('../test/stubbyid-persona'),
+    personaIncludeJs: ENABLE_STUBBYID && '/vendor/stubbyid.js',
     personaAudience: PERSONA_AUDIENCE
   });
 
@@ -55,9 +61,13 @@ mongoose.connect(MONGO_URL, function(err) {
 
   server.listen(PORT, function() {
     console.log("API is " + (API_SECRET ? 'enabled' : 'disabled') + ".");
-    console.log("Persona audience set to " + PERSONA_AUDIENCE +
-                ".\nSite must be accessed through the above URL, or " +
-                "login will fail.");
+    if (ENABLE_STUBBYID)
+      console.log("**   STUBBYID PERSONA SIMULATOR ENABLED   **\n" +
+                  "** THIS MEANS USERS CAN LOG IN AS ANYONE! **");
+    else
+      console.log("Persona audience set to " + PERSONA_AUDIENCE +
+                  ".\nSite must be accessed through the above URL, or " +
+                  "login will fail.");
     console.log("Listening on port " + PORT + ".");
   });
 });

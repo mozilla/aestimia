@@ -45,6 +45,12 @@ describe('Website', function() {
     }
   });
 
+  it("should serve pages loading persona's include.js", function(done) {
+    request(app)
+      .get('/')
+      .expect(/https:\/\/login\.persona\.org\/include\.js/, done);
+  });
+
   it('should return 200 OK with HTML at /', function(done) {
     request(app)
       .get('/')
