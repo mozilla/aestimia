@@ -2,9 +2,17 @@ var mongoose = require('mongoose');
 
 var connected = false;
 
+const TESTDB_URL = 'mongodb://localhost/test';
+
 exports.init = function() {
   if (!connected) {
-    mongoose.connect('mongodb://localhost/test');
+    mongoose.connect(TESTDB_URL, function(err) {
+      if (err) {
+        console.error('Failed to connect to ' + TESTDB_URL + '.');
+        console.log(err.stack);
+        process.exit(1);
+      }
+    });
     connected = true;
   }
 };
