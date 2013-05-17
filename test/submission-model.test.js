@@ -71,6 +71,13 @@ describe('Submission', function() {
     ], done);
   });
 
+  it('validEmail() works', function() {
+    Submission.validEmail('foo@bar.org').should.equal(true);
+    Submission.validEmail('foo+goofball@bar.org').should.equal(true);
+    Submission.validEmail('foo@bar@lol.org').should.equal(false);
+    Submission.validEmail('foo').should.equal(false);
+  });
+
   it('isReviewed() should return true', function(done) {
     Submission.findOne({_id: "000000000000000000000001"}, function(err, s) {
       s.isReviewed().should.equal(true);
