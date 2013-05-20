@@ -2,3 +2,4 @@
 /lib-cov
 coverage.html
 .env
+.DS_Store

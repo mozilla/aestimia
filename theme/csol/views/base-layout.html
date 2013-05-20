@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="csrf" content="{{ csrfToken }}">
+<meta name="email" content="{{ email }}">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+{% block head %}{% endblock %}
+<link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap{{ DOT_MIN }}.css">
+{% block theme_head %}{% endblock %}
+<title>{{ APP_NAME }}{% block title %}{% endblock %}</title>
+
+<div class="wrapper primary">
+  <div class="inner-wrapper">
+    <div class="navbar navbar-static-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">{{ APP_NAME }}</a>
+          {% if email %}
+          <div class="nav-wrap">
+            <ul class="nav">
+              <li><a href="/">Review</a></li>
+              <li><a href="/history">History</a></li>
+              <li><a class="js-logout" href="#" data-placement="bottom" title="Logout {{email}}.">Logout</a></li>
+            </ul>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="container main">
+      {% if messages().length %}
+        <br>
+        {% for message in messages() %}
+          <div class="alert alert-{{ message.category }}">
+            <a class="close" data-dismiss="alert" href="#">&times;</a>
+            {{ message.html|safe }}
+          </div>
+        {% endfor %}
+      {% endif %}
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+</div>
+
+{% block theme_footer %}{% endblock %}
+<script src="/vendor/jquery{{ DOT_MIN }}.js"></script>
+<script src="/vendor/jquery.timeago{{ DOT_MIN }}.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap{{ DOT_MIN }}.js"></script>
+<script src="{{ PERSONA_JS_URL }}"></script>
+<script src="/js/login.js"></script>
+{% block scripts %}{% endblock %}
