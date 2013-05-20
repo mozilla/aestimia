@@ -1,3 +1,11 @@
+/*general*/
+html, body {
+  height: 100%;
+ }
+body {
+  margin: 0px;
+  padding: 0px;
+ }
 ul, ol {
   padding: 0 0 0 0;
   margin: 0 0 0 0;
@@ -12,8 +20,8 @@ body .container > br {
 body > .container {
   padding-bottom:25px;
 }
-#title, .hero-unit {
-  margin-top:45px;
+.container.main {
+  padding-top:45px;
 }
 
 /*navbar*/
@@ -25,24 +33,32 @@ body > .container {
   border-right:none;
 }
 .navbar .navbar-inner,
-footer .footer-inner {
+.wrapper.secondary {
   background-image:url('../img/chalkboard_bg.jpg');
 }
 .navbar .navbar-inner {
   -webkit-box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
   box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 0.25);
+  padding-top:1em;
 }
 .navbar .nav-wrap {
   width:100%;
   padding:0 0 0 0;
   margin:0 0 0 0;
   width:940px;
-  background-color:white;
   margin-bottom:-24px;
   -webkit-box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.25);
   box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.25);
+  background: white;
+}
+.navbar .nav .active,
+.navbar .nav > .active > a,
+.navbar .nav > .active > a:hover,
+.navbar .nav > .active > a:focus {
+  background-color:white;
+  box-shadow:none;
 }
 .navbar .nav-wrap {
   text-align: center;
@@ -83,27 +99,29 @@ footer li:last-child {
 }
 
 /*footer*/
-footer, footer a {
+.footer, .footer a {
   color:#fff;
 }
-footer a:hover {
+.footer a:hover {
   color:#c0c0c0;
   text-decoration: none;
 }
-footer .footer-inner {
+.footer {
   -webkit-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
   box-shadow: inset 0px 10px 20px 0px rgba(0, 0, 0, 0.25);
 }
-footer .lower,
-footer .upper {
-  margin-top:20px;
-}
-footer .lower {
+.footer .lower {
   border-top:1px solid white;
   padding-top:20px;
 }
-footer a.logo {
+.footer ul li {
+  display: inline;
+}
+.footer ul li {
+  display: inline-block;
+}
+.footer a.logo {
   text-indent: -9000px;
   width:82px;
   height:82px;
@@ -111,33 +129,33 @@ footer a.logo {
   background-position: center center;
   background-repeat: no-repeat;
 }
-footer a.logo.chi {
+.footer a.logo.chi {
   background-image:url('../img/chi.png');
 }
-footer a.logo.mac {
+.footer a.logo.mac {
   background-image:url('../img/mac.png');
 }
-footer a.logo.moz {
+.footer a.logo.moz {
   background-image:url('../img/moz.png');
 }
-footer ul li {
-  display: inline-block;
-}
-footer ul li > a,
-footer ul li > span {
+.footer ul li > a,
+.footer ul li > span {
   margin:10px;
 }
-footer ul li:first-child a {
+.footer ul li:first-child a {
   margin-left:0px;
 }
-footer li:nth-child(even) {
+.footer li:nth-child(even) {
   border-left:1px solid #fff;
   border-right:1px solid #fff;
 }
-footer li:last-child {
+.footer li:last-child {
   border-right:none;
 }
-footer .lower p {
+.footer .upper {
+  padding:1em 0;
+}
+.footer .lower p {
   background-image: url('../img/csol_logo_sm.png');
   padding-left:209px;
   background-repeat: no-repeat;
@@ -146,9 +164,27 @@ footer .lower p {
   min-height:131px;
   margin-bottom:20px;
 }
-footer .lower li {
+.footer .lower li {
   border-left:none;
   border-right:none;
-  padding:0 0 0 0;
-  margin:0 0 0 0;
+}
+/*sticky footer*/
+html, body {
+  height: 100%;
+}
+.wrapper,
+.wrapper .inner-wrapper {
+  width: 100%;
+}
+.wrapper.primary {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0px 0px -250px 0px;
+}
+.wrapper.primary .inner-wrapper {
+  padding: 0px 0px 250px 0px;
+}
+.wrapper.secondary {
+  height: 250px;
 }
