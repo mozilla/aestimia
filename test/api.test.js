@@ -148,7 +148,7 @@ describe('API', function() {
       }
     ], done);
   });
-
+  
   it('/submission should accept valid submissions', function(done) {
     request(app)
       .post('/api/submission')

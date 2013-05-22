@@ -220,6 +220,54 @@ describe('Website', function() {
   describe('POST /submissions/:submissionId', function() {
     beforeEach(setupFixtures);
 
+    it('should call onChangeUrl webhook on change', function(done) {
+      var express = require('express');
+      var events = require('events');
+      var webhookApp = express();
+      var webhookServer = require('http').createServer(webhookApp);
+      var body;
+      var bodyListener = new events.EventEmitter();
+
+      webhookApp.use(express.bodyParser());
+      webhookApp.post('/lol', function(req, res) {
+        if (body) throw new Error('body is already set');
+        body = req.body;
+        bodyListener.emit('setBody');
+        res.send('thanks');
+      });
+
+      loggedInEmail = "a@b.com";
+      async.series([
+        webhookServer.listen.bind(webhookServer),
+        function(cb) {
+          var sub = new models.Submission(data.baseSubmission({
+            _id: "a07f1f77bcf86cd799439012",
+            onChangeUrl: "http://localhost:" + webhookServer.address().port +
+                         "/lol"
+          }));
+          sub.save(cb);
+        },
+        function(cb) {
+          request(app)
+            .post('/submissions/a07f1f77bcf86cd799439012')
+            .send({
+              _csrf: 'deadbeef',
+              response: 'this is awesome'
+            })
+            .expect(303, cb);
+        },
+        function(cb) {
+          if (body) return cb();
+          bodyListener.on('setBody', cb);
+        },
+        function(cb) {
+          webhookServer.close();
+          body.should.eql({_id: "a07f1f77bcf86cd799439012"});
+          cb();          
+        }
+      ], done);
+    });
+
     it('should work', function(done) {
       loggedInEmail = "a@b.com";
       async.series([
