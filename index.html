@@ -51,7 +51,7 @@ h2 a:hover:after, h3 a:hover:after {
       a rubric.</p>
 
     <p>This is the documentation for the Aestimia API, 
-      based on commit <a href="https://github.com/mozilla/aestimia/commit/008049a451770844487ae91c9d1a109fad84b6a0">008049a451</a>.
+      based on commit <a href="https://github.com/mozilla/aestimia/commit/0f86931d229cdfdb04327243cd72dab4d1937d2c">0f86931d22</a>.
       For information on installing and configuring Aestimia, see the 
       <a href="https://github.com/mozilla/aestimia">Github project</a>.</p>
 
@@ -169,6 +169,12 @@ h2 a:hover:after, h3 a:hover:after {
     <dt>flagged</dt>
     <dd>A boolean indicating whether or not the submission has been
       flagged for offensive content.</dd>
+    <dt>onChangeUrl</dt>
+    <dd>A webhook URL that will be called via POST request whenever the
+      submission changes or is reviewed. The payload will be JSON
+      with <code>_id</code> equal to the id of the submission that has
+      been changed.
+    </dd>
     <dt>creationDate</dt>
     <dd>The date and time that the submission was created.</dd>
     <dt>rubric</dt>
