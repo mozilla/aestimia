@@ -40,6 +40,8 @@ h2 a:hover:after, h3 a:hover:after {
       
       <li><a href="#submission-create">Create a submission</a></li>
       
+      <li><a href="#submission-get">Get a submission</a></li>
+      
       <li><a href="#submission-list">List submissions</a></li>
       
     </ul>
@@ -51,7 +53,7 @@ h2 a:hover:after, h3 a:hover:after {
       a rubric.</p>
 
     <p>This is the documentation for the Aestimia API, 
-      based on commit <a href="https://github.com/mozilla/aestimia/commit/0f86931d229cdfdb04327243cd72dab4d1937d2c">0f86931d22</a>.
+      based on commit <a href="https://github.com/mozilla/aestimia/commit/7edf6b73d32d94ee5f3ded4011eaee420f784ef7">7edf6b73d3</a>.
       For information on installing and configuring Aestimia, see the 
       <a href="https://github.com/mozilla/aestimia">Github project</a>.</p>
 
@@ -106,6 +108,8 @@ h2 a:hover:after, h3 a:hover:after {
   <p>The submission model is complex, and contains a number of
     sub-models.</p>
   <dl>
+    <dt>_id</dt>
+    <dd>The unique identifier for the submission, e.g. <code>519d2036a8318da30e000004</code>. Assigned by the server when a submission is first created.</dd>
     <dt>learner</dt>
     <dd>The email address of the learner who is submitting the 
       application.</dd>
@@ -321,6 +325,7 @@ h2 a:hover:after, h3 a:hover:after {
       }
     ]
   },
+  "_id": "000000000000000000000001",
   "reviews": [
     {
       "author": "baz@bar.org",
@@ -451,6 +456,76 @@ h2 a:hover:after, h3 a:hover:after {
 
     </section>
     
+    <section id="submission-get">
+      <h2><a href="#submission-get">Get a submission</a></h2>
+
+      
+  
+
+  <pre>GET /api/submissions/:submissionId</pre>
+
+  <p>This endpoint retrieves an existing submission.</p>
+
+  <h4>Example Response</h4>
+
+  <pre class="http headers">Status: 200 OK</pre>
+  <pre class="http response">{
+  "learner": "brian@example.org",
+  "criteriaUrl": "http://seriouscat.com/",
+  "achievement": {
+    "name": "Tropical Koala Badge",
+    "description": "Awarded to Tropical Koalas.",
+    "imageUrl": "http://labs.toolness.com/catbadge.png"
+  },
+  "classifications": [
+    "science",
+    "math"
+  ],
+  "evidence": [
+    {
+      "url": "http://seriouscat.com/serious_cat_is_serious.jpg",
+      "mediaType": "image",
+      "reflection": "This shows how great I did."
+    },
+    {
+      "url": "https://www.wikipedia.org/"
+    }
+  ],
+  "rubric": {
+    "items": [
+      {
+        "required": true,
+        "text": "Learner is a chill bro"
+      },
+      {
+        "required": true,
+        "text": "Learner isn't a jerk"
+      },
+      {
+        "required": false,
+        "text": "Learner can funnel like 80 beers"
+      },
+      {
+        "required": false,
+        "text": "Learner can even lift"
+      }
+    ]
+  },
+  "_id": "000000000000000000000001",
+  "reviews": [
+    {
+      "author": "baz@bar.org",
+      "response": "cool yo",
+      "satisfiedRubrics": [
+        0,
+        1
+      ]
+    }
+  ]
+}</pre>
+
+    </section>
+    
     <section id="submission-list">
       <h2><a href="#submission-list">List submissions</a></h2>
 
@@ -513,6 +588,7 @@ h2 a:hover:after, h3 a:hover:after {
         }
       ]
     },
+    "_id": "000000000000000000000001",
     "reviews": [
       {
         "author": "baz@bar.org",
