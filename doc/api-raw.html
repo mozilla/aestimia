@@ -39,6 +39,8 @@
   <p>The submission model is complex, and contains a number of
     sub-models.</p>
   <dl>
+    <dt>_id</dt>
+    <dd>The unique identifier for the submission, e.g. <code>519d2036a8318da30e000004</code>. Assigned by the server when a submission is first created.</dd>
     <dt>learner</dt>
     <dd>The email address of the learner who is submitting the 
       application.</dd>
@@ -228,6 +230,19 @@
   <pre class="http response">{
   "id": "519140258d6230ae0b00000b"
 }</pre>
+</section>
+
+<section id="submission-get">
+  <h2><a href="#submission-get">Get a submission</a></h2>
+
+  <pre>GET /api/submissions/:submissionId</pre>
+
+  <p>This endpoint retrieves an existing submission.</p>
+
+  <h4>Example Response</h4>
+
+  <pre class="http headers">Status: 200 OK</pre>
+  <pre class="http response">{{examples.awarded}}</pre>
 </section>
 
 <section id="submission-list">

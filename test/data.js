@@ -54,6 +54,7 @@ exports.submissions = {
 
 exports.reviewedSubmissions = {
   'awarded': baseSubmission({
+    _id: "000000000000000000000001",
     reviews: [{
       author: "baz@bar.org",
       response: "cool yo",

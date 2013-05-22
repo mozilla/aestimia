@@ -44,6 +44,28 @@ describe('API', function() {
       .expect(422, done);
   });
 
+  it('GET /submission/:submissionId should work', function(done) {
+    async.series([
+      db.removeAll(aestimia.models.Submission),
+      db.create(aestimia.models.Submission, data.baseSubmission({
+        _id: "000000000000000000000001",
+        learner: "foo@bar.org",
+        classifications: ["math"],
+      })),
+      function(cb) {
+        request(app)
+          .get('/api/submissions/000000000000000000000001')
+          .set('Authorization', authHeader)
+          .expect(200, function(err, res) {
+            if (err) return cb(err);
+            res.body._id.should.eql("000000000000000000000001");
+            res.body.learner.should.eql("foo@bar.org");
+            cb();
+          });
+      }
+    ], done);
+  });
+
   it('GET /submissions should list learner submissions', function(done) {
     async.series([
       db.removeAll(aestimia.models.Submission),
