@@ -115,6 +115,22 @@ table.querystring-args input {
       {% endfor %}
     </div>
   </div>
+  <div data-section-id="submission-get">
+    <h5>URL Arguments</h5>
+    
+    <table class="table http route-args">
+      <tr>
+        <th>Argument</th>
+        <th>Value</th>
+      </tr>
+      <tr>
+        <td><code>submissionId</code></td>
+        <td><input type="text" id="js-submission-id"></td>
+      </tr>
+    </table>
+
+    <button id="js-get-submission" class="btn">Get Submission</button>
+  </div>
   <div data-section-id="submission-list">
     <h5>Query String Arguments</h5>
 

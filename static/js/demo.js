@@ -114,6 +114,10 @@ $(window).ready(function() {
           encodeURIComponent($('#js-learner').val()))
   });
 
+  $("#js-get-submission").click(function() {
+    $.get('/api/submissions/' + $('#js-submission-id').val());
+  });
+
   $("form.js-submission").submit(function() {
     postJSON("/api/submission", $(this.elements['json']).val());
     return false;

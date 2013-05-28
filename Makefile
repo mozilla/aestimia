@@ -20,6 +20,6 @@ website:
 	mv gh-pages/* .
 	rmdir gh-pages
 	git add *.html *.js *.css
-	echo "run 'git commit -a' to commit changes to site, then push to github."
+	echo "run 'git commit' to commit changes to site, then push to github."
 
 .PHONY: test clean
