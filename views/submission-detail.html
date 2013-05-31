@@ -77,9 +77,11 @@
     <h2>Rubric</h2>
     {% for rubitem in submission.rubric.items %}
       <label class="checkbox">
-        <input type="checkbox" name="rubric_{{loop.index0}}"> {{ rubitem.text }}
+        <input type="checkbox" name="rubric_{{loop.index0}}"> 
         {% if rubitem.required %}
-        (<em>required</em>)
+        <strong>{{ rubitem.text }} (required)</strong>
+        {% else %}
+        {{ rubitem.text }}
         {% endif %}
       </label>
     {% endfor %}
