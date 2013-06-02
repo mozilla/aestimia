@@ -44,8 +44,8 @@
 {% if submission.isReviewed() %}
   {% if submission.flagged %}
   <div class="alert alert-error">
-    <button type="submit" name="action" value="unflag" class="btn pull-right"> Un-report</button>
     <strong><i class="icon-flag"></i> This submission has been reported for inappropriate content.</strong>
+    <button type="submit" name="action" value="unflag" class="btn btn-mini pull-right"> Un-report</button>
   </div>
   {% else %}
   <div class="well well-small">
