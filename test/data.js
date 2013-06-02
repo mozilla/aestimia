@@ -60,6 +60,10 @@ exports.reviewedSubmissions = {
       response: "cool yo",
       satisfiedRubrics: [0, 1]
     }]
+  }),
+  'flagged': baseSubmission({
+    _id: "000000000000000000000002",
+    flagged: true
   })
 };
 
