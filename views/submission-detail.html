@@ -13,6 +13,8 @@
 <div class="row">
   <div class="span4 offset4">
     {% include "badge.html" %}
+    <hr>
+    <p>{{ submission.achievement.description }}</p>
   </div>
 </div>
 <h2>Evidence</h2>
@@ -77,9 +79,11 @@
     <h2>Rubric</h2>
     {% for rubitem in submission.rubric.items %}
       <label class="checkbox">
-        <input type="checkbox" name="rubric_{{loop.index0}}"> {{ rubitem.text }}
+        <input type="checkbox" name="rubric_{{loop.index0}}"> 
         {% if rubitem.required %}
-        (<em>required</em>)
+        <strong>{{ rubitem.text }} (required)</strong>
+        {% else %}
+        {{ rubitem.text }}
         {% endif %}
       </label>
     {% endfor %}
@@ -92,6 +96,9 @@
         {% endfor %}
       </select>
     {% else %}
+      <p>Please help the learner improve their work by giving them feedback
+       about what worked and what didn't. If you have any other suggestions,
+       feel free to add them.</p>
       <textarea class="input-block-level" name="response" required></textarea>
     {% endif %}
     <input type="submit" class="btn btn-primary" value="Submit Assessment">
