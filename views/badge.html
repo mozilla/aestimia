@@ -2,10 +2,14 @@
 <center>
   <div><strong>{{ submission.achievement.name }}</strong></div>
   {% if submission.isReviewed() %}
-    {% if submission.isAwarded() %}
-      <span class="text-success">Awarded</span>
+    {% if submission.flagged %}
+      <span class="text-warning">Reported for Inappropriate Content</span>
     {% else %}
-      <span class="text-error">Rejected</span>
+      {% if submission.isAwarded() %}
+        <span class="text-success">Awarded</span>
+      {% else %}
+        <span class="text-error">Rejected</span>
+      {% endif %}
     {% endif %}
   {% else %}
     <span class="muted">Awaiting Review</span>

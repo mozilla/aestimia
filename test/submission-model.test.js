@@ -67,12 +67,23 @@ describe('Submission', function() {
           response: "cool yo",
           satisfiedRubrics: [0, 1]
         }]
+      })),
+      db.create(Submission, baseSubmission({
+        _id: "000000000000000000000006",
+        flagged: true
       }))
     ], done);
   });
 
-  it('isReviewed() should return true', function(done) {
+  it('isReviewed() should return true when reviews > 0', function(done) {
     Submission.findOne({_id: "000000000000000000000001"}, function(err, s) {
+      s.isReviewed().should.equal(true);
+      done();
+    });
+  });
+
+  it('isReviewed() should return true when flagged', function(done) {
+    Submission.findOne({_id: "000000000000000000000006"}, function(err, s) {
       s.isReviewed().should.equal(true);
       done();
     });
@@ -114,7 +125,7 @@ describe('Submission', function() {
     }, function(err, submissions, totalPages) {
       if (err) return done(err);
       totalPages.should.eql(1);
-      submissions.length.should.eql(2);
+      submissions.length.should.eql(3);
       done();
     });
   });
