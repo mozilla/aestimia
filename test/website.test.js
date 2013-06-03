@@ -224,6 +224,53 @@ describe('Website', function() {
   describe('POST /submissions/:submissionId', function() {
     beforeEach(setupFixtures);
 
+    it('should not crash when calling onChangeUrl webhook', function(done) {
+      var serverUrl;
+      var server = require('net').createServer(function(socket) {
+        socket.end();
+      });
+
+      loggedInEmail = "a@b.com";
+      async.series([
+        server.listen.bind(server),
+        function(cb) {
+          serverUrl = "http://localhost:" + server.address().port + "/";
+          var sub = new models.Submission(data.baseSubmission({
+            _id: "a07f1f77bcf86cd799439012",
+            onChangeUrl: serverUrl
+          }));
+          sub.save(cb);
+        },
+        function(cb) {
+          async.parallel([
+            function(cb) {
+              request(app)
+                .post('/submissions/a07f1f77bcf86cd799439012')
+                .send({
+                  _csrf: 'deadbeef',
+                  response: 'this is awesome'
+                })
+                .expect(303, cb);
+            },
+            function(cb) {
+              sinon.stub(console, "error", function() {
+                console.error.restore();
+                [].slice.call(arguments).should.eql([
+                  "calling webhook", serverUrl,
+                  "for submission", 'a07f1f77bcf86cd799439012',
+                  "failed with error", "socket hang up"
+                ]);
+                cb();
+              });
+            }
+          ], cb);
+        }
+      ], function(err) {
+        server.close();
+        done(err);
+      });
+    });
+
     it('should call onChangeUrl webhook on change', function(done) {
       var express = require('express');
       var events = require('events');
