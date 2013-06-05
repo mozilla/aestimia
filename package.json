@@ -1,6 +1,6 @@
 {
   "name": "aestimia",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Assess submitted work with an explicit rubric.",
   "dependencies": {
     "connect-flash": "~0.1.0",
@@ -28,7 +28,9 @@
     "type": "git",
     "url": "git://github.com/mozilla/aestimia.git"
   },
-  "engines" : { "node" : ">=0.8" },
+  "engines": {
+    "node": ">=0.8"
+  },
   "author": "Mozilla Open Badges Team <support@openbadges.org>",
   "license": "BSD"
 }
