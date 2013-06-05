@@ -1,8 +1,8 @@
+#!/usr/bin/env node
+
 if ( process.env.NEW_RELIC_HOME ) {
   require( 'newrelic' );
 }
-
-#!/usr/bin/env node
 
 var fs = require('fs');
 var url = require('url');
