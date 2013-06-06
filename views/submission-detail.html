@@ -14,7 +14,7 @@
   <div class="span4 offset4">
     {% include "badge.html" %}
     <hr>
-    <p>{{ submission.achievement.description }}</p>
+    <p class="verbatim">{{ submission.achievement.description }}</p>
   </div>
 </div>
 <h2>Evidence</h2>
@@ -31,7 +31,7 @@
     {% endif %}
     <h3>Evidence #{{loop.index}}</h3>
     {% if evitem.reflection %}
-      <p>{{ evitem.reflection }}</p>
+      <p class="verbatim">{{ evitem.reflection }}</p>
     {% else %}
       <p class="muted">No reflection provided for this evidence.</p>
     {% endif %}
