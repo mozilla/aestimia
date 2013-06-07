@@ -76,13 +76,22 @@ describe('views/', function() {
     it('should show review form for unreviewed submissions', function() {
       var s = new models.Submission(data.submissions['base']);
       var $ = render('submission-detail.html', {submission: s});
-      $('form').length.should.eql(1);
+      $('button[value="assess"]').length.should.eql(1);
+      $('button[value="unflag"]').length.should.eql(0);
+    });
+
+    it('should show unflag button for flagged submissions', function() {
+      var s = new models.Submission(data.reviewedSubmissions['flagged']);
+      var $ = render('submission-detail.html', {submission: s});
+      $('button[value="assess"]').length.should.eql(0);
+      $('button[value="unflag"]').length.should.eql(1);
     });
 
     it('should hide review form for reviewed submissions', function() {
       var s = new models.Submission(awardedSubmission);
       var $ = render('submission-detail.html', {submission: s});
-      $('form').length.should.eql(0);
+      $('button[value="assess"]').length.should.eql(0);
+      $('button[value="unflag"]').length.should.eql(0);
     });
 
     it('should embed image evidence in page', function() {
@@ -162,6 +171,7 @@ describe('views/', function() {
   describe('badge.html', function() {
     var AWARDED = '.text-success';
     var REJECTED = '.text-error';
+    var FLAGGED = '.text-warning';
     var AWAITING_REVIEW = '.muted';
 
     it('should show awarded status', function() {
@@ -169,6 +179,16 @@ describe('views/', function() {
       var $ = render('badge.html', {submission: s});
       $(AWARDED).length.should.eql(1);
       $(REJECTED).length.should.eql(0);
+      $(FLAGGED).length.should.eql(0);
+      $(AWAITING_REVIEW).length.should.eql(0);
+    });
+
+    it('should show flagged status', function() {
+      var s = new models.Submission(data.reviewedSubmissions['flagged']);
+      var $ = render('badge.html', {submission: s});
+      $(AWARDED).length.should.eql(0);
+      $(REJECTED).length.should.eql(0);
+      $(FLAGGED).length.should.eql(1);
       $(AWAITING_REVIEW).length.should.eql(0);
     });
 
@@ -177,6 +197,7 @@ describe('views/', function() {
       var $ = render('badge.html', {submission: s});
       $(AWARDED).length.should.eql(0);
       $(REJECTED).length.should.eql(1);
+      $(FLAGGED).length.should.eql(0);
       $(AWAITING_REVIEW).length.should.eql(0);
     });
 

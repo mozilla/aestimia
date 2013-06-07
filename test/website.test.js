@@ -22,6 +22,10 @@ function setupFixtures(done) {
     }),
     db.create(models.Submission, data.baseSubmission({
       _id: "a07f1f77bcf86cd799439011"
+    })),
+    db.create(models.Submission, data.baseSubmission({
+      _id: "a07f1f77bcf86cd7994390ff",
+      flagged: true
     }))
   ], done);
 }
@@ -220,6 +224,53 @@ describe('Website', function() {
   describe('POST /submissions/:submissionId', function() {
     beforeEach(setupFixtures);
 
+    it('should not crash when calling onChangeUrl webhook', function(done) {
+      var serverUrl;
+      var server = require('net').createServer(function(socket) {
+        socket.end();
+      });
+
+      loggedInEmail = "a@b.com";
+      async.series([
+        server.listen.bind(server),
+        function(cb) {
+          serverUrl = "http://localhost:" + server.address().port + "/";
+          var sub = new models.Submission(data.baseSubmission({
+            _id: "a07f1f77bcf86cd799439012",
+            onChangeUrl: serverUrl
+          }));
+          sub.save(cb);
+        },
+        function(cb) {
+          async.parallel([
+            function(cb) {
+              request(app)
+                .post('/submissions/a07f1f77bcf86cd799439012')
+                .send({
+                  _csrf: 'deadbeef',
+                  response: 'this is awesome'
+                })
+                .expect(303, cb);
+            },
+            function(cb) {
+              sinon.stub(console, "error", function() {
+                console.error.restore();
+                [].slice.call(arguments).should.eql([
+                  "calling webhook", serverUrl,
+                  "for submission", 'a07f1f77bcf86cd799439012',
+                  "failed with error", "socket hang up"
+                ]);
+                cb();
+              });
+            }
+          ], cb);
+        }
+      ], function(err) {
+        server.close();
+        done(err);
+      });
+    });
+
     it('should call onChangeUrl webhook on change', function(done) {
       var express = require('express');
       var events = require('events');
@@ -268,7 +319,85 @@ describe('Website', function() {
       ], done);
     });
 
-    it('should work', function(done) {
+    it('should work w/ unflagging', function(done) {
+      loggedInEmail = "a@b.com";
+      async.series([
+        function(cb) {
+          request(app)
+            .post('/submissions/a07f1f77bcf86cd7994390ff')
+            .send({
+              _csrf: 'deadbeef',
+              action: 'unflag'
+            })
+            .expect('Location', '/submissions/a07f1f77bcf86cd7994390ff')
+            .expect(303, cb);
+        },
+        function(cb) {
+          models.Submission.findOne({
+            _id: 'a07f1f77bcf86cd7994390ff'
+          }, function(err, submission) {
+            if (err) return cb(err);
+            submission.flagged.should.eql(false);
+            cb();
+          });
+        }
+      ], done);
+    });
+
+    it('should work w/ flagging', function(done) {
+      loggedInEmail = "a@b.com";
+      async.series([
+        function(cb) {
+          request(app)
+            .post('/submissions/a07f1f77bcf86cd799439011')
+            .send({
+              _csrf: 'deadbeef',
+              action: 'flag'
+            })
+            .expect('Location', '/submissions/a07f1f77bcf86cd799439011')
+            .expect(303, cb);
+        },
+        function(cb) {
+          models.Submission.findOne({
+            _id: 'a07f1f77bcf86cd799439011'
+          }, function(err, submission) {
+            if (err) return cb(err);
+            submission.flagged.should.eql(true);
+            cb();
+          });
+        }
+      ], done);
+    });
+
+    it('should reject assessments w/ no response', function(done) {
+      loggedInEmail = "a@b.com";
+      async.series([
+        function(cb) {
+          request(app)
+            .post('/submissions/a07f1f77bcf86cd799439011')
+            .send({
+              _csrf: 'deadbeef',
+              response: '   ',
+              rubric_0: 'on',
+              rubric_1: 'on'
+            })
+            .expect('Location', '/submissions/a07f1f77bcf86cd799439011')
+            .expect(303, cb);
+        },
+        function(cb) {
+          models.Submission.findOne({
+            _id: 'a07f1f77bcf86cd799439011'
+          }, function(err, submission) {
+            if (err) return cb(err);
+            var r = submission.reviews;
+            r.length.should.eql(0);
+            cb();
+          });
+        }
+      ], done);
+    });
+
+    it('should work w/ assessment', function(done) {
       loggedInEmail = "a@b.com";
       async.series([
         function(cb) {

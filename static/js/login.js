@@ -14,7 +14,13 @@ window.reloadPage = function() {
       $.post("/persona/verify", {
         assertion: assertion,
         _csrf: csrfToken
-      }, reloadPage);
+      }, function(response) {
+        if (response && typeof(response) == "object" &&
+            response.status == "failure") {
+          alert("LOGIN FAILURE: " + response.reason);
+        } else
+          reloadPage();
+      });
     },
     onlogout: function() {
       $.post("/persona/logout", {
