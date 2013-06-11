@@ -32,7 +32,9 @@ body > .container {
 .navbar .nav > li:last-child {
   border-right:none;
 }
-.navbar .navbar-inner,
+.navbar .navbar-inner {
+    background: #45bcd2;
+}
 .wrapper.secondary {
   background-image:url('../img/chalkboard_bg.jpg');
 }
@@ -80,7 +82,7 @@ body > .container {
 footer li:last-child {
   border-right:none;
 }
-.navbar .nav > li > a:focus, 
+.navbar .nav > li > a:focus,
 .navbar .nav > li > a:hover {
   color:#c0c0c0;
 }
