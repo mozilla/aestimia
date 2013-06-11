@@ -1,5 +1,6 @@
 var http = require('http');
 var app = http.createServer(require('../').app.build({
+      debug: 'true',
       cookieSecret: 'testing',
       // We're not putting the port in here, but technically that
       // shouldn't cause any of what we're doing to fail.
