@@ -26,6 +26,21 @@ describe('App', function() {
       });
   });
 
+  it('should mount static test dir if debug is set', function(done) {
+    var debugApp = buildApp({
+      debug: true
+    });
+    request(debugApp)
+      .get('/test/')
+      .expect(200, done);
+  });
+
+  it('should not mount static test dir if debug is unset', function(done) {
+    request(app)
+      .get('/test/')
+      .expect(404, done);    
+  });
+
   it('should enable HSTS if protocol is HTTPS', function(done) {
     var httpsApp = buildApp({
       personaAudience: 'https://foo.org'
