@@ -72,6 +72,20 @@
     ok(window.reloadPage.calledOnce, "reloadPage() called");
   });
 
+  loginTest("onlogin() displays alert on verify failure", function(t) {
+    sinon.stub(window, 'alert');
+    t.server.respondWith("POST", "/persona/verify", function(req) {
+      req.respond(200, {"Content-Type": "application/json"},
+                  JSON.stringify({status: 'failure', reason: 'blah'}));
+    });
+    t.watchArgs.onlogin("assrt");
+    t.server.respond();
+    ok(window.reloadPage.notCalled, "reloadPage() not called");
+    ok(window.alert.calledOnce, "alert() called once");
+    deepEqual(window.alert.firstCall.args, ["LOGIN FAILURE: blah"]);
+    window.alert.restore();
+  });
+
   loginTest("onlogout() reloads page on success", {
     email: "bleh@bleh.com"
   }, function(t) {

@@ -13,6 +13,8 @@
 <div class="row">
   <div class="span4 offset4">
     {% include "badge.html" %}
+    <hr>
+    <p class="verbatim">{{ submission.achievement.description }}</p>
   </div>
 </div>
 <h2>Evidence</h2>
@@ -29,7 +31,7 @@
     {% endif %}
     <h3>Evidence #{{loop.index}}</h3>
     {% if evitem.reflection %}
-      <p>{{ evitem.reflection }}</p>
+      <p class="verbatim">{{ evitem.reflection }}</p>
     {% else %}
       <p class="muted">No reflection provided for this evidence.</p>
     {% endif %}
@@ -37,7 +39,15 @@
 </li>
 {% endfor %}
 </ul>
+<form method="POST">
+  <input type="hidden" name="_csrf" value="{{ csrfToken }}">
 {% if submission.isReviewed() %}
+  {% if submission.flagged %}
+  <div class="alert alert-error">
+    <strong><i class="icon-flag"></i> This submission has been reported for inappropriate content.</strong>
+    <button type="submit" name="action" value="unflag" class="btn btn-mini pull-right"> Un-report</button>
+  </div>
+  {% else %}
   <div class="well well-small">
     <h2>Review</h2>
     {% set review = submission.latestReview() %}
@@ -71,30 +81,35 @@
       <small>{{ review.author }}</small>
     </blockquote>
   </div>
+  {% endif %}
 {% else %}
-  <form method="POST">
-    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-    <h2>Rubric</h2>
-    {% for rubitem in submission.rubric.items %}
-      <label class="checkbox">
-        <input type="checkbox" name="rubric_{{loop.index0}}"> {{ rubitem.text }}
-        {% if rubitem.required %}
-        (<em>required</em>)
-        {% endif %}
-      </label>
-    {% endfor %}
-    <h2>Response</h2>
-    {% if submission.isLearnerUnderage() %}
-      <select class="input-block-level" name="response" autocomplete="off" required>
-        <option value="" selected>Select a response&hellip;</option>
-        {% for response in submission.cannedResponses %}
-        <option value="{{ response }}">{{ response }}</option>
-        {% endfor %}
-      </select>
-    {% else %}
-      <textarea class="input-block-level" name="response" required></textarea>
-    {% endif %}
-    <input type="submit" class="btn btn-primary" value="Submit Assessment">
-  </form>
+  <h2>Rubric</h2>
+  {% for rubitem in submission.rubric.items %}
+    <label class="checkbox">
+      <input type="checkbox" name="rubric_{{loop.index0}}"> 
+      {% if rubitem.required %}
+      <strong>{{ rubitem.text }} (required)</strong>
+      {% else %}
+      {{ rubitem.text }}
+      {% endif %}
+    </label>
+  {% endfor %}
+  <h2>Response</h2>
+  {% if submission.isLearnerUnderage() %}
+    <select class="input-block-level" name="response" autocomplete="off">
+      <option value="" selected>Select a response&hellip;</option>
+      {% for response in submission.cannedResponses %}
+      <option value="{{ response }}">{{ response }}</option>
+      {% endfor %}
+    </select>
+  {% else %}
+    <p>Please help the learner improve their work by giving them feedback
+     about what worked and what didn't. If you have any other suggestions,
+     feel free to add them.</p>
+    <textarea class="input-block-level" name="response"></textarea>
+  {% endif %}
+  <button type="submit" name="action" value="assess" class="btn btn-primary">Submit Assessment</button>
+  <button type="submit" name="action" value="flag" class="btn"><i class="icon-flag"></i> Report</button>
 {% endif %}
+</form>
 {% endblock %}
