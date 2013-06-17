@@ -263,6 +263,7 @@ describe('Submission', function() {
     var fakeTime = 0;
     var oldS;
 
+    should.equal(submission.getAssignee(), null);
     sinon.stub(Date, 'now', function() { return fakeTime; });
     async.waterfall([
       submission.save.bind(submission),
@@ -270,11 +271,13 @@ describe('Submission', function() {
       function assignmentSucceeds(s, cb) {
         s.assignedTo.mentor.should.eql("mentor@mentors.org");
         s.assignedTo.expiry.getTime().should.eql(5);
+        should.equal(s.getAssignee(), "mentor@mentors.org");
         oldS = s;
         cb(null, s);
       },
       function assignDuringUnexpiredAssignmentFails(s, cb) {
         fakeTime = 1;
+        should.equal(s.getAssignee(), "mentor@mentors.org");
         s.assignTo("other@mentors.org", 5, function(err, nullSub) {
           if (err) return cb(err);
           cb(nullSub === null ? null : new Error("nullSub !== null"), s);
@@ -282,8 +285,10 @@ describe('Submission', function() {
       },
       function assignAfterExpiredAssignmentSucceeds(s, cb) {
         fakeTime = 6;
+        should.equal(s.getAssignee(), null);
         s.assignTo("other2@mentors.org", 10, function(err, s) {
           if (err) return cb(err);
+          should.equal(s.getAssignee(), "other2@mentors.org");
           cb(s === null ? new Error("s is null") : null);
         });
       },
