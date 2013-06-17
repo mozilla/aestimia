@@ -16,13 +16,25 @@
       {% for classification in submission.classifications %}
       <span class="label">{{ classification }}</span>
       {% endfor %}
+      {% set assignee = submission.getAssignee() %}
+      {% set isSomeoneElseAssignee = (assignee and assignee != email) %}
       <a href="/submissions/{{ submission._id }}" 
-        {% if submission.isReviewed() %}
+        {% if submission.isReviewed() or isSomeoneElseAssignee %}
           class="btn pull-right">View
         {% else %}
           class="btn btn-primary pull-right">Review
         {% endif %}
       </a>
+      {% if (not submission.isReviewed()) and assignee %}
+      <p>
+      This is assigned to 
+      {% if isSomeoneElseAssignee %}
+      {{ assignee }}.
+      {% else %}
+      you.
+      {% endif %}
+      </p>
+      {% endif %}
     </p>
   </div>
 </div>
