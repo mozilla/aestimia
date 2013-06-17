@@ -215,4 +215,94 @@ describe('Submission', function() {
     s.isLearnerUnderage().should.eql(false);
     s.save(done);
   });
+
+  // This test only really verifies how we expect Mongoose to work, not any
+  // special trait of our code.
+  it('should have expected mongoose update semantics', function(done) {
+    var s = new Submission(data.submissions['base']);
+
+    s.save(function(err) {
+      if (err) throw err;
+
+      Submission.findOne({_id: s._id}, function(err, s2) {
+        if (err) throw err;
+        if (!s2) throw new Error("s2 should be truthy");
+
+        s.assignedTo.mentor = "a@lol.org";
+        s.learner = "learner@somewhere.org";
+        s.save(function(err, newS) {
+          if (err) throw err;
+          if (newS !== s) throw new Error("newS !== s");
+          s.assignedTo.mentor.should.eql("a@lol.org");
+          if (s2.assignedTo.mentor) throw new Error();
+
+          // Even though s2 now represents an "old" version of our model,
+          // changing it and saving it shouldn't raise any errors.
+          s2.assignedTo.mentor = "b@lol.org";
+          s2.learner.should.eql("brian@example.org");
+          s2.save(function(err) {
+            if (err) throw err;
+            s.assignedTo.mentor.should.eql("a@lol.org");
+            s2.assignedTo.mentor.should.eql("b@lol.org");
+            Submission.findOne({_id: s._id}, function(err, s3) {
+              s3.assignedTo.mentor.should.eql("b@lol.org");
+
+              // Even though s2's learner value was brian@example.org,
+              // it shouldn't have been saved because we didn't change it.
+              s3.learner.should.eql("learner@somewhere.org");
+              done();
+            });
+          });
+        });
+      });
+    });
+  });
+
+  it('should assign submissions to mentors atomically', function(done) {
+    var submission = new Submission(data.submissions['base']);
+    var fakeTime = 0;
+    var oldS;
+
+    should.equal(submission.getAssignee(), null);
+    sinon.stub(Date, 'now', function() { return fakeTime; });
+    async.waterfall([
+      submission.save.bind(submission),
+      function(s, _, cb) { s.assignTo("mentor@mentors.org", 5, cb); },
+      function assignmentSucceeds(s, cb) {
+        s.assignedTo.mentor.should.eql("mentor@mentors.org");
+        s.assignedTo.expiry.getTime().should.eql(5);
+        should.equal(s.getAssignee(), "mentor@mentors.org");
+        oldS = s;
+        cb(null, s);
+      },
+      function assignDuringUnexpiredAssignmentFails(s, cb) {
+        fakeTime = 1;
+        should.equal(s.getAssignee(), "mentor@mentors.org");
+        s.assignTo("other@mentors.org", 5, function(err, nullSub) {
+          if (err) return cb(err);
+          cb(nullSub === null ? null : new Error("nullSub !== null"), s);
+        });
+      },
+      function assignAfterExpiredAssignmentSucceeds(s, cb) {
+        fakeTime = 6;
+        should.equal(s.getAssignee(), null);
+        s.assignTo("other2@mentors.org", 10, function(err, s) {
+          if (err) return cb(err);
+          should.equal(s.getAssignee(), "other2@mentors.org");
+          cb(s === null ? new Error("s is null") : null);
+        });
+      },
+      function staleAssignmentsShouldFail(cb) {
+        oldS.assignedTo.mentor.should.eql("mentor@mentors.org");
+        oldS.assignedTo.expiry.getTime().should.eql(5);
+        oldS.assignTo("other2@mentors.org", 10, function(err, nullSub) {
+          if (err) return cb(err);
+          cb(nullSub === null ? null : new Error("stale assignment fail"));
+        });
+      }
+    ], function(err) {
+      Date.now.restore();
+      done(err);
+    });
+  });
 });

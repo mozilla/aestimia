@@ -40,5 +40,8 @@ window.reloadPage = function() {
   $(".js-logout").tooltip();
 
   // Miscellaneous stuff that every page might need.
-  if ($.fn.timeago) $("time.timeago").timeago();
+  if ($.fn.timeago) {
+    $.timeago.settings.allowFuture = true;
+    $("time.timeago").timeago();
+  }
 })();
