@@ -222,6 +222,8 @@ describe('Website', function() {
   });
 
   describe('POST /submissions/:submissionId', function() {
+    this.timeout(15000);
+
     beforeEach(setupFixtures);
 
     it('should not crash when calling onChangeUrl webhook', function(done) {
