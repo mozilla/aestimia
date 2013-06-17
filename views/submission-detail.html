@@ -83,7 +83,8 @@
   </div>
   {% endif %}
 {% else %}
-  {% if submission.getAssignee() == email %}
+  {% set assignee = submission.getAssignee() %}
+  {% if assignee == email %}
   <a name="assess"></a>
   <div class="alert">
     You have until <strong>{{ submission.assignedTo.expiry|timeago }}</strong> to assess this submission. After that point, other mentors will have the opportunity to assess it.
@@ -116,8 +117,8 @@
   <button type="submit" name="action" value="assess" class="btn btn-primary">Submit Assessment</button>
   <button type="submit" name="action" value="unassign" class="btn">Cancel Assessment</button>
   <button type="submit" name="action" value="flag" class="btn"><i class="icon-flag"></i> Report</button>
-  {% elif submission.getAssignee() %}
-  <p>This submission is currently being reviewed by {{ submission.getAssignee() }}.</p>
+  {% elif assignee %}
+  <p>This submission is currently being reviewed by {{ assignee }}.</p>
   {% else %}
   <button type="submit" name="action" value="assign" class="btn btn-large btn-primary">Begin Assessment</button>
   {% endif %}

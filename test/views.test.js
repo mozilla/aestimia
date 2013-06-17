@@ -84,7 +84,9 @@ describe('views/', function() {
     it('should show review form for unreviewed submissions', function() {
       var $ = renderAssignedSubmission(data.submissions['base']);
       $('button[value="assess"]').length.should.eql(1);
+      $('button[value="unassign"]').length.should.eql(1);
       $('button[value="unflag"]').length.should.eql(0);
+      $('button[value="assign"]').length.should.eql(0);
     });
 
     it('should show unflag button for flagged submissions', function() {
@@ -113,6 +115,29 @@ describe('views/', function() {
         evidence: [{url: 'http://z/', mediaType: 'link'}]
       }));
       $('.thumbnail a').text().trim().should.eql('http://z/');
+    });
+
+    it('should show begin assessment button', function() {
+      var s = new models.Submission(data.reviewedSubmissions['base']);
+      var $ = render('submission-detail.html', {
+        submission: s,
+        email: 'a@b.org'
+      });
+      $('button[value="assign"]').length.should.eql(1);
+      $('button[value="assess"]').length.should.eql(0);
+    });
+
+    it('should show assignment info when not assignee', function() {
+      var s = new models.Submission(data.reviewedSubmissions['base']);
+      s.assignedTo.mentor = 'foo@bar.org';
+      s.assignedTo.expiry = Date.now() + 1000000;
+      var $ = render('submission-detail.html', {
+        submission: s,
+        email: 'a@b.org'
+      });
+      $('button[value="assign"]').length.should.eql(0);
+      $('button[value="assess"]').length.should.eql(0);
+      $.html().should.match(/foo@bar\.org/);
     });
   });
 
