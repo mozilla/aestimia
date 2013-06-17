@@ -59,23 +59,30 @@ describe('views/', function() {
   });
 
   describe('submission-detail.html', function() {
+    function renderAssignedSubmission(props) {
+      var s = new models.Submission(props);
+      s.assignedTo.mentor = 'foo@bar.org';
+      s.assignedTo.expiry = Date.now() + 1000000;
+      return render('submission-detail.html', {
+        submission: s,
+        email: 'foo@bar.org'
+      });
+    }
+
     it('should hide email of underage learners', function() {
-      var s = new models.Submission(data.submissions['canned-responses']);
-      var $ = render('submission-detail.html', {submission: s});
+      var $ = renderAssignedSubmission(data.submissions['canned-responses']);
       $.html().should.match(/An underage learner/i);
       $.html().should.not.match(/brian@example\.org/);
     });
 
     it('should show email of non-underage learners', function() {
-      var s = new models.Submission(data.submissions['base']);
-      var $ = render('submission-detail.html', {submission: s});
+      var $ = renderAssignedSubmission(data.submissions['base']);
       $.html().should.not.match(/An underage learner/i);
       $.html().should.match(/brian@example\.org/);
     });
 
     it('should show review form for unreviewed submissions', function() {
-      var s = new models.Submission(data.submissions['base']);
-      var $ = render('submission-detail.html', {submission: s});
+      var $ = renderAssignedSubmission(data.submissions['base']);
       $('button[value="assess"]').length.should.eql(1);
       $('button[value="unflag"]').length.should.eql(0);
     });
@@ -95,18 +102,16 @@ describe('views/', function() {
     });
 
     it('should embed image evidence in page', function() {
-      var s = new models.Submission(data.baseSubmission({
+      var $ = renderAssignedSubmission(data.baseSubmission({
         evidence: [{url: 'http://u/', mediaType: 'image'}]
       }));
-      var $ = render('submission-detail.html', {submission: s});
       $('.thumbnail img').attr("src").should.eql('http://u/');
     });
 
     it('should hyperlink to link evidence', function() {
-      var s = new models.Submission(data.baseSubmission({
+      var $ = renderAssignedSubmission(data.baseSubmission({
         evidence: [{url: 'http://z/', mediaType: 'link'}]
       }));
-      var $ = render('submission-detail.html', {submission: s});
       $('.thumbnail a').text().trim().should.eql('http://z/');
     });
   });
