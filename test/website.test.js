@@ -222,6 +222,8 @@ describe('Website', function() {
   });
 
   describe('POST /submissions/:submissionId', function() {
+    this.timeout(15000);
+
     beforeEach(setupFixtures);
 
     it('should not crash when calling onChangeUrl webhook', function(done) {
@@ -315,6 +317,96 @@ describe('Website', function() {
           webhookServer.close();
           body.should.eql({_id: "a07f1f77bcf86cd799439012"});
           cb();          
+        }
+      ], done);
+    });
+
+    it('should allow self-assigning', function(done) {
+      loggedInEmail = "a@b.com";
+      async.series([
+        function(cb) {
+          request(app)
+            .post('/submissions/a07f1f77bcf86cd7994390ff')
+            .send({
+              _csrf: 'deadbeef',
+              action: 'assign'
+            })
+            .expect('Location', '/submissions/a07f1f77bcf86cd7994390ff#assess')
+            .expect(303, cb);
+        },
+        function(cb) {
+          models.Submission.findOne({
+            _id: 'a07f1f77bcf86cd7994390ff'
+          }, function(err, submission) {
+            if (err) return cb(err);
+            submission.assignedTo.mentor.should.eql('a@b.com');
+            submission.assignedTo.expiry.getTime()
+              .should.be.within(Date.now(),
+                                Date.now() + website.ASSIGNMENT_LOCKOUT_MS);
+            cb();
+          });
+        }
+      ], done);
+    });
+
+    it('should disallow self-assigning on conflicts', function(done) {
+      var expTime = Date.now() + 60000;
+      loggedInEmail = "a@b.com";
+      async.series([
+        function(cb) {
+          models.Submission.findOne({
+            _id: 'a07f1f77bcf86cd7994390ff'
+          }, function(err, submission) {
+            if (err) return cb(err);
+            submission.assignTo('blah@b.com', expTime, cb);
+          });
+        },
+        function(cb) {
+          request(app)
+            .post('/submissions/a07f1f77bcf86cd7994390ff')
+            .send({
+              _csrf: 'deadbeef',
+              action: 'assign'
+            })
+            .expect('Location', '/submissions/a07f1f77bcf86cd7994390ff')
+            .expect(303, cb);
+        },
+        function(cb) {
+          models.Submission.findOne({
+            _id: 'a07f1f77bcf86cd7994390ff'
+          }, function(err, submission) {
+            if (err) return cb(err);
+            submission.assignedTo.mentor.should.eql('blah@b.com');
+            submission.assignedTo.expiry.getTime().should.eql(expTime);
+            cb();
+          });
+        }
+      ], done);
+    });
+
+    it('should allow self-unassigning', function(done) {
+      loggedInEmail = "a@b.com";
+      async.series([
+        function(cb) {
+          request(app)
+            .post('/submissions/a07f1f77bcf86cd7994390ff')
+            .send({
+              _csrf: 'deadbeef',
+              action: 'unassign'
+            })
+            .expect('Location', '/submissions/a07f1f77bcf86cd7994390ff')
+            .expect(303, cb);
+        },
+        function(cb) {
+          models.Submission.findOne({
+            _id: 'a07f1f77bcf86cd7994390ff'
+          }, function(err, submission) {
+            if (err) return cb(err);
+            submission.assignedTo.mentor.should.eql('a@b.com');
+            submission.assignedTo.expiry.getTime()
+              .should.be.within(Date.now() - 60000, Date.now());
+            cb();
+          });
         }
       ], done);
     });
