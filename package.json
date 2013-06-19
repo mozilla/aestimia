@@ -1,6 +1,6 @@
 {
   "name": "aestimia",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "description": "Assess submitted work with an explicit rubric.",
   "dependencies": {
     "connect-flash": "~0.1.0",
