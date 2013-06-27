@@ -90,9 +90,11 @@
     You have until <strong>{{ submission.assignedTo.expiry|timeago }}</strong> to assess this submission. After that point, other mentors will have the opportunity to assess it.
   </div>
   <h2>Rubric</h2>
+  <p>All required items must be checked for the learner to be awarded.</p>
   {% for rubitem in submission.rubric.items %}
     <label class="checkbox">
-      <input type="checkbox" name="rubric_{{loop.index0}}"> 
+      <input type="checkbox" name="rubric_{{loop.index0}}"
+             {% if rubitem.required %}data-required{% endif %}>
       {% if rubitem.required %}
       <strong>{{ rubitem.text }} (required)</strong>
       {% else %}
@@ -114,7 +116,7 @@
      feel free to add them.</p>
     <textarea class="input-block-level" name="response"></textarea>
   {% endif %}
-  <button type="submit" name="action" value="assess" class="btn btn-primary">Submit Assessment</button>
+  <button id="js-assess" type="submit" name="action" value="assess" class="btn" data-accept-tooltip="All required rubric items are satisfied, so the learner will be awarded." data-reject-tooltip="Not all required rubric items are satisfied, so the submission will be rejected."><i></i> Submit Assessment</button>
   <button type="submit" name="action" value="unassign" class="btn">Cancel Assessment</button>
   <button type="submit" name="action" value="flag" class="btn"><i class="icon-flag"></i> Report</button>
   {% elif assignee %}
@@ -124,4 +126,8 @@
   {% endif %}
 {% endif %}
 </form>
+{% endblock %}
+
+{% block scripts %}
+<script src="/js/submission-detail.js"></script>
 {% endblock %}
