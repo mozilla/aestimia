@@ -373,4 +373,21 @@ describe('Submission aggregation', function() {
       done();
     });
   });
+
+  it('provides dashboard statistics', function(done) {
+    var fakeTime = new Date(2013, 01, 03).getTime();
+
+    sinon.stub(Date, 'now', function() { return fakeTime; });
+    Submission.getDashboardStatistics(function(err, stats) {
+      Date.now.restore();
+      if (err) throw err;
+      stats.should.eql({
+        reviewed: 2,
+        reviewedToday: 1,
+        unreviewed: 2,
+        unreviewedToday: 1
+      });
+      done();
+    });
+  });
 });
