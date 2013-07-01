@@ -306,3 +306,71 @@ describe('Submission', function() {
     });
   });
 });
+
+describe('Submission aggregation', function() {
+  beforeEach(function(done) {
+    async.series([
+      db.removeAll(Submission),
+      db.removeAll(Mentor),
+      db.create(Mentor, {email: "foo@bar.org", classifications: ["math"]}),
+      db.create(Submission, baseSubmission({
+        creationDate: new Date(2013, 01, 01),
+        reviews: [{
+          date: new Date(2013, 01, 01),
+          author: "foo@bar.org",
+          response: "reviewed on jan 1"
+        }]
+      })),
+      db.create(Submission, baseSubmission({
+        creationDate: new Date(2013, 01, 01),
+        reviews: [{
+          date: new Date(2013, 01, 03),
+          author: "foo@bar.org",
+          response: "reviewed on jan 3"
+        }]
+      })),
+      db.create(Submission, baseSubmission({
+        creationDate: new Date(2013, 01, 01),
+        flagged: true
+      })),
+      db.create(Submission, baseSubmission({
+        creationDate: new Date(2013, 01, 01)
+      })),
+      db.create(Submission, baseSubmission({
+        creationDate: new Date(2013, 01, 03)
+      }))
+    ], done);
+  });
+
+  it('provides # of submissions ever reviewed', function(done) {
+    Submission.countReviewed(function(err, count) {
+      if (err) throw err;
+      count.should.eql(2);
+      done();
+    });
+  });
+
+  it('provides # of submissions reviewed since date', function(done) {
+    Submission.countReviewed(new Date(2013, 01, 02), function(err, count) {
+      if (err) throw err;
+      count.should.eql(1);
+      done();
+    });
+  });
+
+  it('provides # of unreviewed submissions', function(done) {
+    Submission.countUnreviewed(function(err, count) {
+      if (err) throw err;
+      count.should.eql(2);
+      done();
+    });
+  });  
+
+  it('provides # of unreviewed submissions since date', function(done) {
+    Submission.countUnreviewed(new Date(2013, 01, 02), function(err, count) {
+      if (err) throw err;
+      count.should.eql(1);
+      done();
+    });
+  });
+});
