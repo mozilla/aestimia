@@ -3,12 +3,12 @@ var url = require('url');
 var assert = require('assert');
 var colors = require('colors');
 var wd = require('wd');
-var Future = require('fibers/future');
 var mongoose = require('mongoose');
 
 var aestimia = require('../../');
 var stubbyIdPersona = require('../../test/stubbyid-persona');
 var support = require('../../test/acceptance');
+var waitFor = support.waitFor;
 
 var initialized = false;
 
@@ -26,12 +26,6 @@ process.on('uncaughtException', function(err) {
 process.on('exit', function() {
   support.servers.stopAll(function() {});
 });
-
-function waitFor(obj, prop) {
-  var f = new Future();
-  obj[prop].apply(obj, [].slice.call(arguments, 2).concat([f.resolver()]));
-  return f.wait();
-}
 
 function removeAllModels() {
   Object.keys(aestimia.models).forEach(function(name) {
@@ -102,6 +96,7 @@ module.exports = support.fiberize(function() {
       this.browser.eval("window.prompt = function() { return " +
                         JSON.stringify(response) + "; };");
     };
+    this.waitFor = waitFor;
     this._scenarioStartTime = Date.now();
     console.info("Scenario setup completed in " +
                  (this._scenarioStartTime - setupStartTime) + " ms.");
