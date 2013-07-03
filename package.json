@@ -16,13 +16,17 @@
     "express": "~3.2.3"
   },
   "devDependencies": {
+    "colors": "~0.6.0",
+    "cucumber": "~0.3.0",
+    "fibers": "~1.0.1",
+    "wd": "~0.0.32",
     "mocha": "~1.9.0",
     "should": "~1.2.2",
     "sinon": "1.7.2",
     "supertest": "~0.6.0"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec --check-leaks test/*.test.js"
+    "test": "./node_modules/.bin/mocha --reporter spec --check-leaks test/*.test.js && ./node_modules/.bin/cucumber-js -f pretty"
   },
   "repository": {
     "type": "git",
