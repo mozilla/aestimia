@@ -10,8 +10,7 @@ module.exports = fiberize(function() {
     var mentor = new aestimia.models.Mentor({
       email: 'john@mentors.org',
       classifications: ['math', 'science']
-    });
-    this.waitFor(mentor, 'save');
+    }).saveAndWait();
     this.answerNextPromptWith(mentor.email);
     this.browser.elementByCss('.btn.js-login').click();
     this.browser.waitForElementByLinkText('Logout', 15000);
@@ -22,8 +21,7 @@ module.exports = fiberize(function() {
   });
 
   this.When(/^there is a submission for them to review$/, function() {
-    var sub = new aestimia.models.Submission(data.submissions['base']);
-    this.waitFor(sub, 'save');
+    new aestimia.models.Submission(data.submissions['base']).saveAndWait();
     this.browser.get(this.url('/'));
   });
 
