@@ -3,9 +3,10 @@
 {% block content %}
 <h1 id="title">Welcome {{ email }}!</h1>
 {% if totalPages %}
-  <p>Choose a submission from the list below to review.</p>
+  <p>These badges are ready for your review!</p>
   {% include "submission-list.html" %}
 {% else %}
-  <p>You have nothing to review.</p>
+  <p>No badges to review right now! Good job mentor team. You deserve a party.</p>
+  <img src="http://i.imgur.com/N0Qe0.gif">
 {% endif %}
 {% endblock %}
