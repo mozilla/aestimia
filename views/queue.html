@@ -2,6 +2,24 @@
 {% block title %} - Queue{% endblock %}
 {% block content %}
 <h1 id="title">Welcome {{ email }}!</h1>
+<table class="table table-condensed">
+  <tr>
+    <td>Total submissions reviewed</td>
+    <td>{{ stats.reviewed }}</td>
+  </tr>
+  <tr>
+    <td>Total submissions needing assessment</td>
+    <td>{{ stats.unreviewed }}</td>
+  </tr>
+  <tr>
+    <td>Submissions reviewed today</td>
+    <td>{{ stats.reviewedToday }}</td>
+  </tr>
+  <tr>
+    <td>Submissions created today needing assessment</td>
+    <td>{{ stats.unreviewedToday }}</td>
+  </tr>
+</table>
 {% if totalPages %}
   <p>These badges are ready for your review!</p>
   {% include "submission-list.html" %}

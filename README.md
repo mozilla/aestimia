@@ -7,9 +7,9 @@ evidence and a rubric.
 
 You'll need node 0.8, as well as [MongoDB][].
 
-[PhantomJS][] is required to run the test suite. MongoDB is expected
-to be available on localhost at the default port while the test suite is
-running, too; the `test` database will be used.
+[PhantomJS][] 1.8 or later is required to run the test suite. MongoDB is
+expected to be available on localhost at the default port while the test
+suite is running, too; the `test` database will be used.
 
 ## Quick Start
 
@@ -93,6 +93,20 @@ can be themed. See `theme/csol` for an example.
 To enable a theme, set the `THEME_DIR` environment variable to
 the root directory of the theme; see above for more details.
 
+## Acceptance Tests
+
+Acceptance tests are automatically run with `npm test`. Their behavior
+can be changed by the following environment variables:
+
+* `ACCEPTANCE_DEBUG` represents a boolean value. If it exists, logging
+  output will be displayed that makes the tests easier to debug.
+
+* `ACCEPTANCE_BROWSER_NAME` is the name of the browser to use when
+  running the acceptance tests. If this is `phantom` (the default), phantomjs
+  is automatically started and used for browser automation. Otherwise, it's
+  assumed that a [WebDriver][] server is hosted at port 4444 and the
+  `browserName` capability is set to this environment variable.
+
 ## Test Coverage
 
 Build/install [jscoverage][], run `make test-cov`, then open
@@ -109,3 +123,4 @@ be rejected.
   [bin/aestimia.js]: https://github.com/mozilla/aestimia/blob/master/bin/aestimia.js
   [jscoverage]: https://github.com/visionmedia/node-jscoverage
   [100%]: http://labs.toolness.com/temp/aestimia-coverage.html
+  [WebDriver]: http://docs.seleniumhq.org/projects/webdriver/
