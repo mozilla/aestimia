@@ -75,6 +75,13 @@ ol {
   border-left: none;
   border-right: none;
 }
+
+.navbar .navbar-inner {
+    background: #45bcd2;
+}
+.wrapper.secondary {
+  background-image:url('../img/chalkboard_bg.jpg');
+}
 .navbar .nav > li.dropdown.open > .dropdown-toggle {
   color: #000;
 }
@@ -137,6 +144,10 @@ ol {
 .navbar .nav-wrap ul.nav > li > a:focus,
 .navbar .nav-wrap ul.nav > li > a:hover {
   color: #c0c0c0;
+}
+.navbar .nav > li > a:focus,
+.navbar .nav > li > a:hover {
+  color:#c0c0c0;
 }
 .navbar .nav-wrap ul.nav > li.active a,
 .navbar .nav-wrap ul.nav > li.active a:hover {

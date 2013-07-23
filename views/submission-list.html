@@ -8,9 +8,12 @@
       {% if submission.isLearnerUnderage() %}
         An underage learner
       {% else %}
-        {{ submission.learner }}
+        {{ submission.learner }} {% if not submission.isReviewed() %}applied for{% else %}{% if submission.isAwarded() %}earned {% else %}has not yet earned {% endif %}{% endif %} the {{submission.achievement.name}}
       {% endif %}
     </h4>
+    <p>
+        {{submission.achievement.description}}
+    </p>
     <p><small class="muted">Application submitted {{ submission.creationDate|timeago }}.</small></p>
     <p>
       {% for classification in submission.classifications %}
@@ -18,7 +21,7 @@
       {% endfor %}
       {% set assignee = submission.getAssignee() %}
       {% set isSomeoneElseAssignee = (assignee and assignee != email) %}
-      <a href="/submissions/{{ submission._id }}" 
+      <a href="/submissions/{{ submission._id }}"
         {% if submission.isReviewed() or isSomeoneElseAssignee %}
           class="btn pull-right">View
         {% else %}
@@ -27,7 +30,7 @@
       </a>
       {% if (not submission.isReviewed()) and assignee %}
       <p>
-      This is assigned to 
+      This is assigned to
       {% if isSomeoneElseAssignee %}
       {{ assignee }}.
       {% else %}
@@ -44,6 +47,6 @@
     <li><a href="{{prevPage}}">Previous</a></li>
   {% endif %}
   {% if nextPage %}
-    <li><a href="{{nextPage}}">Next</a></li>  
+    <li><a href="{{nextPage}}">Next</a></li>
   {% endif %}
 </ul>
