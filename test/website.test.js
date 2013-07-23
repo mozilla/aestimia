@@ -59,31 +59,31 @@ describe('Website', function() {
     request(app)
       .get('/')
       .expect('Content-Type', /html/)
-      .expect(200, done);    
+      .expect(200, done);
   });
 
   it('should return 200 OK with HTML at /docs', function(done) {
     request(app)
       .get('/docs')
       .expect('Content-Type', /html/)
-      .expect(200, done);    
+      .expect(200, done);
   });
 
   it('should return 200 OK with HTML at /demo', function(done) {
     request(app)
       .get('/demo')
       .expect('Content-Type', /html/)
-      .expect(200, done);    
+      .expect(200, done);
   });
 
   describe('queue', function() {
     beforeEach(setupFixtures);
 
-    it('should show "nothing to review"', function(done) {
+    it('should show "No badges to review right now"', function(done) {
       loggedInEmail = "meh@glorb.org";
       request(app)
         .get('/')
-        .expect(/nothing to review/, done);
+        .expect(/No badges to review right now/, done);
     });
 
     it('should list items to review', function(done) {
@@ -210,7 +210,7 @@ describe('Website', function() {
     it('should return 401 if user is not logged in', function(done) {
       request(app)
         .get('/history')
-        .expect(401, done);      
+        .expect(401, done);
     });
 
     it('should work', function(done) {
@@ -316,7 +316,7 @@ describe('Website', function() {
         function(cb) {
           webhookServer.close();
           body.should.eql({_id: "a07f1f77bcf86cd799439012"});
-          cb();          
+          cb();
         }
       ], done);
     });
