@@ -9,7 +9,7 @@ var url = require('url');
 var assert = require('assert');
 var mongoose = require('mongoose');
 
-const PORT = process.env['PORT'] || 3000;
+const PORT = process.env.PORT || process.env['PORT'] || 3000;
 const COOKIE_SECRET = process.env['COOKIE_SECRET'] || null;
 const MONGO_URL = process.env['MONGO_URL'] || process.env['MONGOHQ_URL'] ||
   process.env['MONGOLAB_URI'] || 'mongodb://localhost/aestimia';
@@ -19,9 +19,10 @@ const API_SECRET = process.env['API_SECRET'];
 const THEME_DIR = process.env['THEME_DIR'];
 const SSL_KEY = process.env['SSL_KEY'];
 const SSL_CERT = process.env['SSL_CERT'];
-const PERSONA_AUDIENCE = process.env['PERSONA_AUDIENCE'] || (DEBUG
+const PERSONA_AUDIENCE = (SSL_KEY ? 'https://' : 'http://') + process.env['PERSONA_AUDIENCE'] + PORT || (DEBUG
   ? (SSL_KEY ? 'https' : 'http') + '://localhost:' + PORT
   : null);
+const PERSONA_AUDIENCE_URL = PERSONA_AUDIENCE;
 
 assert.ok(PERSONA_AUDIENCE, 'PERSONA_AUDIENCE env var should be defined.');
 assert.ok(COOKIE_SECRET, 'COOKIE_SECRET env var should be defined.');
@@ -52,7 +53,7 @@ mongoose.connect(MONGO_URL, function(err) {
     personaDefineRoutes: ENABLE_STUBBYID &&
                          require('../test/stubbyid-persona'),
     personaIncludeJs: ENABLE_STUBBYID && '/vendor/stubbyid.js',
-    personaAudience: PERSONA_AUDIENCE
+    personaAudience: PERSONA_AUDIENCE_URL
   });
 
   var server = app;
