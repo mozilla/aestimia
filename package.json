@@ -11,7 +11,7 @@
     "mongoose": "3.6.9",
     "cheerio": "0.11.0",
     "request": "2.21.0",
-    "newrelic": "~0.9.19",
+    "newrelic": "~0.10.3",
     "nunjucks": "git://github.com/toolness/nunjucks.git#644c8634da0a0327b030c2d0ca72266f15bb8d1a",
     "express": "~3.2.3"
   },
