@@ -147,6 +147,27 @@ table.querystring-args input {
 
     <button id="js-list-submissions" class="btn">List Submissions</button>
   </div>
+  <div data-section-id="mark-review">
+    <h5>URL Arguments</h5>
+    
+    <table class="table http route-args">
+      <tr>
+        <th>Argument</th>
+        <th>Value</th>
+      </tr>
+      <tr>
+        <td><code>submissionId</code></td>
+        <td><input type="text" id="js-submission-id-2"></td>
+      </tr>
+      <tr>
+        <td><code>reviewId</code></td>
+        <td><input type="text" id="js-review-id"></id>
+      </tr>
+    </table>
+
+    <button id="js-mark-review" class="btn">Mark Review</button>
+  </div>
+
 </div>
 {% endblock %}
 {% block scripts %}
