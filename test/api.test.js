@@ -8,6 +8,8 @@ var data = require('./data');
 var db = require('./db');
 var aestimia = require('../');
 
+var authHeader = 'Basic ' + new Buffer('api:lol').toString('base64')
+
 db.init();
 
 describe('API', function() {
@@ -19,7 +21,6 @@ describe('API', function() {
       });
     }
   });
-  var authHeader = 'Basic ' + new Buffer('api:lol').toString('base64');
 
   it('should return 401 when no auth is given', function(done) {
     request(app)
@@ -229,5 +230,62 @@ describe('API', function() {
       })
       .expect(422, done);
   });
+});
 
+describe('API @ /submissions/:submissionId/reviews/:reviewId', function() {
+  var app = utils.buildApp({apiKey: 'lol'});
+
+  beforeEach(function(done) {
+    async.series([
+      db.removeAll(aestimia.models.Submission),
+      db.removeAll(aestimia.models.Mentor),
+      db.create(aestimia.models.Mentor, {
+        email: "baz@bar.org",
+        classifications: ['math']
+      }),
+      db.create(aestimia.models.Submission, data.baseSubmission({
+        _id: "000000000000000000000001",
+        learner: "foo@bar.org",
+        classifications: ["math"],
+        reviews: [{
+          _id: "000000000000000000000010",
+          author: "baz@bar.org",
+          response: "cool yo",
+          satisfiedRubrics: [0, 1]
+        }]
+      }))
+    ], done);
+  });
+
+  it('POST /process should 404 if reviewId is invalid', function(done) {
+    request(app)
+      .post('/api/submissions/000000000000000000000001/reviews/U/process')
+      .set('Authorization', authHeader)
+      .send()
+      .expect(404, done);
+  });
+
+  it('POST /process should 200 if reviewId is valid', function(done) {
+    async.series([
+      function(cb) {
+        request(app)
+          .post('/api/submissions/000000000000000000000001/reviews/' +
+                '000000000000000000000010/process')
+          .set('Authorization', authHeader)
+          .send()
+          .expect({message: "updated"})
+          .expect(200, cb);
+      },
+      function(cb) {
+        aestimia.models.Submission.findOne({
+          _id: "000000000000000000000001",
+        }, function(err, s) {
+          if (err) return cb(err);
+          s.reviews.id("000000000000000000000010").processed
+            .should.equal(true);
+          cb();
+        });
+      }
+    ], done);
+  });
 });

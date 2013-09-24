@@ -39,6 +39,7 @@ describe('Submission', function() {
         _id: "000000000000000000000001",
         classifications: ["math"],
         reviews: [{
+          _id: "000000000000000000000010",
           author: "foo@bar.org",
           response: "cool yo"
         }]
@@ -214,6 +215,24 @@ describe('Submission', function() {
     var s = new Submission(data.submissions['base']);
     s.isLearnerUnderage().should.eql(false);
     s.save(done);
+  });
+
+  it('should store meta property as mixed data', function(done) {
+    new Submission(baseSubmission({
+      meta: {foo: {bar: 1}}
+    })).save(function(err, s) {
+      if (err) return done(err);
+      s.meta.should.eql({foo: {bar: 1}});
+      done();      
+    });    
+  });
+
+  it('should default review.processed to false', function(done) {
+    Submission.findOne({_id: "000000000000000000000001"}, function(err, s) {
+      var r = s.reviews.id("000000000000000000000010");
+      r.processed.should.equal(false);
+      done();
+    });
   });
 
   // This test only really verifies how we expect Mongoose to work, not any
