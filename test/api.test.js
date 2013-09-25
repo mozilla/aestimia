@@ -281,8 +281,8 @@ describe('API @ /submissions/:submissionId/reviews/:reviewId', function() {
           _id: "000000000000000000000001",
         }, function(err, s) {
           if (err) return cb(err);
-          s.reviews.id("000000000000000000000010").processed
-            .should.equal(true);
+          var when = s.reviews.id("000000000000000000000010").processed;
+          (Date.now() - when.getTime()).should.be.approximately(0, 5000);
           cb();
         });
       }

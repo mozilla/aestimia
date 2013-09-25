@@ -158,13 +158,14 @@
           items are satisfied, the learner should be awarded a badge.
         </dd>
         <dt id="review-processed">processed</dt>
-        <dd>An optional boolean for use by clients, which tracks
-          whether the review has been processed yet by them. What it means
-          to be <em>processed</em> is entirely defined by the client: it
+        <dd>An optional date for use by clients, which tracks
+          when the review has been processed by them, if at all. What it 
+          means to be <em>processed</em> is entirely defined by the client: it
           could mean that an email was sent to the submitter, or that
           a badge was awarded as a result of the review, or any number of
-          other things. The value of this field always defaults to
-          <code>false</code> and can only be changed by the client.</dd>
+          other things. This value defaults to being undefined, and can only
+          be changed by the client when it <a href="#mark-review">marks
+          a review</a> as processed.</dd>
       </dl>
     </dd>
     <dt id="submission-meta">meta</dt>
@@ -282,7 +283,8 @@
 
   <pre>POST /api/submissions/:submissionId/reviews/:reviewId/process</pre>
 
-  <p>This endpoint marks a review as <a href="#review-processed">processed</a>.</p>
+  <p>This endpoint sets a review's <a href="#review-processed">processed</a>
+    field to the current date and time.</p>
 
   <h4>Example Response</h4>
 

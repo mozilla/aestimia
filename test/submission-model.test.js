@@ -227,10 +227,10 @@ describe('Submission', function() {
     });    
   });
 
-  it('should default review.processed to false', function(done) {
+  it('should default review.processed to undefined', function(done) {
     Submission.findOne({_id: "000000000000000000000001"}, function(err, s) {
       var r = s.reviews.id("000000000000000000000010");
-      r.processed.should.equal(false);
+      should.equal(r.processed, undefined);
       done();
     });
   });

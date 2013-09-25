@@ -59,8 +59,7 @@ exports.reviewedSubmissions = {
       _id: "000000000000000000000010",
       author: "baz@bar.org",
       response: "cool yo",
-      satisfiedRubrics: [0, 1],
-      processed: false
+      satisfiedRubrics: [0, 1]
     }]
   }),
   'flagged': baseSubmission({
