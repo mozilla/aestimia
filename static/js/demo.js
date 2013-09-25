@@ -86,12 +86,14 @@ $(window).ready(function() {
       ? USERNAME + ':' + password.val()
       : {html: USERNAME + ':<span style="color: red">****</span>'};
     var cmdline = ["curl", "-i", "-u", credentials];
-    if (settings.type != 'GET')
-      cmdline = cmdline.concat([
-        '-X', settings.type,
-        '-H', 'Content-Type: ' + settings.contentType,
-        '--data-binary', settings.data
-      ]);
+    if (settings.type != 'GET') {
+      cmdline = cmdline.concat(['-X', settings.type]);
+      if (settings.data)
+        cmdline = cmdline.concat([
+          '-H', 'Content-Type: ' + settings.contentType,
+          '--data-binary', settings.data
+        ]);
+    }
     cmdline.push(url);
     consoleExec(cmdline);
   }).ajaxComplete(function(event, jqxhr, settings) {
@@ -121,5 +123,10 @@ $(window).ready(function() {
   $("form.js-submission").submit(function() {
     postJSON("/api/submission", $(this.elements['json']).val());
     return false;
+  });
+
+  $("#js-mark-review").click(function() {
+    $.post('/api/submissions/' + $('#js-submission-id-2').val() +
+             '/reviews/' + $('#js-review-id').val() + '/process');
   });
 });
