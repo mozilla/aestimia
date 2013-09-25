@@ -140,6 +140,8 @@
       the most recent review determines whether the learner has satisfied
       the rubric and should be awarded a badge.
       <dl>
+        <dt>_id</dt>
+        <dd>The unique identifier of the review.</dd>
         <dt>date</dt>
         <dd>The date the review was conducted.</dd>
         <dt>author</dt>
@@ -155,8 +157,20 @@
           where the first rubric item is 0. If all required rubric
           items are satisfied, the learner should be awarded a badge.
         </dd>
+        <dt id="review-processed">processed</dt>
+        <dd>An optional date for use by clients, which tracks
+          when the review has been processed by them, if at all. What it 
+          means to be <em>processed</em> is entirely defined by the client: it
+          could mean that an email was sent to the submitter, or that
+          a badge was awarded as a result of the review, or any number of
+          other things. This value defaults to being undefined, and can only
+          be changed by the client when it <a href="#mark-review">marks
+          a review</a> as processed.</dd>
       </dl>
     </dd>
+    <dt id="submission-meta">meta</dt>
+    <dd>Arbitrary value specified by the client, which can be used for storing
+      custom data.</dd>
   </dl>
 
   <h3><a id="schemas_examples" href="#schemas_examples">Examples</a></h3>
@@ -262,4 +276,20 @@
 
   <pre class="http headers">Status: 200 OK</pre>
   <pre class="http response">{{examples.submissionList}}</pre>
+</section>
+
+<section id="mark-review">
+  <h2><a href="#mark-review">Mark review as processed</a></h2>
+
+  <pre>POST /api/submissions/:submissionId/reviews/:reviewId/process</pre>
+
+  <p>This endpoint sets a review's <a href="#review-processed">processed</a>
+    field to the current date and time.</p>
+
+  <h4>Example Response</h4>
+
+  <pre class="http headers">Status: 200 OK</pre>
+  <pre class="http response">{
+  "message": "updated"
+}</pre>
 </section>
