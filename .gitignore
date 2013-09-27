@@ -1,5 +1,6 @@
 /node_modules
 /lib-cov
 coverage.html
-.env
+*.env
 .DS_Store
+*~
