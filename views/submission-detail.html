@@ -14,7 +14,7 @@
   <div class="span4 offset4">
     {% include "badge.html" %}
     <hr>
-    <p class="verbatim">{{ submission.achievement.description }}</p>
+    <p class="verbatim">{{ submission.achievement.description | safe}}</p>
   </div>
 </div>
 <h2>Evidence</h2>
