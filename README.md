@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/mozilla/aestimia.png)](https://travis-ci.org/mozilla/aestimia)
 
+# This project is no longer actively maintained, and has been archived
+
 Aestimia allows a mentor community to assess work based on submitted
 evidence and a rubric.
 
