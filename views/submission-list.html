@@ -12,7 +12,7 @@
       {% endif %}
     </h4>
     <p>
-        {{submission.achievement.description}}
+        {{submission.achievement.description | safe}}
     </p>
     <p><small class="muted">Application submitted {{ submission.creationDate|timeago }}.</small></p>
     <p>
